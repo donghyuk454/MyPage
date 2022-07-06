@@ -18,5 +18,4 @@ public abstract class BaseEntity {
 
     @Column(name = "deleted_date_time", updatable = false)
     protected LocalDateTime deletedDateTime;
-
 }

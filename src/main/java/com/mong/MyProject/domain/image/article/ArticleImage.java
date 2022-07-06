@@ -3,21 +3,15 @@ package com.mong.MyProject.domain.image.article;
 import com.mong.MyProject.domain.article.Article;
 import com.mong.MyProject.domain.image.Image;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "article_image")
 @Getter
-@Table(name = "article_image", uniqueConstraints = {
-        @UniqueConstraint(name = "article_image_unique_constraints", columnNames = {"image_url", "image_key"})
-})
+@Setter
 public class ArticleImage extends Image {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "image_id")
-    private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "article_id",nullable = false)
     private Article article;
 }

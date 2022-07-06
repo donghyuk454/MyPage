@@ -14,6 +14,11 @@ import javax.persistence.*;
 })
 public abstract class Image {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "image_id")
+    private Long id;
+
     @Column(name = "image_url", nullable = false, unique = true)
     private String url;
 

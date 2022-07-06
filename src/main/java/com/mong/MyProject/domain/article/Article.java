@@ -2,6 +2,7 @@ package com.mong.MyProject.domain.article;
 
 import com.mong.MyProject.domain.BaseEntity;
 import com.mong.MyProject.domain.image.Image;
+import com.mong.MyProject.domain.image.article.ArticleImage;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +15,6 @@ import java.util.List;
 @Entity(name = "article")
 @Getter
 @Setter
-
 public class Article extends BaseEntity {
 
     @Id
@@ -27,7 +27,7 @@ public class Article extends BaseEntity {
 
     private boolean deleted;
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
-    private final List<Image> images = new ArrayList<>();
+    @OneToMany//(mappedBy = "image_id")
+    private List<ArticleImage> images = new ArrayList<>();
 
 }
