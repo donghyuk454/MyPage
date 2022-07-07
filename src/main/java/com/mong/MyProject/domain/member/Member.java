@@ -44,6 +44,12 @@ public class Member extends BaseEntity {
         this.lastModifiedDateTime = createdDateTime;
     }
 
+    public void changed(){
+        this.lastModifiedDateTime = LocalDateTime.now();
+    }
+
+    
+
 //    @OneToOne
 //    private MemberImage memberImage;
 //
