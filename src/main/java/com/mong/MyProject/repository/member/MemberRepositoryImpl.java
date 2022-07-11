@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,10 +13,12 @@ import java.util.Optional;
 public class MemberRepositoryImpl implements MemberRepository {
 
     private EntityManager em;
+    private EntityManagerFactory emf;
 
     @Autowired
-    public MemberRepositoryImpl(EntityManager em) {
-        this.em = em;
+    public MemberRepositoryImpl(EntityManagerFactory emf) {
+        this.emf = emf;
+        this.em = emf.createEntityManager();
     }
 
     @Override
