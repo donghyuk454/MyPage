@@ -4,14 +4,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.PersistenceUnit;
 
-@Configuration
+//@Configuration
 public class DataSourceConfiguration {
 
-    @Bean
-    public EntityManagerFactory entityManagerFactory() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("db");
-        return emf;
-    }
+//    @PersistenceUnit
+//    EntityManagerFactory emf;
+//
+//    @Bean
+//    public EntityManagerFactory entityManagerFactory() {
+//        return emf;
+//    }
 }
