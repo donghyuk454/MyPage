@@ -22,7 +22,7 @@ import java.util.List;
 public class Member extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id", updatable = false)
     private Long id;
 
@@ -48,7 +48,20 @@ public class Member extends BaseEntity {
         this.lastModifiedDateTime = LocalDateTime.now();
     }
 
-    
+    @Override
+    public String toString() {
+        return "Member{" +
+                "createdDateTime=" + createdDateTime +
+                ", lastModifiedDateTime=" + lastModifiedDateTime +
+                ", deletedDateTime=" + deletedDateTime +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", alias='" + alias + '\'' +
+                ", passwd='" + passwd + '\'' +
+                '}';
+    }
+
 
 //    @OneToOne
 //    private MemberImage memberImage;
