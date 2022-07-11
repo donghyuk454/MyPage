@@ -24,6 +24,7 @@ public class MemberRepositoryImpl implements MemberRepository {
     @Override
     public Member save(Member member) {
         em.persist(member);
+
         return member;
     }
 
@@ -35,30 +36,30 @@ public class MemberRepositoryImpl implements MemberRepository {
 
     @Override
     public Optional<Member> findByEmailAndPasswd(String email, String passwd) {
-        Member member = em.createQuery("select m from member m where m.email = :email and m.passwd = :passwd", Member.class)
+        List<Member> result = em.createQuery("select m from member m where m.email = :email and m.passwd = :passwd", Member.class)
                 .setParameter("email", email)
                 .setParameter("passwd", passwd)
-                .getResultList()
-                .get(0);
-        return Optional.ofNullable(member);
+                .getResultList();
+
+        return result.stream().findAny();
     }
 
     @Override
     public Optional<Member> findByAlias(String alias) {
-        Member member = em.createQuery("select m from member m where m.alias = :alias", Member.class)
+        List<Member> result = em.createQuery("select m from member m where m.alias = :alias", Member.class)
                 .setParameter("alias", alias)
-                .getResultList()
-                .get(0);
-        return Optional.ofNullable(member);
+                .getResultList();
+
+        return result.stream().findAny();
     }
 
     @Override
     public Optional<Member> findByEmail(String email) {
-        Member member = em.createQuery("select m from member m where m.email = :email", Member.class)
+        List<Member> result = em.createQuery("select m from member m where m.email=:email", Member.class)
                 .setParameter("email", email)
-                .getResultList()
-                .get(0);
-        return Optional.ofNullable(member);
+                .getResultList();
+
+        return result.stream().findAny();
     }
 
     @Override
