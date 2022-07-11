@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Slf4j
 @Service
 public class MemberService {
@@ -47,7 +49,20 @@ public class MemberService {
      * 로그인
      * */
     public Member login(String email, String passwd) {
-        return memberRepository.findByEmailAndPasswd(email, passwd).get();
+        Member member = null;
+
+        try {
+            member = memberRepository.findByEmail(email).get();
+
+            if (!member.getPasswd().equals(passwd)) {
+                throw new IllegalStateException("비밀번호가 다릅니다.");
+            }
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+        } finally {
+            return member;
+        }
+
     }
 
     /**
