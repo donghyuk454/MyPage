@@ -2,15 +2,12 @@ package com.mong.MyProject.domain.member;
 
 import com.mong.MyProject.domain.BaseEntity;
 
-import com.mong.MyProject.domain.article.Article;
-import com.mong.MyProject.domain.image.user.MemberImage;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Slf4j
 @Entity(name="member")
