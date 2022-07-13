@@ -5,11 +5,13 @@ import com.mong.MyProject.repository.member.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
+//@Transactional
 public class MemberService {
 
     private MemberRepository memberRepository;
@@ -48,21 +50,19 @@ public class MemberService {
     /**
      * 로그인
      * */
-    public Member login(String email, String passwd) {
+    public Member login(String email, String passwd){
         Member member = null;
 
-        try {
-            member = memberRepository.findByEmail(email).get();
+        member = memberRepository.findByEmail(email)
+                .orElseThrow(()->{
+                    throw new NoSuchElementException("존재하지 않는 이메일 입니다.");
+                });
 
-            if (!member.getPasswd().equals(passwd)) {
-                throw new IllegalStateException("비밀번호가 다릅니다.");
-            }
-        } catch (NoSuchElementException e) {
-            e.printStackTrace();
-        } finally {
-            return member;
+        if (!member.getPasswd().equals(passwd)) {
+            throw new IllegalStateException("비밀번호가 다릅니다.");
         }
 
+        return member;
     }
 
     /**
