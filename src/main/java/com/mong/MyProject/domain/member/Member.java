@@ -3,6 +3,7 @@ package com.mong.MyProject.domain.member;
 import com.mong.MyProject.domain.BaseEntity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @Table(name="member", uniqueConstraints = {
         @UniqueConstraint(name = "user_unique_constraint", columnNames = {"email", "alias"})
 })
+@NoArgsConstructor
 public class Member extends BaseEntity {
 
     @Id
@@ -31,8 +33,6 @@ public class Member extends BaseEntity {
     private String alias;
     @Column(name = "passwd")
     private String passwd;
-
-    public Member(){}
 
     public Member(String name, String email, String alias, String passwd, LocalDateTime createdDateTime) {
         this.name = name;
