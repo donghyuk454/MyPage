@@ -31,11 +31,6 @@ class MemberServiceTest {
     @Mock
     private Member member;
 
-    IdGenerator idGenerator;
-
-    MemberServiceTest() {
-    }
-
     @Test
     @DisplayName("회원 가입")
     void 회원_가입() {
