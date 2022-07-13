@@ -44,10 +44,6 @@ public class Member extends BaseEntity {
         this.lastModifiedDateTime = createdDateTime;
     }
 
-    public void changed(){
-        this.lastModifiedDateTime = LocalDateTime.now();
-    }
-
     @Override
     public String toString() {
         return "Member{" +
@@ -60,6 +56,11 @@ public class Member extends BaseEntity {
                 ", alias='" + alias + '\'' +
                 ", passwd='" + passwd + '\'' +
                 '}';
+    }
+
+    public void setPasswd(String passwd){
+        this.passwd = passwd;
+        this.lastModifiedDateTime = LocalDateTime.now();
     }
 
 
