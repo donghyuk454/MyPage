@@ -34,18 +34,8 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public Optional<Member> findByEmailAndPasswd(String email, String passwd) {
-        List<Member> result = em.createQuery("select m from member m where m.email = :email and m.passwd = :passwd", Member.class)
-                .setParameter("email", email)
-                .setParameter("passwd", passwd)
-                .getResultList();
-
-        return result.stream().findAny();
-    }
-
-    @Override
     public Optional<Member> findByAlias(String alias) {
-        List<Member> result = em.createQuery("select m from member m where m.alias = :alias", Member.class)
+        List<Member> result = em.createQuery("select m from member m where m.alias=:alias", Member.class)
                 .setParameter("alias", alias)
                 .getResultList();
 
