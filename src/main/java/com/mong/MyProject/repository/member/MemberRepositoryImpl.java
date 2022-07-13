@@ -13,12 +13,10 @@ import java.util.Optional;
 public class MemberRepositoryImpl implements MemberRepository {
 
     private EntityManager em;
-    private final EntityManagerFactory emf;
 
     @Autowired
-    public MemberRepositoryImpl(final EntityManagerFactory emf) {
-        this.emf = emf;
-        this.em = emf.createEntityManager();
+    public MemberRepositoryImpl(EntityManager em) {
+        this.em = em;
     }
 
     @Override
