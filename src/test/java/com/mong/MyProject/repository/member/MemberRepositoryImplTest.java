@@ -1,53 +1,87 @@
 package com.mong.MyProject.repository.member;
 
 import com.mong.MyProject.domain.member.Member;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional
 class MemberRepositoryImplTest {
 
     @Autowired
-    private MemberRepositoryImpl memberRepository;
+    private MemberRepository memberRepository;
 
     @Test
-    void save() {
+    @DisplayName("새로운 member 에 영속성을 부여합니다")
+    void newMember() {
+        //given
         Member member = newTestMember();
 
+        //when
         Member result = memberRepository.findById(member.getId()).get();
+
+        //then
         assertThat(member).isEqualTo(result);
+        assertNotNull(member);
     }
 
     @Test
-    void findByEmailAndPasswd() {
+    @DisplayName("email 을 통해 member 를 조회합니다")
+    void findByEmail(){
+        //given
         Member member = newTestMember();
+        assertNotNull(member);
 
-        Member result = memberRepository.findByEmailAndPasswd(member.getEmail(), member.getPasswd()).get();
+        //when
+        Member result = memberRepository.findByEmail(member.getEmail()).get();
+
+        //then
+        assertNotNull(result);
         assertThat(result).isEqualTo(member);
     }
 
     @Test
+    @DisplayName("alias 를 통해 member 를 조회합니다")
     void findByAlias() {
+        //given
         Member member = newTestMember();
-
+        //when
         Member result = memberRepository.findByAlias(member.getAlias()).get();
+        //then
         assertThat(result).isEqualTo(member);
+    }
+
+    @Test
+    @DisplayName("모든 member 를 조회합니다")
+    void findAll(){
+        //given
+        List<Member> members = new ArrayList<Member>();
+        for (int i = 0; i < 4; i++) {
+            Member member = new Member("name"+i, i+"tt@test.com", "테스트 닉네임"+i, "passwd", LocalDateTime.now());
+            members.add(memberRepository.save(member));
+        }
+
+        //when
+        List<Member> result = memberRepository.findAll();
+
+        //then
+        assertThat(result).isEqualTo(members);
     }
 
     private Member newTestMember(){
-        Member member = new Member("name", "tt@test.com", "alias", "passwd", LocalDateTime.now());
-        memberRepository.save(member);
-        return member;
+        return memberRepository.save(new Member("name", "tt@test.com", "테스트 닉네임", "passwd", LocalDateTime.now()));
     }
 }
