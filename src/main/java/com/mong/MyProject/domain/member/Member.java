@@ -35,6 +35,8 @@ public class Member extends BaseEntity {
     @Column(name = "passwd")
     private String passwd;
 
+    public Member(){}
+
     public Member(String name, String email, String alias, String passwd, LocalDateTime createdDateTime) {
         this.name = name;
         this.email = email;
