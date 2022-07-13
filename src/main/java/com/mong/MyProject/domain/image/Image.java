@@ -9,20 +9,14 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "image", uniqueConstraints = {
-        @UniqueConstraint(name = "image_unique_constraints", columnNames = {"image_url", "image_key"})
-})
+@Table(name = "image")
 public abstract class Image {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "image_id")
     private Long id;
 
     @Column(name = "image_url", nullable = false, unique = true)
     private String url;
-
-    @Column(name = "image_key", nullable = false, unique = true)
-    private String key;
-
 }

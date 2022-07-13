@@ -2,6 +2,9 @@ package com.mong.MyProject.domain.member;
 
 import com.mong.MyProject.domain.BaseEntity;
 
+import com.mong.MyProject.domain.board.Board;
+import com.mong.MyProject.domain.image.user.MemberImage;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @Entity(name="member")
@@ -27,12 +31,21 @@ public class Member extends BaseEntity {
 
     @Column(name = "name")
     private String name;
+
     @Column(name = "email")
     private String email;
+
     @Column(name = "alias")
     private String alias;
+
     @Column(name = "passwd")
     private String passwd;
+
+    @OneToOne(mappedBy = "member")
+    private MemberImage memberImage;
+
+    @OneToMany(mappedBy = "member")
+    private List<Board> boards;
 
     public Member(String name, String email, String alias, String passwd, LocalDateTime createdDateTime) {
         this.name = name;
@@ -61,11 +74,4 @@ public class Member extends BaseEntity {
         this.passwd = passwd;
         this.lastModifiedDateTime = LocalDateTime.now();
     }
-
-
-//    @OneToOne
-//    private MemberImage memberImage;
-//
-//    @OneToMany
-//    private List<Article> articles;
 }

@@ -12,6 +12,6 @@ import javax.persistence.*;
 @Setter
 public class MemberImage extends Image {
     @OneToOne
-    @JoinColumn(name="member_id", nullable = false)
+    @JoinColumn(name="member_id", nullable = false, updatable = false)
     private Member member;
 }
