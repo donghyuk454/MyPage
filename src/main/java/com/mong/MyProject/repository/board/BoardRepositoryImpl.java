@@ -1,11 +1,14 @@
 package com.mong.MyProject.repository.board;
 
 import com.mong.MyProject.domain.board.Board;
+import com.mong.MyProject.domain.member.Member;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.Optional;
 
+@Repository
 public class BoardRepositoryImpl implements BoardRepository{
 
     private EntityManager em;
@@ -16,8 +19,10 @@ public class BoardRepositoryImpl implements BoardRepository{
     }
 
     @Override
-    public Board save(Board board) {
+    public Board create(Member member, Board board) {
         em.persist(board);
+        board.setMember(member);
+        member.addBoard(board);
         return board;
     }
 
@@ -25,5 +30,11 @@ public class BoardRepositoryImpl implements BoardRepository{
     public Optional<Board> findById(Long id) {
         Board board = em.find(Board.class, id);
         return Optional.ofNullable(board);
+    }
+
+    @Override
+    public void deleteBoardById(Long id) {
+        Board board = em.find(Board.class, id);
+        board.delete();
     }
 }
