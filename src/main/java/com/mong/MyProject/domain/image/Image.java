@@ -1,15 +1,11 @@
 package com.mong.MyProject.domain.image;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "image")
+@MappedSuperclass
 public abstract class Image {
 
     @Id

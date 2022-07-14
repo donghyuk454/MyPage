@@ -24,9 +24,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Member extends BaseEntity {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "member_id", updatable = false)
+    @Id @GeneratedValue
+    @Column(name="member_id", updatable = false)
     private Long id;
 
     @Column(name = "name")
@@ -70,7 +69,7 @@ public class Member extends BaseEntity {
                 '}';
     }
 
-    public void setPasswd(String passwd){
+    public void setPasswd(String passwd) {
         this.passwd = passwd;
         this.lastModifiedDateTime = LocalDateTime.now();
     }
