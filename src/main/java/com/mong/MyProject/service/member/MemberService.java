@@ -5,13 +5,11 @@ import com.mong.MyProject.repository.member.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
-//@Transactional
 public class MemberService {
 
     private MemberRepository memberRepository;
@@ -68,7 +66,6 @@ public class MemberService {
     /**
      * 비밀번호 변경
      * */
-
     public void changePasswd(Long id, String passwd) {
         Member member = memberRepository.findById(id).get();
 
