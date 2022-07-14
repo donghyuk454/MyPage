@@ -38,7 +38,7 @@ public class Board extends BaseEntity {
     @JoinColumn(name="board")
     private Member member;
 
-    @OneToMany(mappedBy = "image_id")
+    @OneToMany(mappedBy = "board")
     private List<BoardImage> images = new ArrayList<>();
 
     @Builder
@@ -64,7 +64,7 @@ public class Board extends BaseEntity {
 
     public void delete() {
         this.status = BoardStatus.DELETED;
-        this.lastModifiedDateTime = LocalDateTime.now();
-        this.deletedDateTime = lastModifiedDateTime;
+        this.deletedDateTime = LocalDateTime.now();
+        this.member.deleteBoard(this);
     }
 }

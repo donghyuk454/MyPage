@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -57,6 +58,7 @@ public class Member extends BaseEntity {
         this.boards = boards;
         this.createdDateTime = LocalDateTime.now();
         this.lastModifiedDateTime = createdDateTime;
+        this.boards = new ArrayList<Board>();
     }
 
     @Override
@@ -76,5 +78,20 @@ public class Member extends BaseEntity {
     public void setPasswd(String passwd) {
         this.passwd = passwd;
         this.lastModifiedDateTime = LocalDateTime.now();
+    }
+
+    public void addBoard(Board board) {
+        //무한 루프 방지
+        if(!boards.contains(board))
+            this.boards.add(board);
+
+        if (board.getMember() == null)
+            board.setMember(this);
+    }
+
+    public void deleteBoard(Board board) {
+        //무한 루프 방지
+        if(boards.contains(board))
+            boards.remove(board);
     }
 }
