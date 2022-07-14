@@ -70,7 +70,12 @@ class MemberRepositoryImplTest {
         //given
         List<Member> members = new ArrayList<Member>();
         for (int i = 0; i < 4; i++) {
-            Member member = new Member("name"+i, i+"tt@test.com", "테스트 닉네임"+i, "passwd", LocalDateTime.now());
+            Member member = Member.builder().name("name"+i)
+                    .email(i+"tt@test.com")
+                    .alias("테스트 닉네임"+i)
+                    .passwd("passwd")
+                    .build();
+//            Member member = new Member("name"+i, i+"tt@test.com", "테스트 닉네임"+i, "passwd", LocalDateTime.now());
             members.add(memberRepository.save(member));
         }
 
@@ -82,6 +87,7 @@ class MemberRepositoryImplTest {
     }
 
     private Member newTestMember(){
-        return memberRepository.save(new Member("name", "tt@test.com", "테스트 닉네임", "passwd", LocalDateTime.now()));
+        return memberRepository.save(Member.builder()
+                .name("name").email("tt@test.com").alias("테스트 닉네임").passwd("passwd").build());
     }
 }

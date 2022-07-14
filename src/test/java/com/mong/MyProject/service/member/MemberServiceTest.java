@@ -3,7 +3,6 @@ package com.mong.MyProject.service.member;
 import com.mong.MyProject.domain.member.Member;
 import com.mong.MyProject.repository.member.MemberRepository;
 
-import org.hibernate.mapping.IdGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,11 +33,20 @@ class MemberServiceTest {
     @Test
     @DisplayName("회원 가입")
     void 회원_가입() {
-        member = new Member("test", "email@email.com", "string", "string", LocalDateTime.now());
+        member = Member.builder()
+                .name("test")
+                .email("email@email.com")
+                .alias("string")
+                .passwd("string").build();
+
         when(memberRepository.save(member))
                 .then(m->{
-                    Member temp = new Member("test", "email@email.com", "string", "string", LocalDateTime.now());
-                    temp.setId(1L);
+                    Member temp = Member.builder()
+                            .id(1L)
+                            .name("test")
+                            .email("email@email.com")
+                            .alias("string")
+                            .passwd("string").build();
                     return temp;
                 });
 

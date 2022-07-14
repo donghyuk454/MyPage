@@ -46,12 +46,16 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<Board> boards;
 
-    public Member(String name, String email, String alias, String passwd, LocalDateTime createdDateTime) {
+    @Builder
+    public Member(Long id, String name, String email, String alias, String passwd, MemberImage memberImage, List<Board> boards) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.alias = alias;
         this.passwd = passwd;
-        this.createdDateTime = createdDateTime;
+        this.memberImage = memberImage;
+        this.boards = boards;
+        this.createdDateTime = LocalDateTime.now();
         this.lastModifiedDateTime = createdDateTime;
     }
 
