@@ -11,8 +11,8 @@ public abstract class Image {
     @Id
     @GeneratedValue
     @Column(name = "image_id")
-    private Long id;
+    protected Long id;
 
     @Column(name = "image_url", nullable = false, unique = true)
-    private String url;
+    protected String url;
 }

@@ -13,9 +13,15 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@Builder
 public class MemberImage extends Image {
     @OneToOne
     @JoinColumn(name="member_id", nullable = false, updatable = false)
     private Member member;
+
+    @Builder
+    public MemberImage(Long id, String url, Member member) {
+        this.id = id;
+        this.url = url;
+        this.member = member;
+    }
 }

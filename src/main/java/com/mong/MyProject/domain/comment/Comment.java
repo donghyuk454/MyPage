@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity(name="comment")
 @Getter
@@ -28,4 +29,12 @@ public class Comment extends BaseEntity {
     @JoinColumn(name="board_id")
     private Board board;
 
+    @Builder
+    public Comment(Long id, Member member, Board board) {
+        this.id = id;
+        this.member = member;
+        this.board = board;
+        this.createdDateTime = LocalDateTime.now();
+        this.lastModifiedDateTime = this.createdDateTime;
+    }
 }

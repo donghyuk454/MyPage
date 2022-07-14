@@ -17,7 +17,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Builder
 public class Board extends BaseEntity {
 
     @Id
@@ -41,6 +40,17 @@ public class Board extends BaseEntity {
 
     @OneToMany(mappedBy = "image_id")
     private List<BoardImage> images = new ArrayList<>();
+
+    @Builder
+    public Board(Long id, String title, String content, Member member){
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.member = member;
+        this.status = BoardStatus.ACTIVE;
+        this.createdDateTime = LocalDateTime.now();
+        this.lastModifiedDateTime = this.createdDateTime;
+    }
 
     public void setTitle(String title){
         this.title = title;
