@@ -1,6 +1,7 @@
 package com.mong.MyProject.domain.board;
 
 import com.mong.MyProject.domain.BaseEntity;
+import com.mong.MyProject.domain.comment.Comment;
 import com.mong.MyProject.domain.image.board.BoardImage;
 import com.mong.MyProject.domain.member.Member;
 import lombok.Builder;
@@ -40,6 +41,9 @@ public class Board extends BaseEntity {
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BoardImage> images = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 
     @Builder
     public Board(Long id, String title, String content, Member member){
