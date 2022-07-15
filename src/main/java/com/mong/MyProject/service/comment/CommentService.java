@@ -12,12 +12,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class CommentService {
 
-    private CommentRepository commentRepository;
     private MemberRepository memberRepository;
     private BoardRepository boardRepository;
+    private CommentRepository commentRepository;
 
     @Autowired
-    public CommentService(CommentRepository commentRepository) {
+    public CommentService(MemberRepository memberRepository, BoardRepository boardRepository, CommentRepository commentRepository) {
+        this.memberRepository = memberRepository;
+        this.boardRepository = boardRepository;
         this.commentRepository = commentRepository;
     }
     /**
