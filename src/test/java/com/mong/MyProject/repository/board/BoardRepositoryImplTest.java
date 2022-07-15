@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,6 +27,7 @@ class BoardRepositoryImplTest {
 
     @Autowired private BoardRepository boardRepository;
     @Autowired private MemberRepository memberRepository;
+    @Autowired private EntityManager entityManager;
 
     @Test
     @DisplayName("새로운 board 에 영속성을 부여합니다.")
@@ -34,7 +36,7 @@ class BoardRepositoryImplTest {
         Member member = newTestMember();
 
         //when
-        Board board = boardRepository.create(member, Board.builder()
+        Board board = boardRepository.save(member, Board.builder()
                 .title("제목입니다").content("내용입니다.").build());
 
         //then
@@ -44,11 +46,32 @@ class BoardRepositoryImplTest {
     }
 
     @Test
+    @DisplayName("board 의 내용을 수정합니다. member 에서 board 를 가져와 수정하고 저장할 때 문제가 없는지 확인합니다.")
+    void save() {
+        //given
+        Member member = newTestMember();
+        Board board = boardRepository.save(member, Board.builder()
+                .title("제목입니다").content("내용입니다.").build());
+
+        //when
+        Board b = member.getBoards().get(0);
+        b.setContent("수정된 내용입니다");
+        b.setTitle("수정된 제목입니다");
+        Board result1 = boardRepository.save(b);
+        Board result2 = boardRepository.findById(board.getId()).get();
+        Board result3 = member.getBoards().get(0);
+
+        //then
+        assertThat(result2).isEqualTo(result1);
+        assertThat(result3).isEqualTo(result1);
+    }
+
+    @Test
     @DisplayName("board id 를 통해 board 를 조회합니다.")
     void findById() {
         //given
         Member member = newTestMember();
-        Board board = boardRepository.create(member, Board.builder()
+        Board board = boardRepository.save(member, Board.builder()
                 .title("제목입니다").content("내용입니다.").build());
 
         //when
@@ -64,7 +87,7 @@ class BoardRepositoryImplTest {
     void deleteBoard() {
         //given
         Member member = newTestMember();
-        Board board = boardRepository.create(member, Board.builder()
+        Board board = boardRepository.save(member, Board.builder()
                 .title("제목입니다").content("내용입니다.").build());
 
         //when
