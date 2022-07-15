@@ -6,7 +6,8 @@ import com.mong.MyProject.domain.member.Member;
 import java.util.Optional;
 
 public interface BoardRepository {
-    Board create(Member member, Board board);
+    Board save(Member member, Board board);
+    Board save(Board board);
     Optional<Board> findById(Long id);
     void deleteBoardById(Long id);
 }
