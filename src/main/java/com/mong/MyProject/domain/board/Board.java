@@ -38,7 +38,7 @@ public class Board extends BaseEntity {
     @JoinColumn(name="board")
     private Member member;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BoardImage> images = new ArrayList<>();
 
     @Builder
