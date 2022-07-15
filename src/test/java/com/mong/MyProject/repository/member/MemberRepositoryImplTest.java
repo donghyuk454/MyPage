@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,7 +74,6 @@ class MemberRepositoryImplTest {
                     .alias("테스트 닉네임"+i)
                     .passwd("passwd")
                     .build();
-//            Member member = new Member("name"+i, i+"tt@test.com", "테스트 닉네임"+i, "passwd", LocalDateTime.now());
             members.add(memberRepository.save(member));
         }
 
