@@ -16,8 +16,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class Comment extends BaseEntity {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     @Column(name = "comment_id")
     private Long id;
 
@@ -29,12 +28,29 @@ public class Comment extends BaseEntity {
     @JoinColumn(name="board_id")
     private Board board;
 
+    @Column(name = "content")
+    private String content;
+
     @Builder
-    public Comment(Long id, Member member, Board board) {
+    public Comment(Long id, Member member, Board board, String content) {
         this.id = id;
         this.member = member;
         this.board = board;
+        this.content = content;
         this.createdDateTime = LocalDateTime.now();
         this.lastModifiedDateTime = this.createdDateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "createdDateTime=" + createdDateTime +
+                ", lastModifiedDateTime=" + lastModifiedDateTime +
+                ", deletedDateTime=" + deletedDateTime +
+                ", id=" + id +
+                ", member=" + member +
+                ", board=" + board +
+                ", content='" + content + '\'' +
+                '}';
     }
 }
