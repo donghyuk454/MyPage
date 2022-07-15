@@ -39,7 +39,7 @@ class BoardRepositoryImplTest {
 
         //then
         assertThat(board.getMember()).isEqualTo(member);
-        assertThat(member.getBoards().stream().count()).isEqualTo(1);
+        assertThat(member.getBoards().size()).isEqualTo(1);
         assertThat(member.getBoards().stream().findAny().get()).isEqualTo(board);
     }
 
