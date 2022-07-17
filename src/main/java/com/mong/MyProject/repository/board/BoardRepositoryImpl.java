@@ -21,7 +21,6 @@ public class BoardRepositoryImpl implements BoardRepository{
     @Override
     public Board save(Member member, Board board) {
         board.setMember(member);
-        member.addBoard(board);
         em.persist(member);
         return board;
     }

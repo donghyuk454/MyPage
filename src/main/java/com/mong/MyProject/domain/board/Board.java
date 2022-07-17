@@ -51,6 +51,7 @@ public class Board extends BaseEntity {
         this.title = title;
         this.content = content;
         this.member = member;
+        member.addBoard(this);
         this.status = BoardStatus.ACTIVE;
         this.createdDateTime = LocalDateTime.now();
         this.lastModifiedDateTime = this.createdDateTime;
