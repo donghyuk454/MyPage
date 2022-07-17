@@ -11,7 +11,6 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
-import javax.persistence.metamodel.Type;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,5 +93,10 @@ public class Member extends BaseEntity {
         //무한 루프 방지
         if(boards.contains(board))
             boards.remove(board);
+    }
+
+    public void delete(){
+        this.deletedDateTime = LocalDateTime.now();
+        this.lastModifiedDateTime = this.deletedDateTime;
     }
 }
