@@ -1,5 +1,6 @@
 package com.mong.MyProject.service.member;
 
+import com.mong.MyProject.domain.image.Image;
 import com.mong.MyProject.domain.member.Member;
 import com.mong.MyProject.repository.member.MemberRepository;
 
@@ -9,7 +10,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -161,5 +166,32 @@ class MemberServiceTest {
                 .findById(any(Long.class));
         verify(member, times(1))
                 .setPasswd(any(String.class));
+    }
+
+    @Test
+    @DisplayName("맴버의 image 를 추가하거나 변경합니다.")
+    void 이미지_추가_변경(){
+        when(memberRepository.findById(1L))
+                .thenReturn(Optional.ofNullable(member));
+        when(memberRepository.save(member))
+                .thenReturn(member);
+        MultipartFile image = new MockMultipartFile("test1", "test1.PNG", MediaType.IMAGE_PNG_VALUE, "test1".getBytes());
+
+        memberService.setImage(1L, image);
+
+        verify(member).setImage(any(Image.class));
+    }
+
+    @Test
+    @DisplayName("맴버의 이미지를 삭제합니다.")
+    void 이미지_삭제(){
+        when(memberRepository.findById(1L))
+                .thenReturn(Optional.ofNullable(member));
+        when(memberRepository.save(member))
+                .thenReturn(member);
+
+        memberService.deleteImage(1L);
+
+        verify(member).setImage(null);
     }
 }
