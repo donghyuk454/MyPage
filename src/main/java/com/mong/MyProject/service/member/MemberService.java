@@ -1,10 +1,13 @@
 package com.mong.MyProject.service.member;
 
+import com.mong.MyProject.domain.image.Image;
+import com.mong.MyProject.domain.image.ImageType;
 import com.mong.MyProject.domain.member.Member;
 import com.mong.MyProject.repository.member.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.NoSuchElementException;
 
@@ -66,10 +69,37 @@ public class MemberService {
     /**
      * 비밀번호 변경
      * */
-    public void changePasswd(Long id, String passwd) {
-        Member member = memberRepository.findById(id).get();
+    public void changePasswd(Long member_id, String passwd) {
+        Member member = memberRepository.findById(member_id).get();
 
         member.setPasswd(passwd);
+        memberRepository.save(member);
+    }
+
+    /**
+     * member image 추가, 변경
+     * */
+    public void setImage(Long member_id, MultipartFile file) {
+        Member member = memberRepository.findById(member_id).get();
+
+        // TODO: image 생성
+        String url = "";
+        Image image = Image.builder()
+                .url(url)
+                .type(ImageType.MEMBER)
+                .build();
+
+        member.setImage(image);
+        memberRepository.save(member);
+    }
+
+    /**
+     * member image 삭제
+     * */
+    public void deleteImage(Long member_id){
+        Member member = memberRepository.findById(member_id).get();
+
+        member.setImage(null);
         memberRepository.save(member);
     }
 }
