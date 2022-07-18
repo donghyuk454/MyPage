@@ -1,8 +1,10 @@
 package com.mong.MyProject.service.board;
 
 import com.mong.MyProject.domain.board.Board;
+import com.mong.MyProject.domain.image.Image;
 import com.mong.MyProject.domain.member.Member;
 import com.mong.MyProject.repository.board.BoardRepository;
+import com.mong.MyProject.repository.image.ImageRepository;
 import com.mong.MyProject.repository.member.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,9 +12,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,6 +34,8 @@ class BoardServiceTest {
     private MemberRepository memberRepository;
     @Mock
     private BoardRepository boardRepository;
+    @Mock
+    private ImageRepository imageRepository;
 
     @Mock
     private Member member;
@@ -70,5 +81,54 @@ class BoardServiceTest {
 
         verify(boardRepository, times(1))
                 .deleteBoardById(1L);
+    }
+
+    @Test
+    @DisplayName("board 에 image 를 추가합니다.")
+    void 이미지_추가(){
+        when(boardRepository.save(board))
+                .thenReturn(board);
+        when(boardRepository.findById(1L))
+                .thenReturn(Optional.ofNullable(board));
+        List<MultipartFile> images = List.of(
+                new MockMultipartFile("test1", "test1.PNG", MediaType.IMAGE_PNG_VALUE, "test1".getBytes()),
+                new MockMultipartFile("test2", "test2.PNG", MediaType.IMAGE_PNG_VALUE, "test2".getBytes())
+        );
+
+        boardService.addImage(1L, images);
+
+        verify(board,times(2))
+                .addImage(any());
+    }
+
+    @Test
+    @DisplayName("board 에 image 를 삭제합니다.")
+    void 이미지_삭제(){
+        List<Image> images = mock(List.class);
+        List<Long> image_ids = new ArrayList<>();
+        List<Image> foundedImages = new ArrayList<>();
+
+        for(long i = 1L; i < 5L; i++) {
+            Image temp = mock(Image.class);
+            if (i < 3){
+                image_ids.add(i);
+                foundedImages.add(temp);
+                when(images.remove(temp))
+                        .thenReturn(true);
+            }
+        }
+
+        when(boardRepository.findById(1L))
+                .thenReturn(Optional.ofNullable(board));
+        when(board.getImages())
+                .thenReturn(images);
+        when(imageRepository.findAllById(image_ids))
+                .thenReturn(foundedImages);
+        when(boardRepository.save(board)).thenReturn(board);
+
+        boardService.deleteImages(1L, image_ids);
+
+        verify(images, times(2))
+                .remove(any(Image.class));
     }
 }
