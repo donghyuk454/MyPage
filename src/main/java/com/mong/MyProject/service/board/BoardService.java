@@ -8,6 +8,7 @@ import com.mong.MyProject.repository.board.BoardRepository;
 import com.mong.MyProject.repository.image.ImageRepository;
 import com.mong.MyProject.repository.member.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,7 +62,7 @@ public class BoardService {
         Board board = boardRepository.findById(board_id).get();
         // TODO: url 생성, image 업로드 생성
         images.forEach(img ->{
-            String url = "";
+            String url = "/"+RandomString.make(10);
             Image image = Image.builder()
                     .type(ImageType.BOARD)
                     .url(url)
@@ -80,7 +81,11 @@ public class BoardService {
         Board board = boardRepository.findById(board_id).get();
         List<Image> images = imageRepository.findAllById(image_ids);
         List<Image> board_images = board.getImages();
-        images.forEach(board_images::remove);
+        log.info("삭제할 이미지 = {}", board_images);
+        images.forEach(image -> {
+            board_images.remove(image);
+            log.info("삭제된 이미지 = {}", image);
+        });
 
         boardRepository.save(board);
     }
