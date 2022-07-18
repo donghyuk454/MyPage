@@ -1,17 +1,22 @@
 package com.mong.MyProject.domain.image;
 
+import com.mong.MyProject.domain.board.Board;
+import com.mong.MyProject.domain.member.Member;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Entity(name = "image")
+@Table(name = "image")
 @Getter
-@MappedSuperclass
-public abstract class Image {
+@NoArgsConstructor
+public class Image {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     @Column(name = "image_id")
-    protected Long id;
+    private Long id;
 
     @Column(name = "image_url", nullable = false, unique = true)
     protected String url;
