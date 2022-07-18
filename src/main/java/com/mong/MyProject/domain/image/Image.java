@@ -29,15 +29,10 @@ public class Image {
     private ImageType type;
 
     @Builder
-    public Image(Long id, String url, ImageType type, Board board, Member member) {
+    public Image(Long id, String url, ImageType type) {
         this.id = id;
         this.url = url;
         this.type = type;
-        if (type.equals(ImageType.BOARD)) {
-            board.addImage(this);
-        } else if (type.equals(ImageType.MEMBER)) {
-            member.setImage(this);
-        }
 
         this.key = extractKey();
     }
