@@ -1,15 +1,15 @@
 package com.mong.MyProject.domain.image;
 
-import com.mong.MyProject.domain.board.Board;
-import com.mong.MyProject.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity(name = "image")
-@Table(name = "image")
+@Entity(name = "images")
+@Table(name = "images", uniqueConstraints = {
+        @UniqueConstraint(name = "image_unique_constraint", columnNames = {"image_url", "image_key"})
+})
 @Getter
 @NoArgsConstructor
 public class Image {
@@ -21,10 +21,10 @@ public class Image {
     @Column(name = "image_url", nullable = false, unique = true)
     private String url;
 
-    @Column(name = "key", nullable = false)
+    @Column(name = "image_key", nullable = false, unique = true)
     private String key;
 
-    @Column(name = "type")
+    @Column(name = "image_type")
     @Enumerated(value = EnumType.STRING)
     private ImageType type;
 
@@ -38,6 +38,6 @@ public class Image {
     }
 
     private String extractKey(){
-        return "";
+        return url+"key";
     }
 }
