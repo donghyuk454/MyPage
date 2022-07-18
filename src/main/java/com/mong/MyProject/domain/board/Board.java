@@ -39,7 +39,7 @@ public class Board extends BaseEntity {
     @JoinColumn(name="board")
     private Member member;
 
-    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Image> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -51,7 +51,8 @@ public class Board extends BaseEntity {
         this.title = title;
         this.content = content;
         this.member = member;
-        member.addBoard(this);
+        if(member != null)
+            member.addBoard(this);
         this.status = BoardStatus.ACTIVE;
         this.createdDateTime = LocalDateTime.now();
         this.lastModifiedDateTime = this.createdDateTime;
