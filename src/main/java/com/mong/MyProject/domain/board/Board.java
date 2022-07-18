@@ -2,7 +2,7 @@ package com.mong.MyProject.domain.board;
 
 import com.mong.MyProject.domain.BaseEntity;
 import com.mong.MyProject.domain.comment.Comment;
-import com.mong.MyProject.domain.image.board.BoardImage;
+import com.mong.MyProject.domain.image.Image;
 import com.mong.MyProject.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,7 +40,7 @@ public class Board extends BaseEntity {
     private Member member;
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<BoardImage> images = new ArrayList<>();
+    private List<Image> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
@@ -71,5 +71,9 @@ public class Board extends BaseEntity {
         this.status = BoardStatus.DELETED;
         this.deletedDateTime = LocalDateTime.now();
         this.member.deleteBoard(this);
+    }
+
+    public void addImage(Image image) {
+        images.add(image);
     }
 }

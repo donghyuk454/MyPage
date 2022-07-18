@@ -3,7 +3,7 @@ package com.mong.MyProject.domain.member;
 import com.mong.MyProject.domain.BaseEntity;
 
 import com.mong.MyProject.domain.board.Board;
-import com.mong.MyProject.domain.image.user.MemberImage;
+import com.mong.MyProject.domain.image.Image;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,19 +42,19 @@ public class Member extends BaseEntity {
     private String passwd;
 
     @OneToOne(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private MemberImage memberImage;
+    private Image image;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Board> boards;
 
     @Builder
-    public Member(Long id, String name, String email, String alias, String passwd, MemberImage memberImage, List<Board> boards) {
+    public Member(Long id, String name, String email, String alias, String passwd, Image image, List<Board> boards) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.alias = alias;
         this.passwd = passwd;
-        this.memberImage = memberImage;
+        this.image = image;
         this.boards = boards;
         this.createdDateTime = LocalDateTime.now();
         this.lastModifiedDateTime = createdDateTime;
