@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -109,12 +108,15 @@ class MemberServiceTest {
                 .thenReturn("string");
         when(member.getEmail())
                 .thenReturn("email@email.com");
+        when(member.getId())
+                .thenReturn(1L);
 
         when(memberRepository.findByEmail("email@email.com"))
                 .thenReturn(Optional.ofNullable(member));
 
-        Member result = memberService.login(member.getEmail(), member.getPasswd());
-        assertThat(result).isEqualTo(member);
+        Long member_id = memberService.login(member.getEmail(), member.getPasswd());
+
+        assertThat(member_id).isEqualTo(member.getId());
         verify(memberRepository, times(1))
                 .findByEmail(any(String.class));
         verify(member, times(2))
