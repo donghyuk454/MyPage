@@ -51,7 +51,7 @@ public class MemberService {
     /**
      * 로그인
      * */
-    public Member login(String email, String passwd){
+    public Long login(String email, String passwd){
         Member member = null;
 
         member = memberRepository.findByEmail(email)
@@ -63,7 +63,26 @@ public class MemberService {
             throw new IllegalStateException("비밀번호가 다릅니다.");
         }
 
+        return member.getId();
+    }
+
+    /**
+     * id 로 회원 조회
+     * */
+    public Member getMemberById(Long member_id) {
+        Member member = memberRepository.findById(member_id)
+                .orElseThrow(()->new NoSuchElementException("존재하는 회원이 없습니다."));
         return member;
+    }
+
+    /**
+     * 회원 삭제
+     * */
+    public void deleteMember(Long member_id){
+        Member member = memberRepository.findById(member_id)
+                .orElseThrow(()->new NoSuchElementException("존재하는 회원이 없습니다."));
+
+        member.delete();
     }
 
     /**
