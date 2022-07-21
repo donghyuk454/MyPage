@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
@@ -39,7 +40,7 @@ public class BoardService {
     public Board addBoard(Long member_id, Board board){
         Member member = memberRepository.findById(member_id)
                 .orElseThrow(()-> {
-                    throw new IllegalStateException("없는 회원의 아이디 입니다.");
+                    throw new NoSuchElementException("없는 회원의 아이디 입니다.");
                 });
         return boardRepository.save(member, board);
     }
@@ -50,7 +51,7 @@ public class BoardService {
     public List<Board> getBoardsByMemberId(Long member_id) {
         Member member = memberRepository.findById(member_id)
                 .orElseThrow(()-> {
-                    throw new IllegalStateException("없는 회원의 아이디 입니다.");
+                    throw new NoSuchElementException("없는 회원의 아이디 입니다.");
                 });
 
         return member.getBoards();
@@ -61,7 +62,7 @@ public class BoardService {
      * */
     public Board getBoardById(Long board_id) {
         return boardRepository.findById(board_id).orElseThrow(() -> {
-            throw new IllegalStateException("없는 게시물의 아이디 입니다.");
+            throw new NoSuchElementException("없는 게시물의 아이디 입니다.");
         });
     }
 
@@ -70,7 +71,7 @@ public class BoardService {
      * */
     public Board changeBoard(Long board_id, String title, String content) {
         Board board = boardRepository.findById(board_id).orElseThrow(() -> {
-            throw new IllegalStateException("없는 게시물의 아이디 입니다.");
+            throw new NoSuchElementException("없는 게시물의 아이디 입니다.");
         });
         board.setTitle(title);
         board.setContent(content);
@@ -90,7 +91,7 @@ public class BoardService {
      * */
     public void addImage(Long board_id, List<MultipartFile> images) {
         Board board = boardRepository.findById(board_id).orElseThrow(() -> {
-            throw new IllegalStateException("없는 게시물의 아이디 입니다.");
+            throw new NoSuchElementException("없는 게시물의 아이디 입니다.");
         });
         images.forEach(img ->{
             File imageFile = fileService.convertToFile(img);
@@ -111,7 +112,7 @@ public class BoardService {
      * */
     public void deleteImages(Long board_id, List<Long> image_ids) {
         Board board = boardRepository.findById(board_id).orElseThrow(() -> {
-            throw new IllegalStateException("없는 게시물의 아이디 입니다.");
+            throw new NoSuchElementException("없는 게시물의 아이디 입니다.");
         });
         List<Image> images = imageRepository.findAllById(image_ids);
         List<Image> board_images = board.getImages();
