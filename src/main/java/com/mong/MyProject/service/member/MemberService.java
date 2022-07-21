@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
 @Service
 public class MemberService {
 
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     @Autowired
     public MemberService(MemberRepository memberRepository) {
@@ -52,9 +52,7 @@ public class MemberService {
      * 로그인
      * */
     public Long login(String email, String passwd){
-        Member member = null;
-
-        member = memberRepository.findByEmail(email)
+        Member member = memberRepository.findByEmail(email)
                 .orElseThrow(()->{
                     throw new NoSuchElementException("존재하지 않는 이메일 입니다.");
                 });
@@ -70,9 +68,8 @@ public class MemberService {
      * id 로 회원 조회
      * */
     public Member getMemberById(Long member_id) {
-        Member member = memberRepository.findById(member_id)
+        return memberRepository.findById(member_id)
                 .orElseThrow(()->new NoSuchElementException("존재하는 회원이 없습니다."));
-        return member;
     }
 
     /**
@@ -89,7 +86,8 @@ public class MemberService {
      * 비밀번호 변경
      * */
     public void changePasswd(Long member_id, String passwd) {
-        Member member = memberRepository.findById(member_id).get();
+        Member member = memberRepository.findById(member_id)
+                .orElseThrow(()->new NoSuchElementException("존재하는 회원이 없습니다."));
 
         member.setPasswd(passwd);
         memberRepository.save(member);
@@ -99,7 +97,8 @@ public class MemberService {
      * member image 추가, 변경
      * */
     public void setImage(Long member_id, MultipartFile file) {
-        Member member = memberRepository.findById(member_id).get();
+        Member member = memberRepository.findById(member_id)
+                .orElseThrow(()->new NoSuchElementException("존재하는 회원이 없습니다."));
 
         // TODO: image 생성
         String url = "";
@@ -116,7 +115,8 @@ public class MemberService {
      * member image 삭제
      * */
     public void deleteImage(Long member_id){
-        Member member = memberRepository.findById(member_id).get();
+        Member member = memberRepository.findById(member_id)
+                .orElseThrow(()->new NoSuchElementException("존재하는 회원이 없습니다."));
 
         member.setImage(null);
         memberRepository.save(member);
