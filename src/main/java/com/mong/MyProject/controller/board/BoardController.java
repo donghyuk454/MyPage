@@ -8,12 +8,14 @@ import com.mong.MyProject.dto.response.board.GetBoardResponse;
 import com.mong.MyProject.service.board.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Controller
 public class BoardController {
@@ -27,57 +29,89 @@ public class BoardController {
 
     @GetMapping("/board/{board_id}")
     public ResponseEntity<GetBoardResponse> getBoard(@PathVariable(name = "board_id") Long board_id){
-        Board board = boardService.getBoardById(board_id);
-        GetBoardResponse response = new GetBoardResponse(board);
+        try{
+            Board board = boardService.getBoardById(board_id);
+            GetBoardResponse response = new GetBoardResponse(board);
 
-        return ResponseEntity.ok().body(response);
+            return ResponseEntity.ok().body(response);
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 
     @GetMapping("/member/board")
     public ResponseEntity<List<GetBoardResponse>> getMemberBoards(@RequestParam(name = "member_id") Long member_id) {
-        List<Board> boards = boardService.getBoardsByMemberId(member_id);
-        List<GetBoardResponse> responses = new ArrayList<>();
-        boards.forEach(board -> {
-            GetBoardResponse response = new GetBoardResponse(board);
-            responses.add(response);
-        });
+        try {
+            List<Board> boards = boardService.getBoardsByMemberId(member_id);
+            List<GetBoardResponse> responses = new ArrayList<>();
+            boards.forEach(board -> {
+                GetBoardResponse response = new GetBoardResponse(board);
+                responses.add(response);
+            });
 
-        return ResponseEntity.ok().body(responses);
+            return ResponseEntity.ok().body(responses);
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 
     @PostMapping("/board")
-    public ResponseEntity<Void> createBoard(@RequestParam(name = "member_id") Long member_id, @RequestParam(name = "image") List<MultipartFile> images, @RequestBody CreateBoardRequest createBoardRequest) {
-        Board board = boardService.addBoard(member_id, createBoardRequest.toBoard());
-        boardService.addImage(board.getId(), images);
+    public ResponseEntity<Void> createBoard(@RequestParam(name = "member_id") Long member_id, @Nullable @RequestParam(name = "image") List<MultipartFile> images, @RequestBody CreateBoardRequest createBoardRequest) {
+        try {
+            Board board = boardService.addBoard(member_id, createBoardRequest.toBoard());
+            if (images != null && images.size() > 0)
+                boardService.addImage(board.getId(), images);
 
-        return ResponseEntity.ok().build();
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PutMapping("/board")
     public ResponseEntity<Void> changeBoard(@RequestBody ChangeBoardRequest changeBoardRequest) {
-        boardService.changeBoard(changeBoardRequest.getBoard_id(), changeBoardRequest.getTitle(), changeBoardRequest.getContent());
+        try {
+            boardService.changeBoard(changeBoardRequest.getBoard_id(), changeBoardRequest.getTitle(), changeBoardRequest.getContent());
+            return ResponseEntity.ok().build();
 
-        return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @DeleteMapping("/board")
     public ResponseEntity<Void> deleteBoard(@RequestParam(name = "board_id") Long board_id) {
         boardService.deleteBoard(board_id);
-
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/board/image")
     public ResponseEntity<Void> createBoardImage(@RequestParam(name = "board_id") Long board_id, @RequestPart List<MultipartFile> imageFiles) {
-        boardService.addImage(board_id, imageFiles);
+        try{
+            boardService.addImage(board_id, imageFiles);
+            return ResponseEntity.ok().build();
 
-        return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @DeleteMapping("/board/image")
     public ResponseEntity<Void> removeBoardImage(@RequestBody RemoveBoardImageRequest removeBoardImageRequest) {
-        boardService.deleteImages(removeBoardImageRequest.getBoard_id(), removeBoardImageRequest.getImage_ids());
+        try {
+            boardService.deleteImages(removeBoardImageRequest.getBoard_id(), removeBoardImageRequest.getImage_ids());
+            return ResponseEntity.ok().build();
 
-        return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
