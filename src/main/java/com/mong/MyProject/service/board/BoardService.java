@@ -9,7 +9,6 @@ import com.mong.MyProject.repository.image.ImageRepository;
 import com.mong.MyProject.repository.member.MemberRepository;
 import com.mong.MyProject.service.FileService;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,7 +37,10 @@ public class BoardService {
      * 새로운 board 생성
      * */
     public Board addBoard(Long member_id, Board board){
-        Member member = memberRepository.findById(member_id).get();
+        Member member = memberRepository.findById(member_id)
+                .orElseThrow(()-> {
+                    throw new IllegalStateException("없는 회원의 아이디 입니다.");
+                });
         return boardRepository.save(member, board);
     }
 
@@ -46,9 +48,12 @@ public class BoardService {
      * board 내용(title, content) 수정
      * */
     public Board changeBoard(Long board_id, String title, String content) {
-        Board board = boardRepository.findById(board_id).get();
+        Board board = boardRepository.findById(board_id).orElseThrow(() -> {
+            throw new IllegalStateException("없는 게시물의 아이디 입니다.");
+        });
         board.setTitle(title);
         board.setContent(content);
+
         return boardRepository.save(board);
     }
 
@@ -63,8 +68,9 @@ public class BoardService {
      * board 이미지 추가
      * */
     public void addImage(Long board_id, List<MultipartFile> images) {
-        Board board = boardRepository.findById(board_id).get();
-        // TODO: url 생성, image 업로드 생성
+        Board board = boardRepository.findById(board_id).orElseThrow(() -> {
+            throw new IllegalStateException("없는 게시물의 아이디 입니다.");
+        });
         images.forEach(img ->{
             File imageFile = fileService.convertToFile(img);
 
@@ -83,7 +89,9 @@ public class BoardService {
      * board 이미지 삭제
      * */
     public void deleteImages(Long board_id, List<Long> image_ids) {
-        Board board = boardRepository.findById(board_id).get();
+        Board board = boardRepository.findById(board_id).orElseThrow(() -> {
+            throw new IllegalStateException("없는 게시물의 아이디 입니다.");
+        });
         List<Image> images = imageRepository.findAllById(image_ids);
         List<Image> board_images = board.getImages();
         log.info("삭제할 이미지 = {}", board_images);
