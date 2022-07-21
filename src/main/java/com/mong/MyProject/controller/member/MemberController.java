@@ -71,7 +71,6 @@ public class MemberController {
 
     @PostMapping(value = "/member/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> changeImage(@RequestParam(name = "member_id") Long id, @RequestParam(name = "image") MultipartFile image) {
-        System.out.println(image);
         memberService.setImage(id, image);
 
         return ResponseEntity.ok().build();
