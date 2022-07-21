@@ -45,6 +45,27 @@ public class BoardService {
     }
 
     /**
+     * member 소유의 board 조회
+     * */
+    public List<Board> getBoardsByMemberId(Long member_id) {
+        Member member = memberRepository.findById(member_id)
+                .orElseThrow(()-> {
+                    throw new IllegalStateException("없는 회원의 아이디 입니다.");
+                });
+
+        return member.getBoards();
+    }
+
+    /**
+     * board id 를 통해 board 조회
+     * */
+    public Board getBoardById(Long board_id) {
+        return boardRepository.findById(board_id).orElseThrow(() -> {
+            throw new IllegalStateException("없는 게시물의 아이디 입니다.");
+        });
+    }
+
+    /**
      * board 내용(title, content) 수정
      * */
     public Board changeBoard(Long board_id, String title, String content) {
