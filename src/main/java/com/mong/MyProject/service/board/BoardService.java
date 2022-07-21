@@ -7,27 +7,31 @@ import com.mong.MyProject.domain.member.Member;
 import com.mong.MyProject.repository.board.BoardRepository;
 import com.mong.MyProject.repository.image.ImageRepository;
 import com.mong.MyProject.repository.member.MemberRepository;
+import com.mong.MyProject.service.FileService;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 @Slf4j
 @Service
 public class BoardService {
 
-    private BoardRepository boardRepository;
-    private MemberRepository memberRepository;
-    private ImageRepository imageRepository;
+    private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
+    private final ImageRepository imageRepository;
+    private final FileService fileService;
 
     @Autowired
-    public BoardService(BoardRepository boardRepository, MemberRepository memberRepository, ImageRepository imageRepository) {
+    public BoardService(BoardRepository boardRepository, MemberRepository memberRepository, ImageRepository imageRepository, FileService fileService) {
         this.boardRepository = boardRepository;
         this.memberRepository = memberRepository;
         this.imageRepository = imageRepository;
+        this.fileService = fileService;
     }
 
     /**
@@ -62,10 +66,11 @@ public class BoardService {
         Board board = boardRepository.findById(board_id).get();
         // TODO: url 생성, image 업로드 생성
         images.forEach(img ->{
-            String url = "/"+RandomString.make(10);
+            File imageFile = fileService.convertToFile(img);
+
             Image image = Image.builder()
                     .type(ImageType.BOARD)
-                    .url(url)
+                    .url(imageFile.getAbsolutePath())
                     .build();
 
             board.addImage(image);
@@ -83,6 +88,7 @@ public class BoardService {
         List<Image> board_images = board.getImages();
         log.info("삭제할 이미지 = {}", board_images);
         images.forEach(image -> {
+            fileService.removeFileByPath(image.getUrl());
             board_images.remove(image);
             log.info("삭제된 이미지 = {}", image);
         });
