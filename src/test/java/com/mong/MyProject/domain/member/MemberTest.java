@@ -23,7 +23,7 @@ class MemberTest {
                 .passwd("passwd")
                 .alias("alias")
                 .email("email@email.com")
-                .build();;
+                .build();
     }
 
     @AfterEach
@@ -33,7 +33,7 @@ class MemberTest {
 
     @Test
     @DisplayName("member 가 builder 를 통해 생성되는지 확인합니다.")
-    void 빌더_확인() {
+    void checkBuilder() {
         //when
         Member member1 = new Member();
         member1.setName("name");
@@ -54,7 +54,7 @@ class MemberTest {
 
     @Test
     @DisplayName("setPasswd 실행 시 lastModifiedDateTime 도 바뀌는 지 확인합니다.")
-    void 패스워드_변경(){
+    void changePassword(){
         //when
         LocalDateTime lmdt = member.getLastModifiedDateTime();
         try{
@@ -70,7 +70,7 @@ class MemberTest {
 
     @Test
     @DisplayName("member 를 삭제합니다. 삭제 시 deletedDateTime 이 입력되는지 확인합니다.")
-    void 맴버_삭제(){
+    void deleteMember(){
         //when
         member.delete();
 
@@ -80,7 +80,7 @@ class MemberTest {
 
     @Test
     @DisplayName("member 에 board 를 추가합니다.")
-    void 보드_추가(){
+    void addBoard(){
         //when
         member.addBoard(Board.builder().build());
 
@@ -90,7 +90,7 @@ class MemberTest {
 
     @Test
     @DisplayName("member 에 board 를 삭제합니다.")
-    void 보드_삭제(){
+    void deleteBoard(){
         //given
         Board board = Board.builder().build();
         member.addBoard(board);

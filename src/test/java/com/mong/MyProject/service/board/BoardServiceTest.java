@@ -44,7 +44,7 @@ class BoardServiceTest {
 
     @Test
     @DisplayName("member 의 새로운 board 를 추가합니다.")
-    void 보드_추가() {
+    void addBoard() {
         when(memberRepository.findById(1L))
                 .thenReturn(Optional.ofNullable(member));
         when(boardRepository.save(member, board))
@@ -60,7 +60,7 @@ class BoardServiceTest {
 
     @Test
     @DisplayName("board 의 내용(title, content)를 수정합니다.")
-    void 보드_내용_수정() {
+    void changeBoard() {
         when(boardRepository.save(board))
                 .thenReturn(board);
         when(boardRepository.findById(1L))
@@ -74,7 +74,7 @@ class BoardServiceTest {
 
     @Test
     @DisplayName("board 를 삭제합니다.")
-    void 보드_삭제() {
+    void deleteBoard() {
         doNothing().when(boardRepository).deleteBoardById(1L);
 
         boardService.deleteBoard(1L);
@@ -85,7 +85,7 @@ class BoardServiceTest {
 
     @Test
     @DisplayName("board 에 image 를 추가합니다.")
-    void 이미지_추가(){
+    void addBoardImage(){
         when(boardRepository.save(board))
                 .thenReturn(board);
         when(boardRepository.findById(1L))
@@ -103,7 +103,7 @@ class BoardServiceTest {
 
     @Test
     @DisplayName("board 에 image 를 삭제합니다.")
-    void 이미지_삭제(){
+    void deleteBoardImage(){
         List<Image> images = mock(List.class);
         List<Long> image_ids = new ArrayList<>();
         List<Image> foundedImages = new ArrayList<>();

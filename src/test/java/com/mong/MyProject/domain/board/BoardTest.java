@@ -33,7 +33,7 @@ class BoardTest {
 
     @Test
     @DisplayName("board 를 builder 를 통해 생성합니다.")
-    void 보드_생성() {
+    void checkBuilder() {
         //when
         //then
         assertThat(board).isNotNull();
@@ -47,7 +47,7 @@ class BoardTest {
 
     @Test
     @DisplayName("board 의 title 과 content 를 수정합니다.")
-    void 보드_제목_내용_수정() {
+    void changeBoard() {
         //given
         LocalDateTime lmdt = board.getLastModifiedDateTime();
         try{
@@ -67,7 +67,7 @@ class BoardTest {
 
     @Test
     @DisplayName("board 를 삭제합니다. member 에서도 board 가 삭제되었는지 확인합니다.")
-    void 보드_삭제() {
+    void deleteBoard() {
         //giver
         Member member = board.getMember();
 

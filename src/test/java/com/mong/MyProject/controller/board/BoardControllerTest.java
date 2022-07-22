@@ -40,7 +40,7 @@ class BoardControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("board id 를 통해 board 를 조회합니다. 성공 시 200 을 응답합니다.")
-    void 개시판_조회() throws Exception{
+    void getBoard() throws Exception{
         MockHttpServletRequestBuilder builder = get("/board/1");
 
         Member member = mock(Member.class);
@@ -58,7 +58,7 @@ class BoardControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("없는 board id 를 통해 board 를 조회합니다. NoSuchElementException 이 발생하고 400 을 응답합니다.")
-    void 없는_개시판_조회() throws Exception{
+    void getNotExistBoard() throws Exception{
         MockHttpServletRequestBuilder builder = get("/board/1");
 
         Member member = mock(Member.class);
@@ -75,7 +75,7 @@ class BoardControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("member 가 작성한 boards 를 조회합니다. 성공 시 200 을 응답합니다.")
-    void 유저_개시판_조회() throws Exception {
+    void getMemberBoars() throws Exception {
         MockHttpServletRequestBuilder builder = get("/member/board")
                 .param("member_id", "1");
 
@@ -92,8 +92,7 @@ class BoardControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("새로운 board 를 생성합니다. 사진이 있는 경우 image 까지 추가합니다. 성공 시 200 을 응답합니다.")
-    void 새로운_개시판_생성() throws Exception {
-
+    void createBoard() throws Exception {
         MockMultipartFile file1
                 = new MockMultipartFile("image", "test.PNG", MediaType.IMAGE_PNG_VALUE, "test".getBytes(StandardCharsets.UTF_8));
         MockMultipartFile file2
@@ -121,7 +120,7 @@ class BoardControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("새로운 board 를 생성합니다. 사진이 없는 경우 image 를 추가하지 않습니다. 성공 시 200 을 응답합니다.")
-    void 새로운_개시판_생성_사진이_없는_경우() throws Exception {
+    void createEmptyImageBoard() throws Exception {
         Board board = mock(Board.class);
         CreateBoardRequest createBoardRequest
                 = new CreateBoardRequest("제목입니다.", "내용입니다.");
@@ -143,7 +142,7 @@ class BoardControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("board 의 내용을 수정합니다. 성공 시 200 을 응답합니다.")
-    void 개시물_수정() throws Exception {
+    void changeBoard() throws Exception {
         Board board = mock(Board.class);
         ChangeBoardRequest changeBoardRequest
                 = new ChangeBoardRequest(1L, "제목입니다.", "내용입니다.");
@@ -161,7 +160,7 @@ class BoardControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("board 를 삭제합니다. 성공 시 200 을 응답합니다.")
-    void 개시물_삭제() throws Exception {
+    void deleteBoard() throws Exception {
         doNothing().when(boardService).deleteBoard(anyLong());
 
         MockHttpServletRequestBuilder builder = delete("/board")
@@ -173,7 +172,7 @@ class BoardControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("board 의 image 를 추가합니다. 성공 시 200 을 응답합니다.")
-    void 개시물_사진_추가() throws Exception {
+    void addBoardImage() throws Exception {
         MockMultipartFile file1
                 = new MockMultipartFile("imageFiles", "test.PNG", MediaType.IMAGE_PNG_VALUE, "test".getBytes(StandardCharsets.UTF_8));
         MockMultipartFile file2
@@ -193,7 +192,7 @@ class BoardControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("board 의 image 를 삭제합니다. 성공 시 200 을 응답합니다.")
-    void 개시물_사진_삭제() throws Exception {
+    void deleteBoardImage() throws Exception {
         RemoveBoardImageRequest removeBoardImageRequest
                 = new RemoveBoardImageRequest(1L, List.of(1L, 2L, 3L));
 

@@ -36,7 +36,7 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("회원 가입")
-    void 회원_가입() {
+    void join() {
         member = Member.builder()
                 .name("test")
                 .email("email@email.com")
@@ -65,7 +65,7 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("기존에 존재하는 닉네임을 가진 회원 등록. IllegalException 을 throw 합니다")
-    void 회원_가입_존재하는_닉네임() {
+    void joinExistAlias() {
         memberService.join(member);
         Member member1 = mock(Member.class);
 
@@ -84,7 +84,7 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("기존에 존재하는 이메일을 가진 회원 등록. IllegalException 을 throw 합니다")
-    void 회원_가입_존재하는_이메일() {
+    void joinExistEmail() {
         memberService.join(member);
         Member member1 = mock(Member.class);
 
@@ -101,7 +101,7 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("로그인 기능입니다. 조회한 Member 를 return 합니다")
-    void 로그인() {
+    void login() {
         when(member.getPasswd())
                 .thenReturn("string");
         when(member.getEmail())
@@ -123,7 +123,7 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("존재하지 않는 이메일로 로그인 하는 경우입니다. NoSuchElementException 을 throw 합니다.")
-    void 로그인_아이디_없음() {
+    void loginInvalidEmail() {
         when(memberRepository.findByEmail("none"))
                 .thenReturn(Optional.empty());
 
@@ -136,7 +136,7 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("패스워드가 다른 경우입니다. IllegalStateException 을 throw 합니다.")
-    void 로그인_패스워드_오류() {
+    void loginInvalidPassword() {
         when(member.getPasswd())
                 .thenReturn("string");
 
@@ -152,7 +152,7 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("비밀번호를 변경합니다.")
-    void 비밀번호_변경() {
+    void changePassword() {
         when(memberRepository.findById(1L))
                 .thenReturn(Optional.ofNullable(member));
         when(member.getPasswd())
@@ -170,7 +170,7 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("맴버의 image 를 추가하거나 변경합니다.")
-    void 이미지_추가_변경(){
+    void setMemberImage(){
         when(memberRepository.findById(1L))
                 .thenReturn(Optional.ofNullable(member));
         when(memberRepository.save(member))
@@ -184,7 +184,7 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("맴버의 이미지를 삭제합니다.")
-    void 이미지_삭제(){
+    void deleteMemberImage(){
         when(memberRepository.findById(1L))
                 .thenReturn(Optional.ofNullable(member));
         when(memberRepository.save(member))

@@ -39,7 +39,7 @@ class MemberControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("회원 가입을 합니다. 성공 시 200 으로 응답합니다.")
-    void 회원_가입_성공() throws Exception {
+    void join() throws Exception {
         MemberJoinRequest memberJoinRequest = MemberJoinRequest.builder()
                 .name("이름")
                 .email("email@email.com")
@@ -56,7 +56,7 @@ class MemberControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("회원 가입을 하는 경우, 중복된 alias 인 경우 이미 존재하는 닉네임으로 인식하여, IllegalStateException 이 발생하고 400 을 응답합니다.")
-    void 회원_가입_닉네임_중복() throws Exception{
+    void joinDuplicateAlias() throws Exception{
         MemberJoinRequest memberJoinRequest = MemberJoinRequest.builder()
                 .name("이름")
                 .email("email@email.com")
@@ -76,7 +76,7 @@ class MemberControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("회원 가입을 하는 경우, 중복된 email 인 경우 이미 존재하는 회원으로 인식하여, IllegalStateException 이 발생하고 400 을 응답합니다.")
-    void 회원_가입_이메일_중복() throws Exception{
+    void joinDuplicateEmail() throws Exception{
         MemberJoinRequest memberJoinRequest = MemberJoinRequest.builder()
                 .name("이름")
                 .email("email@email.com")
@@ -96,7 +96,7 @@ class MemberControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("로그인 합니다. 성공 시 200 을 응답합니다.")
-    void 로그인_성공() throws Exception {
+    void login() throws Exception {
         LoginRequest loginRequest
                 = new LoginRequest("email", "password");
 
@@ -112,8 +112,8 @@ class MemberControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @DisplayName("로그인 실패 (가입한 이메일이 아닌 경우)")
-    void 로그인_없는_이메일() throws Exception {
+    @DisplayName("로그인을 실패할 경우 중 가입한 이메일이 아닌 경우 NoSuchElementException 가 발생하고 400 을 응답합니다.")
+    void loginInvalidEmail() throws Exception {
         LoginRequest loginRequest
                 = new LoginRequest("email", "password");
 
@@ -129,8 +129,8 @@ class MemberControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @DisplayName("로그인 실패 (비밀번호를 틀린 경우)")
-    void 로그인_비밀번호_오류() throws Exception {
+    @DisplayName("로그인을 실패할 경우 중 비밀번호를 틀린 경우 NoSuchElementException 가 발생하고 400 을 응답합니다.")
+    void loginInvalidPassword() throws Exception {
         LoginRequest loginRequest
                 = new LoginRequest("email", "password");
 
@@ -147,7 +147,7 @@ class MemberControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("회원의 id 값을 통해 회원의 정보를 조회합니다. 성공 시 200 을 응답합니다.")
-    void 회원_조회_성공() throws Exception{
+    void getMember() throws Exception{
         MockHttpServletRequestBuilder builder = get("/member")
                 .param("member_id", "1");
 
@@ -160,7 +160,7 @@ class MemberControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("존재하지 않는 회원의 id 값을 통해 회원의 정보를 조회합니다. NoSuchElementException 이 발생하고, 400 을 응답합니다.")
-    void 회원_조회_실패() throws Exception{
+    void getNotExistMember() throws Exception{
         MockHttpServletRequestBuilder builder = get("/member")
                 .param("member_id", "1");
 
@@ -173,7 +173,7 @@ class MemberControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("회원의 비밀번호를 변경합니다. 성공 시 200 을 응답합니다.")
-    void 비밀번호_변경() throws Exception{
+    void changePassword() throws Exception{
         ChangePasswordRequest changePasswordRequest
                 = new ChangePasswordRequest(1L, "newPasswd");
 
@@ -190,7 +190,7 @@ class MemberControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("회원의 이미지를 추가하거나 변경합니다. 성공 시 200 을 응답합니다.")
-    void 사진_추가_변경() throws Exception {
+    void setMemberImage() throws Exception {
         MockMultipartFile file  // multipart file name 과 request param name 과 같아야 함
                 = new MockMultipartFile("image", "test.PNG", MediaType.IMAGE_PNG_VALUE, "test".getBytes(StandardCharsets.UTF_8));
 
@@ -207,7 +207,7 @@ class MemberControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("회원의 이미지를 삭제합니다. MultipartFile 이 없는 경우 사진이 삭제됩니다. 성공 시 200 을 응답합니다.")
-    void 사진_삭제() throws Exception {
+    void deleteMemberImage() throws Exception {
         MockHttpServletRequestBuilder builder = delete("/member/image")
                 .param("member_id", "1");
 
@@ -220,7 +220,7 @@ class MemberControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("회원을 삭제합니다. 성공 시 200 을 응답합니다.")
-    void 회원_삭제 () throws Exception {
+    void deleteMember () throws Exception {
         MockHttpServletRequestBuilder builder = delete("/member")
                 .param("member_id", "1");
 

@@ -25,7 +25,7 @@ class MemberRepositoryImplTest {
 
     @Test
     @DisplayName("새로운 member 에 영속성을 부여합니다")
-    void 맴버_추가() {
+    void createMember() {
         //given
         Member member = newTestMember();
 
@@ -39,7 +39,7 @@ class MemberRepositoryImplTest {
 
     @Test
     @DisplayName("email 을 통해 member 를 조회합니다")
-    void 이메일로_맴버_조회(){
+    void getMemberByEmail(){
         //given
         Member member = newTestMember();
         assertNotNull(member);
@@ -54,7 +54,7 @@ class MemberRepositoryImplTest {
 
     @Test
     @DisplayName("alias 를 통해 member 를 조회합니다")
-    void 별칭으로_맴버_조회() {
+    void getMemberByAlias() {
         //given
         Member member = newTestMember();
         //when
@@ -65,9 +65,9 @@ class MemberRepositoryImplTest {
 
     @Test
     @DisplayName("모든 member 를 조회합니다")
-    void 모든_맴버_조회(){
+    void getAllMember(){
         //given
-        List<Member> members = new ArrayList<Member>();
+        List<Member> members = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             Member member = Member.builder().name("name"+i)
                     .email(i+"tt@test.com")

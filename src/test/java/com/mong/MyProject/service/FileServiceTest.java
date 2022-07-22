@@ -1,5 +1,6 @@
 package com.mong.MyProject.service;
 
+import com.mong.MyProject.exception.ErrorCode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -38,7 +39,7 @@ class FileServiceTest {
 
     @Test
     @DisplayName("파일을 생성합니다.")
-    void 파일_생성(){
+    void createFile(){
         //given
         MultipartFile file = new MockMultipartFile("test", "test.PNG", MediaType.IMAGE_PNG_VALUE, "test".getBytes(StandardCharsets.UTF_8));
 
@@ -51,7 +52,7 @@ class FileServiceTest {
 
     @Test
     @DisplayName("파일의 확장자가 없는 경우 오류가 발생합니다.")
-    void 파일_쌩성_확장자_오류(){
+    void createInvalidExtensionFile(){
         //given
         MultipartFile file = new MockMultipartFile("test", "test", MediaType.IMAGE_PNG_VALUE, "test".getBytes(StandardCharsets.UTF_8));
 
@@ -59,12 +60,12 @@ class FileServiceTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, ()-> newFile = fileService.convertToFile(file));
 
         //then
-        assertThat(exception.getMessage()).isEqualTo("파일 작성에 실패하였습니다.");
+        assertThat(exception.getMessage()).isEqualTo(ErrorCode.FAIL_TO_WRITE_FILE);
     }
 
     @Test
     @DisplayName("file 을 통해 파일을 삭제합니다.")
-    void 파일_삭제_파일(){
+    void removeFileByFile(){
         //given
         MultipartFile file = new MockMultipartFile("test", "test.PNG", MediaType.IMAGE_PNG_VALUE, "test".getBytes(StandardCharsets.UTF_8));
         File convertedFile = fileService.convertToFile(file);
@@ -79,7 +80,7 @@ class FileServiceTest {
 
     @Test
     @DisplayName("path 를 통해 파일을 삭제합니다.")
-    void 파일_삭제_경로(){
+    void removeFileByPath(){
         //given
         MultipartFile file = new MockMultipartFile("test", "test.PNG", MediaType.IMAGE_PNG_VALUE, "test".getBytes(StandardCharsets.UTF_8));
         File convertedFile = fileService.convertToFile(file);

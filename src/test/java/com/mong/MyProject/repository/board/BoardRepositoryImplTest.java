@@ -31,7 +31,7 @@ class BoardRepositoryImplTest {
 
     @Test
     @DisplayName("새로운 board 에 영속성을 부여합니다.")
-    void 보드_추가() {
+    void addBoard() {
         //given
         Member member = newTestMember();
 
@@ -47,7 +47,7 @@ class BoardRepositoryImplTest {
 
     @Test
     @DisplayName("board 의 내용을 수정합니다. member 에서 board 를 가져와 수정하고 저장할 때 문제가 없는지 확인합니다.")
-    void 보드_내용_수정() {
+    void changeBoard() {
         //given
         Member member = newTestMember();
         Board board = boardRepository.save(member, Board.builder()
@@ -68,7 +68,7 @@ class BoardRepositoryImplTest {
 
     @Test
     @DisplayName("board id 를 통해 board 를 조회합니다.")
-    void 보드_조회() {
+    void getBoard() {
         //given
         Member member = newTestMember();
         Board board = boardRepository.save(member, Board.builder()
@@ -84,7 +84,7 @@ class BoardRepositoryImplTest {
 
     @Test
     @DisplayName("board_id 를 통해 board 를 삭제합니다. member 의 boards 에서도 삭제가 되는지 확인합니다.")
-    void 보드_삭제() {
+    void deleteBoard() {
         //given
         Member member = newTestMember();
         Board board = boardRepository.save(member, Board.builder()
