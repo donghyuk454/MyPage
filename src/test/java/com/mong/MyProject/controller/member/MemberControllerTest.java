@@ -32,8 +32,6 @@ class MemberControllerTest extends AbstractControllerTest {
     @Mock
     private MemberService memberService;
 
-    Gson gson = new Gson();
-
     @Override
     protected Object setController() {
         return memberController;

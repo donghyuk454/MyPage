@@ -1,5 +1,6 @@
 package com.mong.MyProject.controller;
 
+import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -11,6 +12,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 public abstract class AbstractControllerTest {
 
     protected MockMvc mockMvc;
+    protected Gson gson = new Gson();
 
     @BeforeEach
     void beforeEach(){

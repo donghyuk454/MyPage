@@ -38,8 +38,6 @@ class BoardControllerTest extends AbstractControllerTest {
         return boardController;
     }
 
-    Gson gson = new Gson();
-
     @Test
     @DisplayName("board id 를 통해 board 를 조회합니다. 성공 시 200 을 응답합니다.")
     void 개시판_조회() throws Exception{
