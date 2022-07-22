@@ -1,0 +1,48 @@
+package com.mong.MyProject.controller.comment;
+
+import com.mong.MyProject.dto.request.comment.AddCommentRequest;
+import com.mong.MyProject.dto.request.comment.ChangeCommentRequest;
+import com.mong.MyProject.service.comment.CommentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.NoSuchElementException;
+
+@RestController
+public class CommentController {
+    private final CommentService commentService;
+
+    @Autowired
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
+    }
+
+    @PostMapping("/comment")
+    public ResponseEntity<Void> addComment(@RequestBody AddCommentRequest addCommentRequest) {
+        try {
+            commentService.addComment(addCommentRequest.getMember_id(), addCommentRequest.getBoard_id(), addCommentRequest.getContent());
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("/comment")
+    public ResponseEntity<Void> changeComment(@RequestBody ChangeCommentRequest changeCommentRequest){
+        try {
+            commentService.changeComment(changeCommentRequest.getComment_id(), changeCommentRequest.getContent());
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @DeleteMapping("comment")
+    public ResponseEntity<Void> deleteComment(@RequestParam(name = "comment_id") Long comment_id) {
+        commentService.deleteComment(comment_id);
+        return ResponseEntity.ok().build();
+    }
+}
