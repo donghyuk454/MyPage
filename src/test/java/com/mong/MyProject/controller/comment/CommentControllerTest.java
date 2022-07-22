@@ -4,6 +4,7 @@ import com.mong.MyProject.controller.AbstractControllerTest;
 import com.mong.MyProject.domain.comment.Comment;
 import com.mong.MyProject.dto.request.comment.AddCommentRequest;
 import com.mong.MyProject.dto.request.comment.ChangeCommentRequest;
+import com.mong.MyProject.exception.ErrorCode;
 import com.mong.MyProject.service.comment.CommentService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -80,7 +81,7 @@ class CommentControllerTest extends AbstractControllerTest {
                 .content(gson.toJson(changeCommentRequest));
 
         when(commentService.changeComment(any(Long.class), anyString()))
-                .thenThrow(new NoSuchElementException("없는 댓글의 아이디 입니다."));
+                .thenThrow(new NoSuchElementException(ErrorCode.NOT_EXIST_COMMENT));
 
         mockMvc.perform(builder)
                 .andExpect(status().isBadRequest());

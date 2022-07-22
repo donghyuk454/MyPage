@@ -1,5 +1,6 @@
 package com.mong.MyProject.service;
 
+import com.mong.MyProject.exception.ErrorCode;
 import com.sun.istack.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +20,7 @@ import java.util.UUID;
 public class FileService {
 
 
-    private String imageDirectory;
+    private final String imageDirectory;
 
     public FileService(@Value("${spring.image.directory}") String imageDirectory){
         this.imageDirectory = imageDirectory;
@@ -46,7 +47,7 @@ public class FileService {
             return fileName.substring(fileName.lastIndexOf("."));
         } catch (StringIndexOutOfBoundsException e) {
             e.printStackTrace();
-            throw new IllegalArgumentException("파일 작성에 실패하였습니다.");
+            throw new IllegalArgumentException(ErrorCode.FAIL_TO_WRITE_FILE);
         }
     }
 
@@ -56,7 +57,7 @@ public class FileService {
         } catch (IOException e) {
             log.info("파일 생성에 실패했습니다. 파일 이름 = {}", file.getName());
             e.printStackTrace();
-            throw new IllegalArgumentException("파일 생성에 실패했습니다.");
+            throw new IllegalArgumentException(ErrorCode.FAIL_TO_WRITE_FILE);
         }
     }
 
@@ -69,7 +70,7 @@ public class FileService {
             removeFileByFile(file);
             log.info("파일 작성에 실패하였습니다. 파일 이름 = {}", file.getName());
             e.printStackTrace();
-            throw new IllegalArgumentException("파일 작성에 실패하였습니다.");
+            throw new IllegalArgumentException(ErrorCode.FAIL_TO_WRITE_FILE);
         }
     }
 

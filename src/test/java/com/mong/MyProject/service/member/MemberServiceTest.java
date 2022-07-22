@@ -2,6 +2,7 @@ package com.mong.MyProject.service.member;
 
 import com.mong.MyProject.domain.image.Image;
 import com.mong.MyProject.domain.member.Member;
+import com.mong.MyProject.exception.ErrorCode;
 import com.mong.MyProject.repository.member.MemberRepository;
 
 import org.junit.jupiter.api.DisplayName;
@@ -43,15 +44,12 @@ class MemberServiceTest {
                 .passwd("string").build();
 
         when(memberRepository.save(member))
-                .then(m->{
-                    Member temp = Member.builder()
-                            .id(1L)
-                            .name("test")
-                            .email("email@email.com")
-                            .alias("string")
-                            .passwd("string").build();
-                    return temp;
-                });
+                .thenReturn(Member.builder()
+                        .id(1L)
+                        .name("test")
+                        .email("email@email.com")
+                        .alias("string")
+                        .passwd("string").build());
 
         Long id = memberService.join(member);
 
@@ -91,11 +89,11 @@ class MemberServiceTest {
         Member member1 = mock(Member.class);
 
         when(memberRepository.save(member1))
-                .thenThrow(new IllegalStateException("이미 존재하는 회원입니다."));
+                .thenThrow(new IllegalStateException(ErrorCode.ALREADY_EXIST_MEMBER));
 
         IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.join(member1));
 
-        assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다.");
+        assertThat(e.getMessage()).isEqualTo(ErrorCode.ALREADY_EXIST_MEMBER);
 
         verify(memberRepository, times(2))
                 .findByEmail(any());
@@ -131,7 +129,7 @@ class MemberServiceTest {
 
         NoSuchElementException e = assertThrows(NoSuchElementException.class, () -> memberService.login("none", "none"));
 
-        assertThat(e.getMessage()).isEqualTo("존재하지 않는 이메일 입니다.");
+        assertThat(e.getMessage()).isEqualTo(ErrorCode.INVALID_EMAIL);
         verify(memberRepository, times(1))
                 .findByEmail(any(String.class));
     }
@@ -147,7 +145,7 @@ class MemberServiceTest {
 
         IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.login("email@email.com", "none"));
 
-        assertThat(e.getMessage()).isEqualTo("비밀번호가 다릅니다.");
+        assertThat(e.getMessage()).isEqualTo(ErrorCode.INVALID_PASSWORD);
         verify(memberRepository, times(1))
                 .findByEmail(any(String.class));
     }

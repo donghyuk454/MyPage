@@ -3,6 +3,7 @@ package com.mong.MyProject.service.member;
 import com.mong.MyProject.domain.image.Image;
 import com.mong.MyProject.domain.image.ImageType;
 import com.mong.MyProject.domain.member.Member;
+import com.mong.MyProject.exception.ErrorCode;
 import com.mong.MyProject.repository.member.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,14 +38,14 @@ public class MemberService {
     private void validateDuplicateMember(Member member) {
         memberRepository.findByEmail(member.getEmail())
                 .ifPresent(m -> {
-                    throw new IllegalStateException("이미 존재하는 회원입니다.");
+                    throw new IllegalStateException(ErrorCode.ALREADY_EXIST_MEMBER);
                 });
     }
 
     private void validateDuplicateAlias(Member member) {
         memberRepository.findByAlias(member.getAlias())
                 .ifPresent(m -> {
-                    throw new IllegalStateException("이미 존재하는 닉네임입니다.");
+                    throw new IllegalStateException(ErrorCode.ALREADY_EXIST_ALIAS);
                 });
     }
 
@@ -54,11 +55,11 @@ public class MemberService {
     public Long login(String email, String passwd){
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(()->{
-                    throw new NoSuchElementException("존재하지 않는 이메일 입니다.");
+                    throw new NoSuchElementException(ErrorCode.INVALID_EMAIL);
                 });
 
         if (!member.getPasswd().equals(passwd)) {
-            throw new IllegalStateException("비밀번호가 다릅니다.");
+            throw new IllegalStateException(ErrorCode.INVALID_PASSWORD);
         }
 
         return member.getId();
@@ -69,7 +70,7 @@ public class MemberService {
      * */
     public Member getMemberById(Long member_id) {
         return memberRepository.findById(member_id)
-                .orElseThrow(()->new NoSuchElementException("존재하는 회원이 없습니다."));
+                .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
     }
 
     /**
@@ -77,7 +78,7 @@ public class MemberService {
      * */
     public void deleteMember(Long member_id){
         Member member = memberRepository.findById(member_id)
-                .orElseThrow(()->new NoSuchElementException("존재하는 회원이 없습니다."));
+                .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
 
         member.delete();
     }
@@ -87,7 +88,7 @@ public class MemberService {
      * */
     public void changePasswd(Long member_id, String passwd) {
         Member member = memberRepository.findById(member_id)
-                .orElseThrow(()->new NoSuchElementException("존재하는 회원이 없습니다."));
+                .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
 
         member.setPasswd(passwd);
         memberRepository.save(member);
@@ -98,7 +99,7 @@ public class MemberService {
      * */
     public void setImage(Long member_id, MultipartFile file) {
         Member member = memberRepository.findById(member_id)
-                .orElseThrow(()->new NoSuchElementException("존재하는 회원이 없습니다."));
+                .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
 
         // TODO: image 생성
         String url = "";
@@ -116,7 +117,7 @@ public class MemberService {
      * */
     public void deleteImage(Long member_id){
         Member member = memberRepository.findById(member_id)
-                .orElseThrow(()->new NoSuchElementException("존재하는 회원이 없습니다."));
+                .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
 
         member.setImage(null);
         memberRepository.save(member);

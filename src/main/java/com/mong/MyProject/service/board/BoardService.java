@@ -4,6 +4,7 @@ import com.mong.MyProject.domain.board.Board;
 import com.mong.MyProject.domain.image.Image;
 import com.mong.MyProject.domain.image.ImageType;
 import com.mong.MyProject.domain.member.Member;
+import com.mong.MyProject.exception.ErrorCode;
 import com.mong.MyProject.repository.board.BoardRepository;
 import com.mong.MyProject.repository.image.ImageRepository;
 import com.mong.MyProject.repository.member.MemberRepository;
@@ -40,7 +41,7 @@ public class BoardService {
     public Board addBoard(Long member_id, Board board){
         Member member = memberRepository.findById(member_id)
                 .orElseThrow(()-> {
-                    throw new NoSuchElementException("없는 회원의 아이디 입니다.");
+                    throw new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER);
                 });
         return boardRepository.save(member, board);
     }
@@ -51,7 +52,7 @@ public class BoardService {
     public List<Board> getBoardsByMemberId(Long member_id) {
         Member member = memberRepository.findById(member_id)
                 .orElseThrow(()-> {
-                    throw new NoSuchElementException("없는 회원의 아이디 입니다.");
+                    throw new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER);
                 });
 
         return member.getBoards();
@@ -62,7 +63,7 @@ public class BoardService {
      * */
     public Board getBoardById(Long board_id) {
         return boardRepository.findById(board_id).orElseThrow(() -> {
-            throw new NoSuchElementException("없는 게시물의 아이디 입니다.");
+            throw new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD);
         });
     }
 
@@ -71,7 +72,7 @@ public class BoardService {
      * */
     public Board changeBoard(Long board_id, String title, String content) {
         Board board = boardRepository.findById(board_id).orElseThrow(() -> {
-            throw new NoSuchElementException("없는 게시물의 아이디 입니다.");
+            throw new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD);
         });
         board.setTitle(title);
         board.setContent(content);
@@ -91,7 +92,7 @@ public class BoardService {
      * */
     public void addImage(Long board_id, List<MultipartFile> images) {
         Board board = boardRepository.findById(board_id).orElseThrow(() -> {
-            throw new NoSuchElementException("없는 게시물의 아이디 입니다.");
+            throw new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD);
         });
         images.forEach(img ->{
             File imageFile = fileService.convertToFile(img);
@@ -112,7 +113,7 @@ public class BoardService {
      * */
     public void deleteImages(Long board_id, List<Long> image_ids) {
         Board board = boardRepository.findById(board_id).orElseThrow(() -> {
-            throw new NoSuchElementException("없는 게시물의 아이디 입니다.");
+            throw new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD);
         });
         List<Image> images = imageRepository.findAllById(image_ids);
         List<Image> board_images = board.getImages();

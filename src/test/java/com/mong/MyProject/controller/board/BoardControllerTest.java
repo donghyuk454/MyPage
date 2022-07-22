@@ -1,12 +1,12 @@
 package com.mong.MyProject.controller.board;
 
-import com.google.gson.Gson;
 import com.mong.MyProject.controller.AbstractControllerTest;
 import com.mong.MyProject.domain.board.Board;
 import com.mong.MyProject.domain.member.Member;
 import com.mong.MyProject.dto.request.board.ChangeBoardRequest;
 import com.mong.MyProject.dto.request.board.CreateBoardRequest;
 import com.mong.MyProject.dto.request.board.RemoveBoardImageRequest;
+import com.mong.MyProject.exception.ErrorCode;
 import com.mong.MyProject.service.board.BoardService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -67,7 +67,7 @@ class BoardControllerTest extends AbstractControllerTest {
         when(member.getAlias()).thenReturn("테스트용");
 
         when(boardService.getBoardById(1L))
-                .thenThrow(new NoSuchElementException("없는 게시물의 아이디 입니다."));
+                .thenThrow(new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD));
 
         mockMvc.perform(builder)
                 .andExpect(status().isBadRequest());
@@ -207,5 +207,4 @@ class BoardControllerTest extends AbstractControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk());
     }
-
 }

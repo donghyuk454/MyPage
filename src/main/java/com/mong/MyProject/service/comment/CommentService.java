@@ -3,6 +3,7 @@ package com.mong.MyProject.service.comment;
 import com.mong.MyProject.domain.board.Board;
 import com.mong.MyProject.domain.comment.Comment;
 import com.mong.MyProject.domain.member.Member;
+import com.mong.MyProject.exception.ErrorCode;
 import com.mong.MyProject.repository.board.BoardRepository;
 import com.mong.MyProject.repository.comment.CommentRepository;
 import com.mong.MyProject.repository.member.MemberRepository;
@@ -29,9 +30,9 @@ public class CommentService {
      * */
     public void addComment(Long member_id, Long board_id, String content) {
         Member member = memberRepository.findById(member_id)
-                .orElseThrow(()->new NoSuchElementException(""));
+                .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
         Board board = boardRepository.findById(board_id)
-                .orElseThrow(()->new NoSuchElementException("없는 게시물의 아이디 입니다."));
+                .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD));
 
         commentRepository.save(member, board, content);
     }
@@ -41,7 +42,7 @@ public class CommentService {
      * */
     public Comment changeComment(Long comment_id, String content) {
         Comment comment = commentRepository.findById(comment_id)
-                .orElseThrow(()->new NoSuchElementException("없는 댓글의 아이디 입니다."));
+                .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_COMMENT));
         comment.setContent(content);
 
         return comment;
