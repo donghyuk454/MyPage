@@ -45,9 +45,9 @@ class CommentServiceTest {
         Member member = mock(Member.class);
 
         when(memberRepository.findById(1L))
-                .thenReturn(Optional.ofNullable(member));
+                .thenReturn(Optional.of(member));
         when(boardRepository.findById(1L))
-                .thenReturn(Optional.ofNullable(board));
+                .thenReturn(Optional.of(board));
         when(commentRepository.save(member, board, "content"))
                 .thenReturn(comment);
 
@@ -61,7 +61,7 @@ class CommentServiceTest {
     @DisplayName("comment 의 content 내용을 수정합니다.")
     void changeComment() {
         when(commentRepository.findById(1L))
-                .thenReturn(Optional.ofNullable(comment));
+                .thenReturn(Optional.of(comment));
         when(comment.getContent())
                 .thenReturn("changed");
 

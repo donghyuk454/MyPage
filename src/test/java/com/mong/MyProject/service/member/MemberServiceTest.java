@@ -110,7 +110,7 @@ class MemberServiceTest {
                 .thenReturn(1L);
 
         when(memberRepository.findByEmail("email@email.com"))
-                .thenReturn(Optional.ofNullable(member));
+                .thenReturn(Optional.of(member));
 
         Long member_id = memberService.login(member.getEmail(), member.getPasswd());
 
@@ -141,7 +141,7 @@ class MemberServiceTest {
                 .thenReturn("string");
 
         when(memberRepository.findByEmail("email@email.com"))
-                .thenReturn(Optional.ofNullable(member));
+                .thenReturn(Optional.of(member));
 
         IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.login("email@email.com", "none"));
 
@@ -154,7 +154,7 @@ class MemberServiceTest {
     @DisplayName("비밀번호를 변경합니다.")
     void changePassword() {
         when(memberRepository.findById(1L))
-                .thenReturn(Optional.ofNullable(member));
+                .thenReturn(Optional.of(member));
         when(member.getPasswd())
                 .thenReturn("newPassword");
 
@@ -172,7 +172,7 @@ class MemberServiceTest {
     @DisplayName("맴버의 image 를 추가하거나 변경합니다.")
     void setMemberImage(){
         when(memberRepository.findById(1L))
-                .thenReturn(Optional.ofNullable(member));
+                .thenReturn(Optional.of(member));
         when(memberRepository.save(member))
                 .thenReturn(member);
         MultipartFile image = new MockMultipartFile("test1", "test1.PNG", MediaType.IMAGE_PNG_VALUE, "test1".getBytes());
@@ -186,7 +186,7 @@ class MemberServiceTest {
     @DisplayName("맴버의 이미지를 삭제합니다.")
     void deleteMemberImage(){
         when(memberRepository.findById(1L))
-                .thenReturn(Optional.ofNullable(member));
+                .thenReturn(Optional.of(member));
         when(memberRepository.save(member))
                 .thenReturn(member);
 

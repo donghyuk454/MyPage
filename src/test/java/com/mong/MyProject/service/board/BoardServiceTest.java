@@ -46,7 +46,7 @@ class BoardServiceTest {
     @DisplayName("member 의 새로운 board 를 추가합니다.")
     void addBoard() {
         when(memberRepository.findById(1L))
-                .thenReturn(Optional.ofNullable(member));
+                .thenReturn(Optional.of(member));
         when(boardRepository.save(member, board))
                 .thenReturn(board);
 
@@ -64,7 +64,7 @@ class BoardServiceTest {
         when(boardRepository.save(board))
                 .thenReturn(board);
         when(boardRepository.findById(1L))
-                .thenReturn(Optional.ofNullable(board));
+                .thenReturn(Optional.of(board));
 
         Board result = boardService.changeBoard(1L, "title", "content");
 
@@ -89,7 +89,7 @@ class BoardServiceTest {
         when(boardRepository.save(board))
                 .thenReturn(board);
         when(boardRepository.findById(1L))
-                .thenReturn(Optional.ofNullable(board));
+                .thenReturn(Optional.of(board));
         List<MultipartFile> images = List.of(
                 new MockMultipartFile("test1", "test1.PNG", MediaType.IMAGE_PNG_VALUE, "test1".getBytes()),
                 new MockMultipartFile("test2", "test2.PNG", MediaType.IMAGE_PNG_VALUE, "test2".getBytes())
@@ -119,7 +119,7 @@ class BoardServiceTest {
         }
 
         when(boardRepository.findById(1L))
-                .thenReturn(Optional.ofNullable(board));
+                .thenReturn(Optional.of(board));
         when(board.getImages())
                 .thenReturn(images);
         when(imageRepository.findAllById(image_ids))
