@@ -6,14 +6,13 @@ import com.mong.MyProject.dto.request.member.LoginRequest;
 import com.mong.MyProject.dto.request.member.MemberJoinRequest;
 import com.mong.MyProject.dto.response.member.LoginResponse;
 import com.mong.MyProject.service.member.MemberService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.NoSuchElementException;
 
 @Slf4j
 @RestController
@@ -28,38 +27,23 @@ public class MemberController {
 
     @GetMapping("/member")
     public ResponseEntity<Member> getMember(@RequestParam(name = "member_id") Long member_id) {
-        try {
-            Member member = memberService.getMemberById(member_id);
-            return ResponseEntity.ok().body(member);
-        } catch (NoSuchElementException e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().build();
-        }
+        Member member = memberService.getMemberById(member_id);
+        return ResponseEntity.ok().body(member);
     }
 
     @PostMapping("/member")
     public ResponseEntity<Void> join(@RequestBody MemberJoinRequest memberJoinRequest) {
-        try {
-            memberService.join(memberJoinRequest.toMember());
+        memberService.join(memberJoinRequest.toMember());
 
-            return ResponseEntity.ok().build();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-        try {
-            Long member_id = memberService.login(loginRequest.getEmail(), loginRequest.getPasswd());
-            LoginResponse loginResponse = new LoginResponse(member_id);
+        Long member_id = memberService.login(loginRequest.getEmail(), loginRequest.getPasswd());
+        LoginResponse loginResponse = new LoginResponse(member_id);
 
-            return ResponseEntity.ok().body(loginResponse);
-        } catch (IllegalStateException | NoSuchElementException e){
-            e.printStackTrace();
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok().body(loginResponse);
     }
 
     @PutMapping("/member/password")
