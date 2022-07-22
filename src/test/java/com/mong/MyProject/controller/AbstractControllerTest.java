@@ -1,6 +1,7 @@
 package com.mong.MyProject.controller;
 
 import com.google.gson.Gson;
+import com.mong.MyProject.exception.ExceptionHandlers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -18,6 +19,7 @@ public abstract class AbstractControllerTest {
     void beforeEach(){
         mockMvc = MockMvcBuilders.standaloneSetup(setController())
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
+                .setControllerAdvice(new ExceptionHandlers())
                 .build();
     }
 
