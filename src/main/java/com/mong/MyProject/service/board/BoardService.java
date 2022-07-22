@@ -119,9 +119,11 @@ public class BoardService {
         List<Image> board_images = board.getImages();
         log.info("삭제할 이미지 = {}", board_images);
         images.forEach(image -> {
-            fileService.removeFileByPath(image.getUrl());
-            board_images.remove(image);
-            log.info("삭제된 이미지 = {}", image);
+            if (fileService.removeFileByPath(image.getUrl())) {
+                board_images.remove(image);
+                log.info("삭제된 이미지 = {}", image);
+            } else
+                throw new NoSuchElementException(ErrorCode.FAIL_TO_REMOVE_FILE);
         });
 
         boardRepository.save(board);

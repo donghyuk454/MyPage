@@ -67,20 +67,22 @@ public class FileService {
             fileOutputStream.write(multipartFile.getBytes());
             fileOutputStream.close();
         } catch (IOException e) {
-            removeFileByFile(file);
-            log.info("파일 작성에 실패하였습니다. 파일 이름 = {}", file.getName());
+            if(removeFileByFile(file))
+                log.info("파일 작성에 실패하여 삭제하였습니다. 파일 이름 = {}", file.getName());
+            else
+                log.info("파일 작성에 실패하였고 삭제에도 실패하였습니다. 파일 이름 = {}", file.getName());
             e.printStackTrace();
             throw new IllegalArgumentException(ErrorCode.FAIL_TO_WRITE_FILE);
         }
     }
 
-    public void removeFileByPath(@NotNull String path) {
+    public boolean removeFileByPath(@NotNull String path) {
         File file = new File(path);
-        file.delete();
+        return file.delete();
     }
 
-    public void removeFileByFile(@NotNull File file) {
-        file.delete();
+    public boolean removeFileByFile(@NotNull File file) {
+        return file.delete();
     }
 
 }

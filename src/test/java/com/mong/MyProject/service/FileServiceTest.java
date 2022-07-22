@@ -70,9 +70,10 @@ class FileServiceTest {
         File convertedFile = fileService.convertToFile(file);
 
         //when
-        fileService.removeFileByFile(convertedFile);
+        boolean result = fileService.removeFileByFile(convertedFile);
 
         //then
+        assertThat(result).isTrue();
         assertThat(convertedFile).doesNotExist();
     }
 
@@ -84,9 +85,10 @@ class FileServiceTest {
         File convertedFile = fileService.convertToFile(file);
 
         //when
-        fileService.removeFileByPath(convertedFile.getAbsolutePath());
+        boolean result = fileService.removeFileByPath(convertedFile.getAbsolutePath());
 
         //then
+        assertThat(result).isTrue();
         assertThat(convertedFile).doesNotExist();
     }
 }

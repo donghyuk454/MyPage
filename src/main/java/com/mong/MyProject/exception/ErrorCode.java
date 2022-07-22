@@ -19,4 +19,5 @@ public class ErrorCode {
 
     // image
     public static final String FAIL_TO_WRITE_FILE = "파일 작성에 실패하였습니다.";
+    public static final String FAIL_TO_REMOVE_FILE = "파일 삭제에 실패하였습니다.";
 }
