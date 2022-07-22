@@ -1,7 +1,6 @@
 package com.mong.MyProject.dto.response.board;
 
 import com.mong.MyProject.domain.board.Board;
-import com.mong.MyProject.domain.member.Member;
 import lombok.*;
 
 import java.time.LocalDateTime;
