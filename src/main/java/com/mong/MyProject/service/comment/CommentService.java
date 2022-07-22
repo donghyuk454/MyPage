@@ -9,12 +9,14 @@ import com.mong.MyProject.repository.member.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Service
 public class CommentService {
 
-    private MemberRepository memberRepository;
-    private BoardRepository boardRepository;
-    private CommentRepository commentRepository;
+    private final MemberRepository memberRepository;
+    private final BoardRepository boardRepository;
+    private final CommentRepository commentRepository;
 
     @Autowired
     public CommentService(MemberRepository memberRepository, BoardRepository boardRepository, CommentRepository commentRepository) {
@@ -25,18 +27,21 @@ public class CommentService {
     /**
      * 댓글 생성
      * */
-    public Comment addComment(Long member_id, Long board_id, String content) {
-        Member member = memberRepository.findById(member_id).get();
-        Board board = boardRepository.findById(board_id).get();
+    public void addComment(Long member_id, Long board_id, String content) {
+        Member member = memberRepository.findById(member_id)
+                .orElseThrow(()->new NoSuchElementException(""));
+        Board board = boardRepository.findById(board_id)
+                .orElseThrow(()->new NoSuchElementException("없는 게시물의 아이디 입니다."));
 
-        return commentRepository.save(member, board, content);
+        commentRepository.save(member, board, content);
     }
 
     /**
      * 댓글 내용 수정
      * */
     public Comment changeComment(Long comment_id, String content) {
-        Comment comment = commentRepository.findById(comment_id).get();
+        Comment comment = commentRepository.findById(comment_id)
+                .orElseThrow(()->new NoSuchElementException("없는 댓글의 아이디 입니다."));
         comment.setContent(content);
 
         return comment;
