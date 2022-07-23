@@ -16,9 +16,8 @@ import java.util.UUID;
 
 @Slf4j
 @Component
-@PropertySource("/src/main/resources/application.properties")
+@PropertySource("classpath:application.properties")
 public class FileService {
-
 
     private final String imageDirectory;
 
