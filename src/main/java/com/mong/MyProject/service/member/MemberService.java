@@ -5,12 +5,14 @@ import com.mong.MyProject.domain.image.ImageType;
 import com.mong.MyProject.domain.member.Member;
 import com.mong.MyProject.exception.ErrorCode;
 import com.mong.MyProject.repository.member.MemberRepository;
+import com.mong.MyProject.service.FileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.NoSuchElementException;
 
 @Slf4j
@@ -19,10 +21,12 @@ import java.util.NoSuchElementException;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final FileService fileService;
 
     @Autowired
-    public MemberService(MemberRepository memberRepository) {
+    public MemberService(MemberRepository memberRepository, FileService fileService) {
         this.memberRepository = memberRepository;
+        this.fileService = fileService;
     }
 
     /**
@@ -103,10 +107,9 @@ public class MemberService {
         Member member = memberRepository.findById(member_id)
                 .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
 
-        // TODO: image 생성
-        String url = "";
+        File imageFile = fileService.convertToFile(file);
         Image image = Image.builder()
-                .url(url)
+                .url(imageFile.getAbsolutePath())
                 .type(ImageType.MEMBER)
                 .build();
 
@@ -121,7 +124,9 @@ public class MemberService {
         Member member = memberRepository.findById(member_id)
                 .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
 
-        member.setImage(null);
-        memberRepository.save(member);
+        if (fileService.removeFileByPath(member.getImage().getUrl())) {
+            member.setImage(null);
+            memberRepository.save(member);
+        }
     }
 }
