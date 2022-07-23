@@ -9,10 +9,12 @@ import com.mong.MyProject.repository.comment.CommentRepository;
 import com.mong.MyProject.repository.member.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 
 @Service
+@Transactional
 public class CommentService {
 
     private final MemberRepository memberRepository;
