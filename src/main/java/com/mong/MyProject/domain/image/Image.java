@@ -38,6 +38,6 @@ public class Image {
     }
 
     private String extractKey(){
-        return url+"key";
+        return url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
     }
 }
