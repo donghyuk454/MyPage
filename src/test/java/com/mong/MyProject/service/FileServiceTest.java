@@ -7,8 +7,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -17,13 +20,19 @@ import java.nio.charset.StandardCharsets;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith({MockitoExtension.class, SpringExtension.class})
+@TestPropertySource("classpath:test.properties")
 class FileServiceTest {
 
     private FileService fileService;
-    private String imageDirectory = "src/test/resources/images/";
+
+    private final String imageDirectory;
 
     private File newFile;
+
+    public FileServiceTest(@Value("${spring.image.directory}") String imageDirectory) {
+        this.imageDirectory = imageDirectory;
+    }
 
     @BeforeEach
     void beforeEach(){
