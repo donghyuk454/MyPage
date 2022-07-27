@@ -63,7 +63,7 @@ class FileServiceTest {
     @DisplayName("파일의 확장자가 없는 경우 오류가 발생합니다.")
     void createInvalidExtensionFile(){
         //given
-        MultipartFile file = new MockMultipartFile("test", "test", MediaType.IMAGE_PNG_VALUE, "test".getBytes(StandardCharsets.UTF_8));
+        MultipartFile file = new MockMultipartFile("test", "test.PNG", MediaType.IMAGE_PNG_VALUE, "test".getBytes(StandardCharsets.UTF_8));
 
         //when
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, ()-> newFile = fileService.convertToFile(file));
