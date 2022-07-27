@@ -54,7 +54,7 @@ public class FileService {
         try {
             return file.createNewFile();
         } catch (IOException e) {
-            log.info("파일 생성에 실패했습니다. 파일 이름 = {}", file.getName());
+            log.info("파일 생성에 실패했습니다. 파일 이름 = {}, 경로 = {}", file.getName(), file.getAbsolutePath());
             e.printStackTrace();
             throw new IllegalArgumentException(ErrorCode.FAIL_TO_WRITE_FILE);
         }
