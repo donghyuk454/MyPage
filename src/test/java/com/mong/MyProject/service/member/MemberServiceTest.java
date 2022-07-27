@@ -5,6 +5,7 @@ import com.mong.MyProject.domain.member.Member;
 import com.mong.MyProject.exception.ErrorCode;
 import com.mong.MyProject.repository.member.MemberRepository;
 
+import com.mong.MyProject.service.FileService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -30,6 +32,9 @@ class MemberServiceTest {
 
     @Mock
     private MemberRepository memberRepository;
+
+    @Mock
+    private FileService fileService;
 
     @Mock
     private Member member;
@@ -175,6 +180,11 @@ class MemberServiceTest {
                 .thenReturn(Optional.of(member));
         when(memberRepository.save(member))
                 .thenReturn(member);
+        File imageFile = mock(File.class);
+        when(fileService.convertToFile(any()))
+                .thenReturn(imageFile);
+        when(imageFile.getAbsolutePath())
+                .thenReturn("/this/is/absolute/path.PNG");
         MultipartFile image = new MockMultipartFile("test1", "test1.PNG", MediaType.IMAGE_PNG_VALUE, "test1".getBytes());
 
         memberService.setImage(1L, image);
@@ -189,6 +199,13 @@ class MemberServiceTest {
                 .thenReturn(Optional.of(member));
         when(memberRepository.save(member))
                 .thenReturn(member);
+        Image image = mock(Image.class);
+        when(member.getImage())
+                .thenReturn(image);
+        when(image.getUrl())
+                .thenReturn("/this/is/absolute/path.PNG");
+        when(fileService.removeFileByPath(any(String.class)))
+                .thenReturn(true);
 
         memberService.deleteImage(1L);
 

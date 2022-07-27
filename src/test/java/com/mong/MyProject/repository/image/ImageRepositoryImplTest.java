@@ -8,7 +8,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,10 +22,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @Transactional
+@TestPropertySource("classpath:test.properties")
 class ImageRepositoryImplTest {
 
     @Autowired private ImageRepository imageRepository;
     @Autowired private BoardRepository boardRepository;
+
+    @Value("${spring.image.directory}") String imageDirectory;
 
     @Test
     @DisplayName("board 의 이미지를 id 를 통해 검색합니다.")
@@ -32,7 +37,7 @@ class ImageRepositoryImplTest {
         Board board = Board.builder().content("content").title("title").build();
         for (int i = 0; i < 5; i++) {
             Image image = Image.builder()
-                    .url(String.valueOf(i))
+                    .url(imageDirectory+"/"+i+".PNG")
                     .type(ImageType.BOARD)
                     .build();
             board.addImage(image);
@@ -51,8 +56,8 @@ class ImageRepositoryImplTest {
 
         //then
         assertThat(result.size()).isEqualTo(3);
-        result.forEach(image->{
-            assertThat(images.contains(image)).isTrue();
-        });
+        result.forEach(image->
+            assertThat(images.contains(image)).isTrue()
+        );
     }
 }

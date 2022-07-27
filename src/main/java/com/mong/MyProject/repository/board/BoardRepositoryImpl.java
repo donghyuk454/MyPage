@@ -21,13 +21,22 @@ public class BoardRepositoryImpl implements BoardRepository{
     @Override
     public Board save(Member member, Board board) {
         board.setMember(member);
-        em.persist(member);
+        member.addBoard(board);
+
+        if (member.getId() == null)
+            em.persist(member);
+        else {
+            em.merge(member);
+        }
         return board;
     }
 
     @Override
     public Board save(Board board) {
-        em.persist(board);
+        if(board.getId() == null)
+            em.persist(board);
+        else
+            em.merge(board);
         return board;
     }
 

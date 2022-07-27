@@ -6,6 +6,8 @@ import com.mong.MyProject.domain.member.Member;
 import com.mong.MyProject.repository.board.BoardRepository;
 import com.mong.MyProject.repository.image.ImageRepository;
 import com.mong.MyProject.repository.member.MemberRepository;
+import com.mong.MyProject.service.FileService;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,12 +18,11 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,6 +37,8 @@ class BoardServiceTest {
     private BoardRepository boardRepository;
     @Mock
     private ImageRepository imageRepository;
+    @Mock
+    private FileService fileService;
 
     @Mock
     private Member member;
@@ -94,6 +97,11 @@ class BoardServiceTest {
                 new MockMultipartFile("test1", "test1.PNG", MediaType.IMAGE_PNG_VALUE, "test1".getBytes()),
                 new MockMultipartFile("test2", "test2.PNG", MediaType.IMAGE_PNG_VALUE, "test2".getBytes())
         );
+        File imageFile= mock(File.class);
+        when(fileService.convertToFile(any()))
+                .thenReturn(imageFile);
+        when(imageFile.getAbsolutePath())
+                .thenReturn("/this/is/absolute/path.PNG");
 
         boardService.addImage(1L, images);
 
@@ -124,7 +132,10 @@ class BoardServiceTest {
                 .thenReturn(images);
         when(imageRepository.findAllById(image_ids))
                 .thenReturn(foundedImages);
-        when(boardRepository.save(board)).thenReturn(board);
+        when(boardRepository.save(board))
+                .thenReturn(board);
+        when(fileService.removeFileByPath(any()))
+                .thenReturn(true);
 
         boardService.deleteImages(1L, image_ids);
 

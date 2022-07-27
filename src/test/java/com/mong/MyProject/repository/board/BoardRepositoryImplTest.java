@@ -4,21 +4,17 @@ import com.mong.MyProject.domain.board.Board;
 import com.mong.MyProject.domain.board.BoardStatus;
 import com.mong.MyProject.domain.member.Member;
 import com.mong.MyProject.repository.member.MemberRepository;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -27,7 +23,6 @@ class BoardRepositoryImplTest {
 
     @Autowired private BoardRepository boardRepository;
     @Autowired private MemberRepository memberRepository;
-    @Autowired private EntityManager entityManager;
 
     @Test
     @DisplayName("새로운 board 에 영속성을 부여합니다.")
@@ -42,7 +37,7 @@ class BoardRepositoryImplTest {
         //then
         assertThat(board.getMember()).isEqualTo(member);
         assertThat(member.getBoards().size()).isEqualTo(1);
-        assertThat(member.getBoards().stream().findAny().get()).isEqualTo(board);
+        assertThat(member.getBoards().get(0).getId()).isNotNull();
     }
 
     @Test
@@ -50,20 +45,21 @@ class BoardRepositoryImplTest {
     void changeBoard() {
         //given
         Member member = newTestMember();
-        Board board = boardRepository.save(member, Board.builder()
+        boardRepository.save(member, Board.builder()
                 .title("제목입니다").content("내용입니다.").build());
 
         //when
-        Board b = member.getBoards().get(0);
-        b.setContent("수정된 내용입니다");
-        b.setTitle("수정된 제목입니다");
-        Board result1 = boardRepository.save(b);
-        Board result2 = boardRepository.findById(board.getId()).get();
-        Board result3 = member.getBoards().get(0);
+        Board board = member.getBoards().get(0);
+        board.setContent("수정된 내용입니다");
+        board.setTitle("수정된 제목입니다");
+        boardRepository.save(board);
+
+        Board result1 = boardRepository.findById(board.getId()).get();
+        Board result2 = member.getBoards().get(0);
 
         //then
+        assertThat(result1).isNotNull();
         assertThat(result2).isEqualTo(result1);
-        assertThat(result3).isEqualTo(result1);
     }
 
     @Test
@@ -71,15 +67,18 @@ class BoardRepositoryImplTest {
     void getBoard() {
         //given
         Member member = newTestMember();
-        Board board = boardRepository.save(member, Board.builder()
+        boardRepository.save(member, Board.builder()
                 .title("제목입니다").content("내용입니다.").build());
+
+        Board board = member.getBoards().get(0);
 
         //when
         Board result = boardRepository.findById(board.getId()).get();
 
         //then
-        assertThat(result).isEqualTo(board);
-        assertThat(result.getMember()).isEqualTo(member);
+        assertThat(result.getContent()).isEqualTo(board.getContent());
+        assertEquals(board.getTitle(), result.getTitle());
+        assertThat(result.getMember().getId()).isEqualTo(member.getId());
     }
 
     @Test
@@ -87,8 +86,9 @@ class BoardRepositoryImplTest {
     void deleteBoard() {
         //given
         Member member = newTestMember();
-        Board board = boardRepository.save(member, Board.builder()
+        boardRepository.save(member, Board.builder()
                 .title("제목입니다").content("내용입니다.").build());
+        Board board = member.getBoards().get(0);
 
         //when
         boardRepository.deleteBoardById(board.getId());
