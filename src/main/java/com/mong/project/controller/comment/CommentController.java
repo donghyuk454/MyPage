@@ -19,19 +19,19 @@ public class CommentController {
 
     @PostMapping("/comment")
     public ResponseEntity<Void> addComment(@RequestBody AddCommentRequest addCommentRequest) {
-        commentService.addComment(addCommentRequest.getMember_id(), addCommentRequest.getBoard_id(), addCommentRequest.getContent());
+        commentService.addComment(addCommentRequest.getMemberId(), addCommentRequest.getBoardId(), addCommentRequest.getContent());
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/comment")
     public ResponseEntity<Void> changeComment(@RequestBody ChangeCommentRequest changeCommentRequest){
-        commentService.changeComment(changeCommentRequest.getComment_id(), changeCommentRequest.getContent());
+        commentService.changeComment(changeCommentRequest.getCommentId(), changeCommentRequest.getContent());
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("comment")
-    public ResponseEntity<Void> deleteComment(@RequestParam(name = "comment_id") Long comment_id) {
-        commentService.deleteComment(comment_id);
+    public ResponseEntity<Void> deleteComment(@RequestParam(name = "comment_id") Long commentId) {
+        commentService.deleteComment(commentId);
         return ResponseEntity.ok().build();
     }
 }

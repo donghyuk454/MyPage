@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class GetBoardCommentResponse {
-    private Long comment_id;
-    private Long writer_id;
-    private String writer_alias;
+    private Long commentId;
+    private Long writerId;
+    private String writerAlias;
     private String content;
 }

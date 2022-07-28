@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class GetBoardImageResponse {
-    private Long image_id;
+    private Long imageId;
     private String url;
 }

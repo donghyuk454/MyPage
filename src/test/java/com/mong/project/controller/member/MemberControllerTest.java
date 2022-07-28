@@ -182,7 +182,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 .content(gson.toJson(changePasswordRequest));
 
         doNothing().when(memberService)
-                .changePasswd(changePasswordRequest.getMember_id(), changePasswordRequest.getNewPasswd());
+                .changePasswd(changePasswordRequest.getMemberId(), changePasswordRequest.getNewPasswd());
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk());

@@ -11,6 +11,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class RemoveBoardImageRequest {
-    private Long board_id;
-    private List<Long> image_ids;
+    private Long boardId;
+    private List<Long> imageIds;
 }

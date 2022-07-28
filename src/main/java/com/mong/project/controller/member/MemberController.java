@@ -26,8 +26,8 @@ public class MemberController {
     }
 
     @GetMapping("/member")
-    public ResponseEntity<Member> getMember(@RequestParam(name = "member_id") Long member_id) {
-        Member member = memberService.getMemberById(member_id);
+    public ResponseEntity<Member> getMember(@RequestParam(name = "member_id") Long memberId) {
+        Member member = memberService.getMemberById(memberId);
         return ResponseEntity.ok().body(member);
     }
 
@@ -48,7 +48,7 @@ public class MemberController {
 
     @PutMapping("/member/password")
     public ResponseEntity<Void> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
-        memberService.changePasswd(changePasswordRequest.getMember_id(), changePasswordRequest.getNewPasswd());
+        memberService.changePasswd(changePasswordRequest.getMemberId(), changePasswordRequest.getNewPasswd());
 
         return ResponseEntity.ok().build();
     }
@@ -61,15 +61,15 @@ public class MemberController {
     }
 
     @DeleteMapping("/member/image")
-    public ResponseEntity<Void> deleteImage(@RequestParam(name = "member_id") Long member_id) {
-        memberService.deleteImage(member_id);
+    public ResponseEntity<Void> deleteImage(@RequestParam(name = "member_id") Long memberId) {
+        memberService.deleteImage(memberId);
 
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/member")
-    public ResponseEntity<Void> deleteMember(@RequestParam Long member_id) {
-        memberService.deleteMember(member_id);
+    public ResponseEntity<Void> deleteMember(@RequestParam Long memberId) {
+        memberService.deleteMember(memberId);
 
         return ResponseEntity.ok().build();
     }

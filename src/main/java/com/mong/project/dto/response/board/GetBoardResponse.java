@@ -10,22 +10,22 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class GetBoardResponse {
-    private Long board_id;
+    private Long boardId;
     private String title;
     private String content;
-    private Long writer_id;
-    private String writer_alias;
+    private Long writerId;
+    private String writerAlias;
     private LocalDateTime createDateTime;
 
     private List<GetBoardImageResponse> images = new ArrayList<>();
     private List<GetBoardCommentResponse> comments = new ArrayList<>();
 
     public GetBoardResponse(Board board) {
-        this.board_id = board.getId();
+        this.boardId = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
-        this.writer_id = board.getMember().getId();
-        this.writer_alias = board.getMember().getAlias();
+        this.writerId = board.getMember().getId();
+        this.writerAlias = board.getMember().getAlias();
         this.createDateTime = board.getCreatedDateTime();
         board.getImages().forEach(image -> {
             GetBoardImageResponse temp = new GetBoardImageResponse(image.getId(), image.getUrl());

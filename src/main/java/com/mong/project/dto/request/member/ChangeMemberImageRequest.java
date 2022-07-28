@@ -9,6 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChangeMemberImageRequest {
-    private Long member_id;
+    private Long memberId;
     private MultipartFile image;
 }

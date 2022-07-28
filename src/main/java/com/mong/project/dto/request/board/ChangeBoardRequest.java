@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChangeBoardRequest {
-    private Long board_id;
+    private Long boardId;
     private String title;
     private String content;
 }
