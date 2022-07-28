@@ -220,7 +220,7 @@ class MemberControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("회원을 삭제합니다. 성공 시 200 을 응답합니다.")
-    void deleteMember () throws Exception {
+    void deleteMember() throws Exception {
         MockHttpServletRequestBuilder builder = delete("/member")
                 .param("member_id", "1");
 
