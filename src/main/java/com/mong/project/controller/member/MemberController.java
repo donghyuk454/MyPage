@@ -68,7 +68,7 @@ public class MemberController {
     }
 
     @DeleteMapping("/member")
-    public ResponseEntity<Void> deleteMember(@RequestParam Long memberId) {
+    public ResponseEntity<Void> deleteMember(@RequestParam(name = "member_id") Long memberId) {
         memberService.deleteMember(memberId);
 
         return ResponseEntity.ok().build();
