@@ -1,8 +1,5 @@
 package com.mong.project.exception;
 
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
 public class ErrorCode {
     // member
     public static final String NOT_EXIST_MEMBER = "존재하지 않는 유저의 아이디 입니다.";
