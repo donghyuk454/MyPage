@@ -45,7 +45,6 @@ public class FileService {
         try{
             return fileName.substring(fileName.lastIndexOf("."));
         } catch (StringIndexOutOfBoundsException e) {
-            e.printStackTrace();
             throw new IllegalArgumentException(ErrorCode.FAIL_TO_WRITE_FILE);
         }
     }
@@ -55,7 +54,6 @@ public class FileService {
             return file.createNewFile();
         } catch (IOException e) {
             log.info("파일 생성에 실패했습니다. 파일 이름 = {}, 경로 = {}", file.getName(), file.getAbsolutePath());
-            e.printStackTrace();
             throw new IllegalArgumentException(ErrorCode.FAIL_TO_WRITE_FILE);
         }
     }
@@ -70,7 +68,6 @@ public class FileService {
                 log.info("파일 작성에 실패하여 삭제하였습니다. 파일 이름 = {}", file.getName());
             else
                 log.info("파일 작성에 실패하였고 삭제에도 실패하였습니다. 파일 이름 = {}", file.getName());
-            e.printStackTrace();
             throw new IllegalArgumentException(ErrorCode.FAIL_TO_WRITE_FILE);
         }
     }
