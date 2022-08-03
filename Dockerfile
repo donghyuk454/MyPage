@@ -1,4 +1,6 @@
 FROM openjdk:11
 ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java", "-jar", "-spring.profiles.active=set1", "/app.jar"]
+ARG IDLE_PROFILE
+ENV ENV_IDLE_PROFILE=&IDLE_PROFILE
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=${ENV_IDLE_PROFILE}", "/app.jar"]
