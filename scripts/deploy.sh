@@ -1,5 +1,5 @@
 #!/bin/bash
-BUILD_JAR=$(ls /home/ec2-user/service/*.jar)
+BUILD_JAR=$(ls /home/ec2-user/service/build/libs/*.jar)
 JAR_NAME=$(basename $BUILD_JAR)
 echo "> build 파일명: $JAR_NAME"
 
@@ -21,4 +21,4 @@ fi
 
 DEPLOY_JAR=$DEPLOY_PATH$JAR_NAME
 echo "> DEPLOY_JAR 배포"
-nohup java -jar $DEPLOY_JAR >> /home/ec2-user/deploy.log 2>/home/ec2-user/deploy_err.log &
+nohup java -jar $DEPLOY_JAR >> /home/ec2-user/service/deploy.log 2>/home/ec2-user/service/deploy_err.log &
