@@ -26,6 +26,6 @@ hooks:
       timeout: 100
       runas: ec2-user
   ValidateService:
-    - location: scripts/stop.sh
+    - location: scripts/health.sh
         timeout: 100
         runas: ec2-user
