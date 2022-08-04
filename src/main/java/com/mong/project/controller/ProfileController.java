@@ -22,7 +22,7 @@ public class ProfileController {
     @GetMapping("/profile")
     public String getProfile() {
         List<String> profile = Arrays.asList(environment.getActiveProfiles());
-        List<String> realProfiles = Arrays.asList("set1", "set2");
+        List<String> realProfiles = Arrays.asList("set1", "set2", "dev");
         String defaultProfile = profile.isEmpty() ? "default" : profile.get(0);
 
         return profile.stream()
