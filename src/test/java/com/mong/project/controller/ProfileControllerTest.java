@@ -4,12 +4,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,7 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@ActiveProfiles("dev")
 class ProfileControllerTest extends AbstractControllerTest{
 
     @InjectMocks
@@ -28,17 +24,15 @@ class ProfileControllerTest extends AbstractControllerTest{
     @Mock
     private Environment environment;
 
-    @Autowired
-    Environment env;
-
     @Test
-    @DisplayName("현재 실행중인 profile 을 확인합니다. profile 을 dev 으로 설정하였으므로, dev 을 반환합니다.")
+    @DisplayName("현재 실행중인 profile 을 확인합니다. profile 을 dev 으로 설정한 경우, dev 을 반환합니다.")
     void checkProfile() throws Exception {
-        when(environment.getActiveProfiles()).thenReturn(env.getActiveProfiles());
+        String[] temp = new String[1];
+        temp[0] = "dev";
+        when(environment.getActiveProfiles())
+                .thenReturn(temp);
 
-        MockHttpServletRequestBuilder builder = get("/profile");
-
-        MvcResult mvcResult = mockMvc.perform( get("/profile"))
+        MvcResult mvcResult = mockMvc.perform(get("/profile"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
