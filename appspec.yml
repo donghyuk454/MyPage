@@ -29,4 +29,3 @@ hooks:
     - location: scripts/health.sh
       timeout: 100
       runas: ec2-user
-      runas: ec2-user
