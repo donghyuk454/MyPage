@@ -14,7 +14,7 @@ echo "> 실행 포트 : $IDLE_PORT" >> /home/ec2-user/deploy.log
 for CNT in {1..10}
 do
     echo "> health 확인용 반복문 시작... $CNT 회" >> /home/ec2-user/deploy.log
-    UP=$(curl -s http://127.0.0.1:${IDLE_PORT}/autocator/health | grep 'UP')
+    UP=$(curl -s http://127.0.0.1:${IDLE_PORT}/actuator/health | grep 'UP')
     if [ -z "${UP}" ]
     then
         echo "> 아직 애플리케이션이 시작되지 않았습니다." >> /home/ec2-user/deploy.log
