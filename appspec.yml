@@ -19,13 +19,13 @@ hooks:
       runas: ec2-user
   BeforeInstall:
     - location: scripts/beforeInstall.sh
-        timeout: 100
-        runas: ec2-user
+      timeout: 100
+      runas: ec2-user
   ApplicationStart:
     - location: scripts/start.sh
       timeout: 100
       runas: ec2-user
   ValidateService:
     - location: scripts/health.sh
-        timeout: 100
-        runas: ec2-user
+      timeout: 100
+      runas: ec2-user
