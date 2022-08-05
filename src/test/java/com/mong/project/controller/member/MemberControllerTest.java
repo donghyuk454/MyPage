@@ -1,6 +1,7 @@
 package com.mong.project.controller.member;
 
 import com.mong.project.controller.AbstractControllerTest;
+import com.mong.project.domain.board.Board;
 import com.mong.project.domain.member.Member;
 import com.mong.project.dto.request.member.ChangePasswordRequest;
 import com.mong.project.dto.request.member.LoginRequest;
@@ -18,6 +19,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.mockito.Mockito.*;
@@ -46,7 +48,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 .passwd("password")
                 .alias("별칭").build();
 
-        MockHttpServletRequestBuilder builder = post("/member")
+        MockHttpServletRequestBuilder builder = post("/members")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(memberJoinRequest));
 
@@ -63,7 +65,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 .passwd("password")
                 .alias("별칭").build();
 
-        MockHttpServletRequestBuilder builder = post("/member")
+        MockHttpServletRequestBuilder builder = post("/members")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(memberJoinRequest));
 
@@ -83,7 +85,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 .passwd("password")
                 .alias("별칭").build();
 
-        MockHttpServletRequestBuilder builder = post("/member")
+        MockHttpServletRequestBuilder builder = post("/members")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(memberJoinRequest));
 
@@ -148,7 +150,7 @@ class MemberControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("회원의 id 값을 통해 회원의 정보를 조회합니다. 성공 시 200 을 응답합니다.")
     void getMember() throws Exception{
-        MockHttpServletRequestBuilder builder = get("/member")
+        MockHttpServletRequestBuilder builder = get("/members")
                 .param("member_id", "1");
 
         when(memberService.getMemberById(1L))
@@ -161,7 +163,7 @@ class MemberControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("존재하지 않는 회원의 id 값을 통해 회원의 정보를 조회합니다. NoSuchElementException 이 발생하고, 400 을 응답합니다.")
     void getNotExistMember() throws Exception{
-        MockHttpServletRequestBuilder builder = get("/member")
+        MockHttpServletRequestBuilder builder = get("/members")
                 .param("member_id", "1");
 
         when(memberService.getMemberById(1L))
@@ -177,12 +179,29 @@ class MemberControllerTest extends AbstractControllerTest {
         ChangePasswordRequest changePasswordRequest
                 = new ChangePasswordRequest(1L, "newPasswd");
 
-        MockHttpServletRequestBuilder builder = put("/member/password")
+        MockHttpServletRequestBuilder builder = put("/members/password")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(changePasswordRequest));
 
         doNothing().when(memberService)
                 .changePasswd(changePasswordRequest.getMemberId(), changePasswordRequest.getNewPasswd());
+
+        mockMvc.perform(builder)
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("member 가 작성한 boards 를 조회합니다. 성공 시 200 을 응답합니다.")
+    void getMemberBoars() throws Exception {
+        MockHttpServletRequestBuilder builder = get("/members/board")
+                .param("member_id", "1");
+
+        List<Board> boards = mock(List.class);
+        Member member = mock(Member.class);
+        when(member.getId()).thenReturn(1L);
+        when(member.getAlias()).thenReturn("테스트용");
+        when(member.getBoards()).thenReturn(boards);
+        when(boards.size()).thenReturn(2);
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk());
@@ -197,7 +216,7 @@ class MemberControllerTest extends AbstractControllerTest {
         doNothing().when(memberService)
                 .setImage(1L, file);
 
-        MockHttpServletRequestBuilder builder = multipart("/member/image")
+        MockHttpServletRequestBuilder builder = multipart("/members/image")
                 .file(file)
                 .param("member_id", "1");
 
@@ -208,7 +227,7 @@ class MemberControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("회원의 이미지를 삭제합니다. MultipartFile 이 없는 경우 사진이 삭제됩니다. 성공 시 200 을 응답합니다.")
     void deleteMemberImage() throws Exception {
-        MockHttpServletRequestBuilder builder = delete("/member/image")
+        MockHttpServletRequestBuilder builder = delete("/members/image")
                 .param("member_id", "1");
 
         doNothing().when(memberService)
@@ -221,7 +240,7 @@ class MemberControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("회원을 삭제합니다. 성공 시 200 을 응답합니다.")
     void deleteMember() throws Exception {
-        MockHttpServletRequestBuilder builder = delete("/member")
+        MockHttpServletRequestBuilder builder = delete("/members")
                 .param("member_id", "1");
 
         doNothing().when(memberService)
