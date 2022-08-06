@@ -40,8 +40,8 @@ public class BoardService {
     /**
      * 새로운 board 생성
      * */
-    public Board addBoard(Long member_id, Board board){
-        Member member = memberRepository.findById(member_id)
+    public Board addBoard(Long memberId, Board board){
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(()-> {
                     throw new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER);
                 });
@@ -51,8 +51,8 @@ public class BoardService {
     /**
      * member 소유의 board 조회
      * */
-    public List<Board> getBoardsByMemberId(Long member_id) {
-        Member member = memberRepository.findById(member_id)
+    public List<Board> getBoardsByMemberId(Long memberId) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(()-> {
                     throw new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER);
                 });
@@ -63,8 +63,8 @@ public class BoardService {
     /**
      * board id 를 통해 board 조회
      * */
-    public Board getBoardById(Long board_id) {
-        return boardRepository.findById(board_id).orElseThrow(() -> {
+    public Board getBoardById(Long boardId) {
+        return boardRepository.findById(boardId).orElseThrow(() -> {
             throw new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD);
         });
     }
@@ -72,8 +72,8 @@ public class BoardService {
     /**
      * board 내용(title, content) 수정
      * */
-    public Board changeBoard(Long board_id, String title, String content) {
-        Board board = boardRepository.findById(board_id).orElseThrow(() -> {
+    public Board changeBoard(Long boardId, String title, String content) {
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> {
             throw new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD);
         });
         board.setTitle(title);
@@ -85,8 +85,8 @@ public class BoardService {
     /**
      * board 삭제
      * */
-    public void deleteBoard(Long board_id) {
-        boardRepository.deleteBoardById(board_id);
+    public void deleteBoard(Long boardId) {
+        boardRepository.deleteBoardById(boardId);
     }
 
     /**
@@ -113,16 +113,17 @@ public class BoardService {
     /**
      * board 이미지 삭제
      * */
-    public void deleteImages(Long board_id, List<Long> image_ids) {
-        Board board = boardRepository.findById(board_id).orElseThrow(() -> {
+    public void deleteImages(Long boardId, List<Long> imageIds) {
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> {
             throw new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD);
         });
-        List<Image> images = imageRepository.findAllById(image_ids);
-        List<Image> board_images = board.getImages();
-        log.info("삭제할 이미지 = {}", board_images);
+
+        List<Image> images = imageRepository.findAllById(imageIds);
+        List<Image> boardImages = board.getImages();
+        log.info("삭제할 이미지 = {}", boardImages);
         images.forEach(image -> {
             if (fileService.removeFileByPath(image.getUrl())) {
-                board_images.remove(image);
+                boardImages.remove(image);
                 log.info("삭제된 이미지 = {}", image);
             } else
                 throw new NoSuchElementException(ErrorCode.FAIL_TO_REMOVE_FILE);
