@@ -2,7 +2,6 @@ package com.mong.project.service;
 
 import com.mong.project.exception.ErrorCode;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,11 +31,7 @@ class FileServiceTest {
 
     public FileServiceTest(@Value("${spring.image.directory}") String imageDirectory) {
         this.imageDirectory = imageDirectory;
-    }
-
-    @BeforeEach
-    void beforeEach(){
-        this.fileService= new FileService(imageDirectory);
+        fileService = new FileService(imageDirectory);
     }
 
     @AfterEach
