@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestPropertySource("classpath:test.properties")
 class FileServiceTest {
 
-    private FileService fileService;
+    private final FileService fileService;
 
     private final String imageDirectory;
 

@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public class CommentRepositoryImpl implements CommentRepository{
 
-    private EntityManager em;
+    private final EntityManager em;
 
     @Autowired
     public CommentRepositoryImpl(EntityManager em){
