@@ -7,7 +7,6 @@ import com.mong.project.dto.request.member.LoginRequest;
 import com.mong.project.dto.request.member.MemberJoinRequest;
 import com.mong.project.dto.response.board.GetBoardResponse;
 import com.mong.project.dto.response.member.LoginResponse;
-import com.mong.project.service.board.BoardService;
 import com.mong.project.service.member.MemberService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,12 +24,10 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
-    private final BoardService boardService;
 
     @Autowired
-    public MemberController(MemberService memberService, BoardService boardService){
+    public MemberController(MemberService memberService){
         this.memberService = memberService;
-        this.boardService = boardService;
     }
 
     @GetMapping("/members")
@@ -63,7 +60,7 @@ public class MemberController {
 
     @GetMapping("/members/board")
     public ResponseEntity<List<GetBoardResponse>> getMemberBoards(@RequestParam(name = "member_id") Long memberId) {
-        List<Board> boards = boardService.getBoardsByMemberId(memberId);
+        List<Board> boards = memberService.getMemberById(memberId).getBoards();
         List<GetBoardResponse> responses = new ArrayList<>();
         boards.forEach(board -> {
             GetBoardResponse response = new GetBoardResponse(board);
@@ -87,7 +84,7 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/member")
+    @DeleteMapping("/members")
     public ResponseEntity<Void> deleteMember(@RequestParam(name = "member_id") Long memberId) {
         memberService.deleteMember(memberId);
 
