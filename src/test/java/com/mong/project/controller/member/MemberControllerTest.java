@@ -192,12 +192,14 @@ class MemberControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("member 가 작성한 boards 를 조회합니다. 성공 시 200 을 응답합니다.")
-    void getMemberBoars() throws Exception {
+    void getMemberBoards() throws Exception {
         MockHttpServletRequestBuilder builder = get("/members/board")
                 .param("member_id", "1");
 
         List<Board> boards = mock(List.class);
         Member member = mock(Member.class);
+        when(memberService.getMemberById(1L))
+                .thenReturn(member);
         when(member.getId()).thenReturn(1L);
         when(member.getAlias()).thenReturn("테스트용");
         when(member.getBoards()).thenReturn(boards);
