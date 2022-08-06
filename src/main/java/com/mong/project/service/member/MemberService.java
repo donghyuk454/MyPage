@@ -75,16 +75,16 @@ public class MemberService {
     /**
      * id 로 회원 조회
      * */
-    public Member getMemberById(Long member_id) {
-        return memberRepository.findById(member_id)
+    public Member getMemberById(Long memberId) {
+        return memberRepository.findById(memberId)
                 .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
     }
 
     /**
      * 회원 삭제
      * */
-    public void deleteMember(Long member_id){
-        Member member = memberRepository.findById(member_id)
+    public void deleteMember(Long memberId){
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
 
         member.delete();
@@ -93,8 +93,8 @@ public class MemberService {
     /**
      * 비밀번호 변경
      * */
-    public void changePasswd(Long member_id, String passwd) {
-        Member member = memberRepository.findById(member_id)
+    public void changePasswd(Long memberId, String passwd) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
 
         member.setPasswd(passwd);
@@ -104,8 +104,8 @@ public class MemberService {
     /**
      * member image 추가, 변경
      * */
-    public void setImage(Long member_id, MultipartFile file) {
-        Member member = memberRepository.findById(member_id)
+    public void setImage(Long memberId, MultipartFile file) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
 
         File imageFile = fileService.convertToFile(file);
@@ -121,8 +121,8 @@ public class MemberService {
     /**
      * member image 삭제
      * */
-    public void deleteImage(Long member_id){
-        Member member = memberRepository.findById(member_id)
+    public void deleteImage(Long memberId){
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
 
         if (fileService.removeFileByPath(member.getImage().getUrl())) {

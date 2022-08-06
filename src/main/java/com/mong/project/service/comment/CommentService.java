@@ -30,10 +30,10 @@ public class CommentService {
     /**
      * 댓글 생성
      * */
-    public void addComment(Long member_id, Long board_id, String content) {
-        Member member = memberRepository.findById(member_id)
+    public void addComment(Long memberId, Long boardId, String content) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
-        Board board = boardRepository.findById(board_id)
+        Board board = boardRepository.findById(boardId)
                 .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD));
 
         commentRepository.save(member, board, content);
@@ -42,8 +42,8 @@ public class CommentService {
     /**
      * 댓글 내용 수정
      * */
-    public Comment changeComment(Long comment_id, String content) {
-        Comment comment = commentRepository.findById(comment_id)
+    public Comment changeComment(Long commentId, String content) {
+        Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_COMMENT));
         comment.setContent(content);
 
@@ -53,7 +53,7 @@ public class CommentService {
     /**
      * 댓글 삭제
      * */
-    public void deleteComment(Long comment_id) {
-        commentRepository.deleteById(comment_id);
+    public void deleteComment(Long commentId) {
+        commentRepository.deleteById(commentId);
     }
 }
