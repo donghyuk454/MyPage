@@ -13,6 +13,8 @@ import java.nio.file.Files;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -74,8 +76,15 @@ public class FileService {
     }
 
     public boolean removeFileByPath(@NotNull String path) {
-        File file = new File(path);
-        return file.delete();
+        try {
+            Files.delete(Path.of(path));
+        } catch (NoSuchFileException e) {
+            throw new IllegalStateException(ErrorCode.FAIL_TO_REMOVE_FILE);
+        } catch (IOException e) {
+            return false;
+        }
+
+        return true;
     }
 
     public boolean removeFileByFile(@NotNull File file) {
