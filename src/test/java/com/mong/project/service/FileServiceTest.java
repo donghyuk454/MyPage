@@ -72,14 +72,14 @@ class FileServiceTest {
     void removeFileByFile(){
         //given
         MultipartFile file = new MockMultipartFile("test", "test.PNG", MediaType.IMAGE_PNG_VALUE, "test".getBytes(StandardCharsets.UTF_8));
-        File convertedFile = fileService.convertToFile(file);
+        newFile = fileService.convertToFile(file);
 
         //when
-        boolean result = fileService.removeFileByFile(convertedFile);
+        boolean result = fileService.removeFileByFile(newFile);
 
         //then
         assertThat(result).isTrue();
-        assertThat(convertedFile).doesNotExist();
+        assertThat(newFile).doesNotExist();
     }
 
     @Test
@@ -87,13 +87,27 @@ class FileServiceTest {
     void removeFileByPath(){
         //given
         MultipartFile file = new MockMultipartFile("test", "test.PNG", MediaType.IMAGE_PNG_VALUE, "test".getBytes(StandardCharsets.UTF_8));
-        File convertedFile = fileService.convertToFile(file);
+        newFile = fileService.convertToFile(file);
 
         //when
-        boolean result = fileService.removeFileByPath(convertedFile.getAbsolutePath());
+        boolean result = fileService.removeFileByPath(newFile.getAbsolutePath());
 
         //then
         assertThat(result).isTrue();
-        assertThat(convertedFile).doesNotExist();
+        assertThat(newFile).doesNotExist();
+    }
+
+    @Test
+    @DisplayName("잘못된 path 를 통해 파일을 삭제합니다. IllegalStateException 이 발생합니다.")
+    void removeFileByInvalidPath(){
+        //given
+        MultipartFile file = new MockMultipartFile("test", "test.PNG", MediaType.IMAGE_PNG_VALUE, "test".getBytes(StandardCharsets.UTF_8));
+        newFile = fileService.convertToFile(file);
+
+        //when
+        IllegalStateException exception = assertThrows(IllegalStateException.class, ()->fileService.removeFileByPath("not/exist/path/file.PNG"));
+
+        //then
+        assertThat(exception.getMessage()).isEqualTo(ErrorCode.FAIL_TO_REMOVE_FILE);
     }
 }
