@@ -28,8 +28,6 @@ public class CommentRepositoryImpl implements CommentRepository{
                 .member(member)
                 .content(content)
                 .build();
-        board.getComments().add(comment);
-        em.persist(member);
         em.persist(comment);
         log.info("Comment 생성 : {}", comment.toString());
         return comment;
@@ -39,13 +37,14 @@ public class CommentRepositoryImpl implements CommentRepository{
     public Optional<Comment> findById(Long id) {
         Comment comment = em.find(Comment.class, id);
         log.info("Comment 찾기 : {}", comment.toString());
-        return Optional.ofNullable(comment);
+        return Optional.of(comment);
     }
 
     @Override
     public void deleteById(Long id) {
         Comment comment = em.find(Comment.class, id);
-        comment.getBoard().getComments().remove(comment);
+        Board board = comment.getBoard();
+        board.getComments().remove(comment);
         em.remove(comment);
     }
 }
