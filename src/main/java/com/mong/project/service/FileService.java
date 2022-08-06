@@ -1,13 +1,15 @@
 package com.mong.project.service;
 
 import com.mong.project.exception.ErrorCode;
-import com.sun.istack.NotNull;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotNull;
+import java.nio.file.Files;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,7 +26,6 @@ public class FileService {
     public FileService(@Value("${spring.image.directory}") String imageDirectory){
         this.imageDirectory = imageDirectory;
     }
-
 
     public File convertToFile(@NotNull MultipartFile file) {
         String uuid = UUID.randomUUID().toString();
