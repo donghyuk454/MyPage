@@ -92,8 +92,8 @@ public class BoardService {
     /**
      * board 이미지 추가
      * */
-    public void addImage(Long board_id, List<MultipartFile> images) {
-        Board board = boardRepository.findById(board_id).orElseThrow(() -> {
+    public void addImage(Long boardId, List<MultipartFile> images) {
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> {
             throw new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD);
         });
         images.forEach(img ->{

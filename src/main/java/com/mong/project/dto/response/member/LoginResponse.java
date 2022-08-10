@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 public class LoginResponse {
     private Long memberId;
 
-    public LoginResponse(Long member_id){
-        this.memberId = member_id;
+    public LoginResponse(Long memberId){
+        this.memberId = memberId;
     }
 }
