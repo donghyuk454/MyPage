@@ -45,8 +45,8 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-        Long member_id = memberService.login(loginRequest.getEmail(), loginRequest.getPasswd());
-        LoginResponse loginResponse = new LoginResponse(member_id);
+        Long memberId = memberService.login(loginRequest.getEmail(), loginRequest.getPasswd());
+        LoginResponse loginResponse = new LoginResponse(memberId);
 
         return ResponseEntity.ok().body(loginResponse);
     }
