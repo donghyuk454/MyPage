@@ -58,7 +58,7 @@ public class Member extends BaseEntity {
         this.boards = boards;
         this.createdDateTime = LocalDateTime.now();
         this.lastModifiedDateTime = createdDateTime;
-        this.boards = new ArrayList<Board>();
+        this.boards = new ArrayList<>();
     }
 
     @Override
