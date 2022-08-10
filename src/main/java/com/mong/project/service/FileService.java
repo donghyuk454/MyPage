@@ -1,16 +1,20 @@
 package com.mong.project.service;
 
 import com.mong.project.exception.ErrorCode;
-import com.sun.istack.NotNull;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotNull;
+import java.nio.file.Files;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -24,7 +28,6 @@ public class FileService {
     public FileService(@Value("${spring.image.directory}") String imageDirectory){
         this.imageDirectory = imageDirectory;
     }
-
 
     public File convertToFile(@NotNull MultipartFile file) {
         String uuid = UUID.randomUUID().toString();
@@ -73,8 +76,15 @@ public class FileService {
     }
 
     public boolean removeFileByPath(@NotNull String path) {
-        File file = new File(path);
-        return file.delete();
+        try {
+            Files.delete(Path.of(path));
+        } catch (NoSuchFileException e) {
+            throw new IllegalStateException(ErrorCode.FAIL_TO_REMOVE_FILE);
+        } catch (IOException e) {
+            return false;
+        }
+
+        return true;
     }
 
     public boolean removeFileByFile(@NotNull File file) {

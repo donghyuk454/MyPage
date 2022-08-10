@@ -62,6 +62,32 @@ class BoardServiceTest {
     }
 
     @Test
+    @DisplayName("member 의 id 를 통해 member 의 모든 board 를 조회합니다.")
+    void getBoardsByMemberId() {
+        when(member.getBoards())
+                .thenReturn(List.of(board));
+        when(memberRepository.findById(1L))
+                .thenReturn(Optional.of(member));
+
+        List<Board> result = boardService.getBoardsByMemberId(1L);
+
+        verify(memberRepository, times(1))
+                .findById(1L);
+    }
+
+    @Test
+    @DisplayName("member 의 id 를 통해 member 의 모든 board 를 조회합니다.")
+    void getBoardById() {
+        when(boardRepository.findById(1L))
+                .thenReturn(Optional.of(board));
+
+        Board result = boardService.getBoardById(1L);
+
+        verify(boardRepository, times(1))
+                .findById(1L);
+    }
+
+    @Test
     @DisplayName("board 의 내용(title, content)를 수정합니다.")
     void changeBoard() {
         when(boardRepository.save(board))

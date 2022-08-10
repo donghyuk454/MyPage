@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public class BoardRepositoryImpl implements BoardRepository{
 
-    private EntityManager em;
+    private final EntityManager em;
 
     @Autowired
     public BoardRepositoryImpl(EntityManager em) {

@@ -41,7 +41,7 @@ class CommentControllerTest extends AbstractControllerTest {
         AddCommentRequest addCommentRequest
                 = new AddCommentRequest(1L, 1L, "댓글입니다.");
 
-        MockHttpServletRequestBuilder builder = post("/comment")
+        MockHttpServletRequestBuilder builder = post("/comments")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(addCommentRequest));
 
@@ -58,7 +58,7 @@ class CommentControllerTest extends AbstractControllerTest {
         ChangeCommentRequest changeCommentRequest
                 = new ChangeCommentRequest(1L, "수정할 내용입니다.");
 
-        MockHttpServletRequestBuilder builder = put("/comment")
+        MockHttpServletRequestBuilder builder = put("/comments")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(changeCommentRequest));
 
@@ -75,7 +75,7 @@ class CommentControllerTest extends AbstractControllerTest {
         ChangeCommentRequest changeCommentRequest
                 = new ChangeCommentRequest(1L, "수정할 내용입니다.");
 
-        MockHttpServletRequestBuilder builder = put("/comment")
+        MockHttpServletRequestBuilder builder = put("/comments")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(changeCommentRequest));
 
@@ -89,7 +89,7 @@ class CommentControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("댓글을 삭제합니다. 성공 시 200 을 응답합니다.")
     void deleteComment() throws Exception {
-        MockHttpServletRequestBuilder builder = delete("/comment")
+        MockHttpServletRequestBuilder builder = delete("/comments")
                 .param("comment_id", "1");
 
         doNothing().when(commentService)

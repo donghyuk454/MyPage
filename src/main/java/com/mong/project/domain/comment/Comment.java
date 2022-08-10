@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 
 @Entity(name="comment")
 @Getter
-@Setter
 @NoArgsConstructor
 public class Comment extends BaseEntity {
     @Id @GeneratedValue
@@ -35,6 +34,8 @@ public class Comment extends BaseEntity {
     public Comment(Long id, Member member, Board board, String content) {
         this.id = id;
         this.member = member;
+        if (member != null)
+            board.getComments().add(this);
         this.board = board;
         this.content = content;
         this.createdDateTime = LocalDateTime.now();
@@ -52,5 +53,10 @@ public class Comment extends BaseEntity {
                 ", board=" + board +
                 ", content='" + content + '\'' +
                 '}';
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+        this.lastModifiedDateTime = LocalDateTime.now();
     }
 }

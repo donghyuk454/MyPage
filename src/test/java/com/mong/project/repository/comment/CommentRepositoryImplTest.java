@@ -3,6 +3,7 @@ package com.mong.project.repository.comment;
 import com.mong.project.domain.board.Board;
 import com.mong.project.domain.comment.Comment;
 import com.mong.project.domain.member.Member;
+import com.mong.project.repository.board.BoardRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CommentRepositoryImplTest {
 
     @Autowired private CommentRepository commentRepository;
+    @Autowired private BoardRepository boardRepository;
 
     @Test
     @DisplayName("새로운 comment 를 저장합니다. 그리고 해당 comment 를 반환합니다.")
@@ -59,7 +61,7 @@ class CommentRepositoryImplTest {
     void deleteComment() {
         //given
         Member member = Member.builder().build();
-        Board board = Board.builder().build();
+        Board board = boardRepository.save(Board.builder().build());
         Comment comment = commentRepository.save(member, board, "content");
 
         //when
@@ -67,6 +69,5 @@ class CommentRepositoryImplTest {
 
         //then
         assertThat(board.getComments().size()).isZero();
-
     }
 }
