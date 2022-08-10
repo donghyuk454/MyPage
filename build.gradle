@@ -3,6 +3,7 @@ plugins {
 	id "org.sonarqube" version "3.0"
 	id 'jacoco'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id "org.asciidoctor.convert" version "1.5.8"
 	id 'java'
 }
 
@@ -32,15 +33,52 @@ dependencies {
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
+
+// Spring Rest Doc
+
+ext {
+	snippetsDir = file('build/generated-snippets')
+}
+
+// Jacoco
 
 jacoco {
 	toolVersion = "0.8.7"
 }
 
 test {
+	outputs.dir snippetsDir
 	finalizedBy jacocoTestReport
 	useJUnitPlatform()
+}
+
+asciidoctor {
+	inputs.dir snippetsDir
+	outputDir file('build/docs/html5')
+	dependsOn test
+}
+
+asciidoctor.doFirst {
+	delete file('src/main/resources/static/docs')
+}
+
+task copyDocument(type: Copy) {
+	dependsOn asciidoctor
+	from "${asciidoctor.outputDir}"
+	into file("src/main/resources/static/docs")
+}
+
+build {
+	dependsOn copyDocument
+}
+
+bootJar {
+	dependsOn asciidoctor
+	from("${asciidoctor.outputDir}") {
+		into 'static/docs'
+	}
 }
 
 jacocoTestReport {
@@ -97,7 +135,7 @@ jacocoTestCoverageVerification {
 
 			excludes = ['com.mong.project.MyProjectApplication',
 						'com.mong.project.exception.*',
-						"com.mong.project.dto.*",] + qDomains
+						"com.mong.project.dto.*"] + qDomains
 		}
 	}
 }
