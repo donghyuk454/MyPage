@@ -61,8 +61,7 @@ jacocoTestReport {
 		classDirectories.setFrom(files(classDirectories.files.collect {
 			fileTree(dir: it,
 					exclude: ["com/mong/project/exception/*",
-							  "com/mong/project/dto/*",
-							  "com/mong/project/service/FileService*",] + qDomains)
+							  "com/mong/project/dto/*",] + qDomains)
 		}))
 	}
 }
@@ -98,8 +97,7 @@ jacocoTestCoverageVerification {
 
 			excludes = ['com.mong.project.MyProjectApplication',
 						'com.mong.project.exception.*',
-						"com.mong.project.dto.*",
-						"com.mong.project.service.FileService*"] + qDomains
+						"com.mong.project.dto.*",] + qDomains
 		}
 	}
 }
