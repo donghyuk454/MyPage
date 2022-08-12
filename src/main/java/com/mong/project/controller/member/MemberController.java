@@ -21,6 +21,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
+@RequestMapping("members")
 public class MemberController {
 
     private final MemberService memberService;
@@ -30,14 +31,21 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    @GetMapping("/members")
+    @GetMapping("/")
     public ResponseEntity<Member> getMember(@RequestParam(name = "member_id") Long memberId) {
         Member member = memberService.getMemberById(memberId);
         return ResponseEntity.ok().body(member);
     }
 
-    @PostMapping("/members")
-    public ResponseEntity<Void> join(@RequestBody MemberJoinRequest memberJoinRequest) {
+    @DeleteMapping("/")
+    public ResponseEntity<Void> deleteMember(@RequestParam(name = "member_id") Long memberId) {
+        memberService.deleteMember(memberId);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<Void> signup(@RequestBody MemberJoinRequest memberJoinRequest) {
         memberService.join(memberJoinRequest.toMember());
 
         return ResponseEntity.ok().build();
@@ -51,14 +59,14 @@ public class MemberController {
         return ResponseEntity.ok().body(loginResponse);
     }
 
-    @PutMapping("/members/password")
+    @PutMapping("/password")
     public ResponseEntity<Void> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
         memberService.changePasswd(changePasswordRequest.getMemberId(), changePasswordRequest.getNewPasswd());
 
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/members/board")
+    @GetMapping("/board")
     public ResponseEntity<List<GetBoardResponse>> getMemberBoards(@RequestParam(name = "member_id") Long memberId) {
         List<Board> boards = memberService.getMemberById(memberId).getBoards();
         List<GetBoardResponse> responses = new ArrayList<>();
@@ -70,23 +78,16 @@ public class MemberController {
         return ResponseEntity.ok().body(responses);
     }
 
-    @PostMapping(value = "/members/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> changeImage(@RequestParam(name = "member_id") Long memberId, @RequestParam(name = "image") MultipartFile image) {
         memberService.setImage(memberId, image);
 
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/members/image")
+    @DeleteMapping("/image")
     public ResponseEntity<Void> deleteImage(@RequestParam(name = "member_id") Long memberId) {
         memberService.deleteImage(memberId);
-
-        return ResponseEntity.ok().build();
-    }
-
-    @DeleteMapping("/members")
-    public ResponseEntity<Void> deleteMember(@RequestParam(name = "member_id") Long memberId) {
-        memberService.deleteMember(memberId);
 
         return ResponseEntity.ok().build();
     }
