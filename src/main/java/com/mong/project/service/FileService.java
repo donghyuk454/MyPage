@@ -88,7 +88,6 @@ public class FileService {
     }
 
     public boolean removeFileByFile(@NotNull File file) {
-        return file.delete();
+        return removeFileByPath(file.getAbsolutePath());
     }
-
 }
