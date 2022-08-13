@@ -1,7 +1,6 @@
 package com.mong.project.repository.member;
 
 import com.mong.project.domain.member.Member;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -13,7 +12,6 @@ public class MemberRepositoryImpl implements MemberRepository {
 
     private EntityManager em;
 
-    @Autowired
     public MemberRepositoryImpl(EntityManager em) {
         this.em = em;
     }

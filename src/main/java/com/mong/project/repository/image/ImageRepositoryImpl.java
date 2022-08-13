@@ -1,7 +1,6 @@
 package com.mong.project.repository.image;
 
 import com.mong.project.domain.image.Image;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -13,7 +12,6 @@ public class ImageRepositoryImpl implements ImageRepository{
 
     private EntityManager em;
 
-    @Autowired
     public ImageRepositoryImpl(EntityManager em){
         this.em = em;
     }

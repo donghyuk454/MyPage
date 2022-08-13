@@ -10,7 +10,6 @@ import com.mong.project.repository.image.ImageRepository;
 import com.mong.project.repository.member.MemberRepository;
 import com.mong.project.service.FileService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,7 +28,6 @@ public class BoardService {
     private final ImageRepository imageRepository;
     private final FileService fileService;
 
-    @Autowired
     public BoardService(BoardRepository boardRepository, MemberRepository memberRepository, ImageRepository imageRepository, FileService fileService) {
         this.boardRepository = boardRepository;
         this.memberRepository = memberRepository;
