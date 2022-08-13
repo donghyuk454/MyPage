@@ -3,6 +3,8 @@ package com.mong.project.controller;
 import com.mong.project.exception.ExceptionHandlers;
 
 import com.google.gson.Gson;
+import com.mong.project.util.document.ApiDocumentUtil;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -27,6 +29,8 @@ public abstract class AbstractControllerTest {
 
     protected MockMvc mockMvc;
     protected Gson gson = new Gson();
+    protected OperationRequestPreprocessor requestPreprocessor = ApiDocumentUtil.requestPreprocessor();
+    protected OperationResponsePreprocessor responsePreprocessor = ApiDocumentUtil.responsePreprocessor();
 
     @BeforeEach
     void beforeEach(RestDocumentationContextProvider restDocumentationContextProvider){
@@ -39,12 +43,4 @@ public abstract class AbstractControllerTest {
     }
 
     protected abstract Object setController();
-
-    public OperationRequestPreprocessor requestPreprocessor() {
-        return preprocessRequest(prettyPrint());
-    }
-
-    public OperationResponsePreprocessor responsePreprocessor() {
-        return preprocessResponse(prettyPrint());
-    }
 }

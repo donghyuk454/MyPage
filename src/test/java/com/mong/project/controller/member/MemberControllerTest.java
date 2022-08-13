@@ -61,8 +61,8 @@ class MemberControllerTest extends AbstractControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andDo(document("/members/join/success",
-                        requestPreprocessor(),
-                        responsePreprocessor(),
+                        requestPreprocessor,
+                        responsePreprocessor,
                         requestFields(
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("사용자 이름"),
                                 fieldWithPath("email").type(JsonFieldType.STRING).description("사용자 이메일"),
@@ -90,8 +90,8 @@ class MemberControllerTest extends AbstractControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isBadRequest())
                 .andDo(document("/members/join/fail/existing-alias",
-                        requestPreprocessor(),
-                        responsePreprocessor(),
+                        requestPreprocessor,
+                        responsePreprocessor,
                         requestFields(
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("사용자 이름"),
                                 fieldWithPath("email").type(JsonFieldType.STRING).description("사용자 이메일"),
@@ -122,8 +122,8 @@ class MemberControllerTest extends AbstractControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isBadRequest())
                 .andDo(document("/members/join/fail/existing-email",
-                        requestPreprocessor(),
-                        responsePreprocessor(),
+                        requestPreprocessor,
+                        responsePreprocessor,
                         requestFields(
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("사용자 이름"),
                                 fieldWithPath("email").type(JsonFieldType.STRING).description("사용자 이메일"),
@@ -151,8 +151,8 @@ class MemberControllerTest extends AbstractControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andDo(document("/members/login/success",
-                        requestPreprocessor(),
-                        responsePreprocessor(),
+                        requestPreprocessor,
+                        responsePreprocessor,
                         requestFields(
                                 fieldWithPath("email").type(JsonFieldType.STRING).description("사용자 이메일"),
                                 fieldWithPath("passwd").type(JsonFieldType.STRING).description("비밀번호")
@@ -175,8 +175,8 @@ class MemberControllerTest extends AbstractControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isBadRequest())
                 .andDo(document("/members/login/fail/invalid-email",
-                        requestPreprocessor(),
-                        responsePreprocessor(),
+                        requestPreprocessor,
+                        responsePreprocessor,
                         requestFields(
                                 fieldWithPath("email").type(JsonFieldType.STRING).description("사용자 이메일"),
                                 fieldWithPath("passwd").type(JsonFieldType.STRING).description("비밀번호")
@@ -199,8 +199,8 @@ class MemberControllerTest extends AbstractControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isBadRequest())
                 .andDo(document("/members/login/fail/invalid-password",
-                        requestPreprocessor(),
-                        responsePreprocessor(),
+                        requestPreprocessor,
+                        responsePreprocessor,
                         requestFields(
                                 fieldWithPath("email").type(JsonFieldType.STRING).description("사용자 이메일"),
                                 fieldWithPath("passwd").type(JsonFieldType.STRING).description("비밀번호")
@@ -219,8 +219,8 @@ class MemberControllerTest extends AbstractControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andDo(document("/members/get/success",
-                        requestPreprocessor(),
-                        responsePreprocessor(),
+                        requestPreprocessor,
+                        responsePreprocessor,
                         requestParameters(
                                 parameterWithName("memberId").description("사용자 id")
                         )));
@@ -238,8 +238,8 @@ class MemberControllerTest extends AbstractControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isBadRequest())
                 .andDo(document("/members/get/fail/not-existing-memberId",
-                        requestPreprocessor(),
-                        responsePreprocessor(),
+                        requestPreprocessor,
+                        responsePreprocessor,
                         requestParameters(
                                 parameterWithName("memberId").description("사용자 id")
                         ),
@@ -264,8 +264,8 @@ class MemberControllerTest extends AbstractControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andDo(document("/members/password/success",
-                        requestPreprocessor(),
-                        responsePreprocessor(),
+                        requestPreprocessor,
+                        responsePreprocessor,
                         requestFields(
                                 fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("사용자 id"),
                                 fieldWithPath("newPasswd").type(JsonFieldType.STRING).description("새로운 비밀번호")
@@ -297,8 +297,8 @@ class MemberControllerTest extends AbstractControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andDo(document("/members/board/get/success",
-                        requestPreprocessor(),
-                        responsePreprocessor(),
+                        requestPreprocessor,
+                        responsePreprocessor,
                         requestParameters(
                                 parameterWithName("memberId").description("사용자 id")
                         ),
@@ -330,8 +330,8 @@ class MemberControllerTest extends AbstractControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andDo(document("/members/image/set/success",
-                        requestPreprocessor(),
-                        responsePreprocessor(),
+                        requestPreprocessor,
+                        responsePreprocessor,
                         requestParameters(
                                 parameterWithName("memberId").description("사용자 id")
                         ),
@@ -352,8 +352,8 @@ class MemberControllerTest extends AbstractControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andDo(document("/members/image/delete/success",
-                        requestPreprocessor(),
-                        responsePreprocessor(),
+                        requestPreprocessor,
+                        responsePreprocessor,
                         requestParameters(
                                 parameterWithName("memberId").description("사용자 id")
                         )));
@@ -371,8 +371,8 @@ class MemberControllerTest extends AbstractControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andDo(document("/members/delete/success",
-                        requestPreprocessor(),
-                        responsePreprocessor(),
+                        requestPreprocessor,
+                        responsePreprocessor,
                         requestParameters(
                                 parameterWithName("memberId").description("사용자 id")
                         )));
