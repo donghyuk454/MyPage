@@ -66,13 +66,11 @@ public class MemberController {
     }
 
     @GetMapping("/board")
-    public ResponseEntity<List<GetBoardResponse>> getMemberBoards(@RequestParam(name = "member_id") Long memberId) {
+    public ResponseEntity<List<GetBoardResponse>> getMemberBoards(@RequestParam(name = "memberId") Long memberId) {
         List<Board> boards = memberService.getMemberById(memberId).getBoards();
-        List<GetBoardResponse> responses = new ArrayList<>();
-        boards.forEach(board -> {
-            GetBoardResponse response = new GetBoardResponse(board);
-            responses.add(response);
-        });
+        List<GetBoardResponse> responses = boards.stream()
+                .map(GetBoardResponse::new)
+                .collect(Collectors.toList());
 
         return ResponseEntity.ok().body(responses);
     }
