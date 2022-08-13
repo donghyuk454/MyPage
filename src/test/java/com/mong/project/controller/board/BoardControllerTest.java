@@ -82,7 +82,7 @@ class BoardControllerTest extends AbstractControllerTest {
 
         Board board = mock(Board.class);
         CreateBoardRequest createBoardRequest
-                = new CreateBoardRequest("제목입니다.", "내용입니다.");
+                = new CreateBoardRequest(1L, "제목입니다.", "내용입니다.");
 
         when(boardService.addBoard(any(Long.class), any(Board.class)))
                 .thenReturn(board);
@@ -92,7 +92,6 @@ class BoardControllerTest extends AbstractControllerTest {
         MockHttpServletRequestBuilder builder = multipart("/boards")
                 .file(file1)
                 .file(file2)
-                .param("member_id", "1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(createBoardRequest));
 
@@ -105,13 +104,12 @@ class BoardControllerTest extends AbstractControllerTest {
     void createEmptyImageBoard() throws Exception {
         Board board = mock(Board.class);
         CreateBoardRequest createBoardRequest
-                = new CreateBoardRequest("제목입니다.", "내용입니다.");
+                = new CreateBoardRequest(1L, "제목입니다.", "내용입니다.");
 
         when(boardService.addBoard(any(Long.class), any(Board.class)))
                 .thenReturn(board);
 
         MockHttpServletRequestBuilder builder = post("/boards")
-                .param("member_id", "1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(createBoardRequest));
 
@@ -146,7 +144,7 @@ class BoardControllerTest extends AbstractControllerTest {
         doNothing().when(boardService).deleteBoard(anyLong());
 
         MockHttpServletRequestBuilder builder = delete("/boards")
-                .param("board_id", "1");
+                .param("boardId", "1");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk());
@@ -166,7 +164,7 @@ class BoardControllerTest extends AbstractControllerTest {
         MockHttpServletRequestBuilder builder = multipart("/boards/image")
                 .file(file1)
                 .file(file2)
-                .param("board_id", "1");
+                .param("boardId", "1");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk());

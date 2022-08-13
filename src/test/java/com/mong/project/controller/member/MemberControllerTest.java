@@ -54,7 +54,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 .passwd("password")
                 .alias("별칭").build();
 
-        MockHttpServletRequestBuilder builder = post("/members")
+        MockHttpServletRequestBuilder builder = post("/members/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(memberJoinRequest));
 
@@ -80,7 +80,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 .passwd("password")
                 .alias("별칭").build();
 
-        MockHttpServletRequestBuilder builder = post("/members")
+        MockHttpServletRequestBuilder builder = post("/members/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(memberJoinRequest));
 
@@ -112,7 +112,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 .passwd("password")
                 .alias("별칭").build();
 
-        MockHttpServletRequestBuilder builder = post("/members")
+        MockHttpServletRequestBuilder builder = post("/members/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(memberJoinRequest));
 
@@ -141,7 +141,7 @@ class MemberControllerTest extends AbstractControllerTest {
         LoginRequest loginRequest
                 = new LoginRequest("email", "password");
 
-        MockHttpServletRequestBuilder builder = post("/login")
+        MockHttpServletRequestBuilder builder = post("/members/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(loginRequest));
 
@@ -165,7 +165,7 @@ class MemberControllerTest extends AbstractControllerTest {
         LoginRequest loginRequest
                 = new LoginRequest("email", "password");
 
-        MockHttpServletRequestBuilder builder = post("/login")
+        MockHttpServletRequestBuilder builder = post("/members/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(loginRequest));
 
@@ -189,7 +189,7 @@ class MemberControllerTest extends AbstractControllerTest {
         LoginRequest loginRequest
                 = new LoginRequest("email", "password");
 
-        MockHttpServletRequestBuilder builder = post("/login")
+        MockHttpServletRequestBuilder builder = post("/members/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(loginRequest));
 
