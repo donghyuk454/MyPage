@@ -9,15 +9,15 @@ import com.mong.project.dto.response.board.GetBoardResponse;
 import com.mong.project.dto.response.member.LoginResponse;
 import com.mong.project.service.member.MemberService;
 
+import com.mong.project.util.transformer.MemberTransformer;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -26,19 +26,18 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @Autowired
     public MemberController(MemberService memberService){
         this.memberService = memberService;
     }
 
-    @GetMapping("/")
-    public ResponseEntity<Member> getMember(@RequestParam(name = "member_id") Long memberId) {
+    @GetMapping
+    public ResponseEntity<Member> getMember(@RequestParam(name = "memberId") Long memberId) {
         Member member = memberService.getMemberById(memberId);
         return ResponseEntity.ok().body(member);
     }
 
-    @DeleteMapping("/")
-    public ResponseEntity<Void> deleteMember(@RequestParam(name = "member_id") Long memberId) {
+    @DeleteMapping
+    public ResponseEntity<Void> deleteMember(@RequestParam(name = "memberId") Long memberId) {
         memberService.deleteMember(memberId);
 
         return ResponseEntity.ok().build();
@@ -46,7 +45,7 @@ public class MemberController {
 
     @PostMapping("/signup")
     public ResponseEntity<Void> signup(@RequestBody MemberJoinRequest memberJoinRequest) {
-        memberService.join(memberJoinRequest.toMember());
+        memberService.join(MemberTransformer.joinRequestToMember(memberJoinRequest));
 
         return ResponseEntity.ok().build();
     }
@@ -79,14 +78,14 @@ public class MemberController {
     }
 
     @PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> changeImage(@RequestParam(name = "member_id") Long memberId, @RequestParam(name = "image") MultipartFile image) {
+    public ResponseEntity<Void> changeImage(@RequestParam(name = "memberId") Long memberId, @RequestParam(name = "image") MultipartFile image) {
         memberService.setImage(memberId, image);
 
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/image")
-    public ResponseEntity<Void> deleteImage(@RequestParam(name = "member_id") Long memberId) {
+    public ResponseEntity<Void> deleteImage(@RequestParam(name = "memberId") Long memberId) {
         memberService.deleteImage(memberId);
 
         return ResponseEntity.ok().build();
