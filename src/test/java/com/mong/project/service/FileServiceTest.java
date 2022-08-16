@@ -25,12 +25,9 @@ class FileServiceTest {
 
     private final FileService fileService;
 
-    private final String imageDirectory;
-
     private File newFile;
 
     public FileServiceTest(@Value("${spring.image.directory}") String imageDirectory) {
-        this.imageDirectory = imageDirectory;
         fileService = new FileService(imageDirectory);
     }
 
