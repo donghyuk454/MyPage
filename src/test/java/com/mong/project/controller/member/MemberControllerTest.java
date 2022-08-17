@@ -54,7 +54,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 .passwd("password")
                 .alias("별칭").build();
 
-        MockHttpServletRequestBuilder builder = post("/members/signup")
+        MockHttpServletRequestBuilder builder = post("/api/members/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(memberJoinRequest));
 
@@ -80,7 +80,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 .passwd("password")
                 .alias("별칭").build();
 
-        MockHttpServletRequestBuilder builder = post("/members/signup")
+        MockHttpServletRequestBuilder builder = post("/api/members/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(memberJoinRequest));
 
@@ -112,7 +112,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 .passwd("password")
                 .alias("별칭").build();
 
-        MockHttpServletRequestBuilder builder = post("/members/signup")
+        MockHttpServletRequestBuilder builder = post("/api/members/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(memberJoinRequest));
 
@@ -141,7 +141,7 @@ class MemberControllerTest extends AbstractControllerTest {
         LoginRequest loginRequest
                 = new LoginRequest("email", "password");
 
-        MockHttpServletRequestBuilder builder = post("/members/login")
+        MockHttpServletRequestBuilder builder = post("/api/members/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(loginRequest));
 
@@ -165,7 +165,7 @@ class MemberControllerTest extends AbstractControllerTest {
         LoginRequest loginRequest
                 = new LoginRequest("email", "password");
 
-        MockHttpServletRequestBuilder builder = post("/members/login")
+        MockHttpServletRequestBuilder builder = post("/api/members/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(loginRequest));
 
@@ -189,7 +189,7 @@ class MemberControllerTest extends AbstractControllerTest {
         LoginRequest loginRequest
                 = new LoginRequest("email", "password");
 
-        MockHttpServletRequestBuilder builder = post("/members/login")
+        MockHttpServletRequestBuilder builder = post("/api/members/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(loginRequest));
 
@@ -210,8 +210,7 @@ class MemberControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("회원의 id 값을 통해 회원의 정보를 조회합니다. 성공 시 200 을 응답합니다.")
     void getMember() throws Exception {
-        MockHttpServletRequestBuilder builder = get("/members")
-                .param("memberId", "1");
+        MockHttpServletRequestBuilder builder = get("/api/members");
 
         when(memberService.getMemberById(1L))
                 .thenReturn(Member.builder().build());
@@ -220,17 +219,14 @@ class MemberControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andDo(document("/members/get/success",
                         requestPreprocessor,
-                        responsePreprocessor,
-                        requestParameters(
-                                parameterWithName("memberId").description("사용자 id")
-                        )));
+                        responsePreprocessor
+                        ));
     }
 
     @Test
     @DisplayName("존재하지 않는 회원의 id 값을 통해 회원의 정보를 조회합니다. NoSuchElementException 이 발생하고, 400 을 응답합니다.")
     void getNotExistMember() throws Exception {
-        MockHttpServletRequestBuilder builder = get("/members")
-                .param("memberId", "1");
+        MockHttpServletRequestBuilder builder = get("/api/members");
 
         when(memberService.getMemberById(1L))
                 .thenThrow(new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
@@ -240,9 +236,6 @@ class MemberControllerTest extends AbstractControllerTest {
                 .andDo(document("/members/get/fail/not-existing-memberId",
                         requestPreprocessor,
                         responsePreprocessor,
-                        requestParameters(
-                                parameterWithName("memberId").description("사용자 id")
-                        ),
                         responseFields(
                                 fieldWithPath("errorCode").type(JsonFieldType.STRING).description("에러메세지")
                         )));
@@ -252,14 +245,14 @@ class MemberControllerTest extends AbstractControllerTest {
     @DisplayName("회원의 비밀번호를 변경합니다. 성공 시 200 을 응답합니다.")
     void changePassword() throws Exception {
         ChangePasswordRequest changePasswordRequest
-                = new ChangePasswordRequest(1L, "newPasswd");
+                = new ChangePasswordRequest("newPasswd");
 
-        MockHttpServletRequestBuilder builder = put("/members/password")
+        MockHttpServletRequestBuilder builder = put("/api/members/password")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(changePasswordRequest));
 
         doNothing().when(memberService)
-                .changePasswd(changePasswordRequest.getMemberId(), changePasswordRequest.getNewPasswd());
+                .changePasswd(1L, changePasswordRequest.getNewPasswd());
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
@@ -267,7 +260,6 @@ class MemberControllerTest extends AbstractControllerTest {
                         requestPreprocessor,
                         responsePreprocessor,
                         requestFields(
-                                fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("사용자 id"),
                                 fieldWithPath("newPasswd").type(JsonFieldType.STRING).description("새로운 비밀번호")
                         )));
     }
@@ -275,8 +267,7 @@ class MemberControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("member 가 작성한 boards 를 조회합니다. 성공 시 200 을 응답합니다.")
     void getMemberBoards() throws Exception {
-        MockHttpServletRequestBuilder builder = get("/members/board")
-                .param("memberId", "1");
+        MockHttpServletRequestBuilder builder = get("/api/members/board");
 
         Board board1 = mock(Board.class);
         List<Board> boards = List.of(board1);
@@ -299,9 +290,6 @@ class MemberControllerTest extends AbstractControllerTest {
                 .andDo(document("/members/board/get/success",
                         requestPreprocessor,
                         responsePreprocessor,
-                        requestParameters(
-                                parameterWithName("memberId").description("사용자 id")
-                        ),
                         responseFields(
                                 fieldWithPath("[].boardId").type(JsonFieldType.NUMBER).description("board id"),
                                 fieldWithPath("[].title").type(JsonFieldType.STRING).description("게시물 제목"),
@@ -323,7 +311,7 @@ class MemberControllerTest extends AbstractControllerTest {
         doNothing().when(memberService)
                 .setImage(1L, file);
 
-        MockHttpServletRequestBuilder builder = multipart("/members/image")
+        MockHttpServletRequestBuilder builder = multipart("/api/members/image")
                 .file(file)
                 .param("memberId", "1");
 
@@ -332,9 +320,6 @@ class MemberControllerTest extends AbstractControllerTest {
                 .andDo(document("/members/image/set/success",
                         requestPreprocessor,
                         responsePreprocessor,
-                        requestParameters(
-                                parameterWithName("memberId").description("사용자 id")
-                        ),
                         requestParts(
                                 partWithName("image").description("사용자 프로필 사진")
                         )));
@@ -343,8 +328,7 @@ class MemberControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("회원의 이미지를 삭제합니다. MultipartFile 이 없는 경우 사진이 삭제됩니다. 성공 시 200 을 응답합니다.")
     void deleteMemberImage() throws Exception {
-        MockHttpServletRequestBuilder builder = delete("/members/image")
-                .param("memberId", "1");
+        MockHttpServletRequestBuilder builder = delete("/api/members/image");
 
         doNothing().when(memberService)
                 .deleteImage(1L);
@@ -353,17 +337,14 @@ class MemberControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andDo(document("/members/image/delete/success",
                         requestPreprocessor,
-                        responsePreprocessor,
-                        requestParameters(
-                                parameterWithName("memberId").description("사용자 id")
-                        )));
+                        responsePreprocessor
+                        ));
     }
 
     @Test
     @DisplayName("회원을 삭제합니다. 성공 시 200 을 응답합니다.")
     void deleteMember() throws Exception {
-        MockHttpServletRequestBuilder builder = delete("/members")
-                .param("memberId", "1");
+        MockHttpServletRequestBuilder builder = delete("/api/members");
 
         doNothing().when(memberService)
                 .deleteMember(1L);
@@ -372,9 +353,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andDo(document("/members/delete/success",
                         requestPreprocessor,
-                        responsePreprocessor,
-                        requestParameters(
-                                parameterWithName("memberId").description("사용자 id")
-                        )));
+                        responsePreprocessor
+                        ));
     }
 }
