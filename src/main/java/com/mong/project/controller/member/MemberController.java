@@ -2,6 +2,7 @@ package com.mong.project.controller.member;
 
 import com.mong.project.domain.board.Board;
 import com.mong.project.domain.member.Member;
+import com.mong.project.domain.member.annotation.Login;
 import com.mong.project.dto.request.member.ChangePasswordRequest;
 import com.mong.project.dto.request.member.LoginRequest;
 import com.mong.project.dto.request.member.MemberJoinRequest;
@@ -16,12 +17,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.mong.project.config.interceptor.LoginConst.LOGIN_MEMBER;
+
 @Slf4j
 @RestController
-@RequestMapping("members")
+@RequestMapping("/api/members")
 public class MemberController {
 
     private final MemberService memberService;
@@ -31,14 +35,16 @@ public class MemberController {
     }
 
     @GetMapping
-    public ResponseEntity<Member> getMember(@RequestParam(name = "memberId") Long memberId) {
+    public ResponseEntity<Member> getMember(@Login final Long memberId) {
         Member member = memberService.getMemberById(memberId);
+
         return ResponseEntity.ok().body(member);
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteMember(@RequestParam(name = "memberId") Long memberId) {
+    public ResponseEntity<Void> deleteMember(@Login final Long memberId, final HttpSession session) {
         memberService.deleteMember(memberId);
+        session.invalidate();
 
         return ResponseEntity.ok().build();
     }
@@ -51,22 +57,30 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest, final HttpSession session) {
         Long memberId = memberService.login(loginRequest.getEmail(), loginRequest.getPasswd());
+        session.setAttribute(LOGIN_MEMBER, memberId);
         LoginResponse loginResponse = new LoginResponse(memberId);
 
         return ResponseEntity.ok().body(loginResponse);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(final HttpSession session) {
+        session.invalidate();
+
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping("/password")
-    public ResponseEntity<Void> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
-        memberService.changePasswd(changePasswordRequest.getMemberId(), changePasswordRequest.getNewPasswd());
+    public ResponseEntity<Void> changePassword(@Login final Long memberId, @RequestBody ChangePasswordRequest changePasswordRequest) {
+        memberService.changePasswd(memberId, changePasswordRequest.getNewPasswd());
 
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/board")
-    public ResponseEntity<List<GetBoardResponse>> getMemberBoards(@RequestParam(name = "memberId") Long memberId) {
+    public ResponseEntity<List<GetBoardResponse>> getMemberBoards(@Login final Long memberId) {
         List<Board> boards = memberService.getMemberById(memberId).getBoards();
         List<GetBoardResponse> responses = boards.stream()
                 .map(GetBoardResponse::new)
@@ -76,14 +90,14 @@ public class MemberController {
     }
 
     @PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> changeImage(@RequestParam(name = "memberId") Long memberId, @RequestParam(name = "image") MultipartFile image) {
+    public ResponseEntity<Void> changeImage(@Login final Long memberId,  @RequestPart(name = "image") MultipartFile image) {
         memberService.setImage(memberId, image);
 
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/image")
-    public ResponseEntity<Void> deleteImage(@RequestParam(name = "memberId") Long memberId) {
+    public ResponseEntity<Void> deleteImage(@Login final Long memberId) {
         memberService.deleteImage(memberId);
 
         return ResponseEntity.ok().build();
