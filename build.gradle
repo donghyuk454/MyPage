@@ -85,21 +85,17 @@ jacocoTestReport {
 	finalizedBy jacocoTestCoverageVerification
 
 	reports {
-		csv.required = false
+		csv.required = true
 		xml.required = true
 		html.required = true
-	}
-
-	def qDomains = []
-	for (qPattern in "**/QA".."**/QZ") {
-		qDomains.add(qPattern + "*")
 	}
 
 	afterEvaluate {
 		classDirectories.setFrom(files(classDirectories.files.collect {
 			fileTree(dir: it,
 					exclude: ["com/mong/project/exception/*",
-							  "com/mong/project/dto/*",] + qDomains)
+							  "com/mong/project/dto/*",
+							  'com.mong.project.util.readme.*'])
 		}))
 	}
 }
@@ -135,7 +131,8 @@ jacocoTestCoverageVerification {
 
 			excludes = ['com.mong.project.MyProjectApplication',
 						'com.mong.project.exception.*',
-						"com.mong.project.dto.*"] + qDomains
+						'com.mong.project.dto.*',
+						'com.mong.project.util.readme.*'] + qDomains
 		}
 	}
 }
