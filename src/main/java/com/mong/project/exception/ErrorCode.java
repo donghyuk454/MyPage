@@ -22,5 +22,5 @@ public class ErrorCode {
     public static final String FAIL_TO_REMOVE_FILE = "파일 삭제에 실패하였습니다.";
 
     //session
-    public static final String INVALID_SESSION = "세션";
+    public static final String INVALID_SESSION = "잘못되었거나 존재하지 않는 세션입니다.";
 }
