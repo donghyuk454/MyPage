@@ -4,7 +4,6 @@ import com.mong.project.domain.board.Board;
 import com.mong.project.domain.comment.Comment;
 import com.mong.project.domain.member.Member;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -16,7 +15,6 @@ public class CommentRepositoryImpl implements CommentRepository{
 
     private final EntityManager em;
 
-    @Autowired
     public CommentRepositoryImpl(EntityManager em){
         this.em = em;
     }

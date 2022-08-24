@@ -25,19 +25,16 @@ class FileServiceTest {
 
     private final FileService fileService;
 
-    private final String imageDirectory;
-
     private File newFile;
 
     public FileServiceTest(@Value("${spring.image.directory}") String imageDirectory) {
-        this.imageDirectory = imageDirectory;
         fileService = new FileService(imageDirectory);
     }
 
     @AfterEach
     void afterEach(){
         if(newFile != null && newFile.exists()){
-            newFile.delete();
+            fileService.removeFileByFile(newFile);
         }
     }
 
@@ -55,7 +52,7 @@ class FileServiceTest {
     }
 
     @Test
-    @DisplayName("파일의 확장자가 없는 경우 오류가 발생합니다.")
+    @DisplayName("파일의 확장자가 없는 경우 IllegalArgumentException 이 발생합니다.")
     void createInvalidExtensionFile(){
         //given
         MultipartFile file = new MockMultipartFile("test", "test", MediaType.IMAGE_PNG_VALUE, "test".getBytes(StandardCharsets.UTF_8));

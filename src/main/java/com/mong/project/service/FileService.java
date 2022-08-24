@@ -18,6 +18,8 @@ import java.nio.file.Path;
 import java.util.Objects;
 import java.util.UUID;
 
+import static com.mong.project.exception.ErrorCode.FAIL_TO_WRITE_FILE;
+
 @Slf4j
 @Component
 @PropertySource("classpath:application.properties")
@@ -35,11 +37,17 @@ public class FileService {
                 + extractExtension(Objects.requireNonNull(file.getOriginalFilename()));
         File newFile = new File(fileName);
 
-        if (createNewFile(newFile)) {
-            writeFileByFOS(newFile, file);
+        try {
+            if (newFile.createNewFile()) {
+                writeFileByFOS(newFile, file);
 
-            log.info("파일을 생성하였습니다. 경로 = {}", newFile.getAbsolutePath());
-            return newFile;
+                log.info("파일을 생성하였습니다. 경로 = {}", newFile.getAbsolutePath());
+                return newFile;
+            }
+        } catch (IOException e) {
+            log.error("파일을 생성에 실패하였습니다. 경로 = {}", newFile.getAbsolutePath());
+
+            throw new IllegalArgumentException(FAIL_TO_WRITE_FILE);
         }
         return null;
     }
@@ -48,30 +56,13 @@ public class FileService {
         try{
             return fileName.substring(fileName.lastIndexOf("."));
         } catch (StringIndexOutOfBoundsException e) {
-            throw new IllegalArgumentException(ErrorCode.FAIL_TO_WRITE_FILE);
+            throw new IllegalArgumentException(FAIL_TO_WRITE_FILE);
         }
     }
 
-    private boolean createNewFile(File file) {
-        try {
-            return file.createNewFile();
-        } catch (IOException e) {
-            log.info("파일 생성에 실패했습니다. 파일 이름 = {}, 경로 = {}", file.getName(), file.getAbsolutePath());
-            throw new IllegalArgumentException(ErrorCode.FAIL_TO_WRITE_FILE);
-        }
-    }
-
-    private void writeFileByFOS(File file, MultipartFile multipartFile) {
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
+    private void writeFileByFOS(File file, MultipartFile multipartFile) throws IOException {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             fileOutputStream.write(multipartFile.getBytes());
-            fileOutputStream.close();
-        } catch (IOException e) {
-            if(removeFileByFile(file))
-                log.info("파일 작성에 실패하여 삭제하였습니다. 파일 이름 = {}", file.getName());
-            else
-                log.info("파일 작성에 실패하였고 삭제에도 실패하였습니다. 파일 이름 = {}", file.getName());
-            throw new IllegalArgumentException(ErrorCode.FAIL_TO_WRITE_FILE);
         }
     }
 
@@ -88,7 +79,6 @@ public class FileService {
     }
 
     public boolean removeFileByFile(@NotNull File file) {
-        return file.delete();
+        return removeFileByPath(file.getAbsolutePath());
     }
-
 }

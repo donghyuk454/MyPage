@@ -9,6 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AddCommentRequest {
     private Long boardId;
-    private Long memberId;
     private String content;
 }

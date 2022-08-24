@@ -1,6 +1,9 @@
 package com.mong.project.exception;
 
 public class ErrorCode {
+
+    private ErrorCode() { }
+
     // member
     public static final String NOT_EXIST_MEMBER = "존재하지 않는 유저의 아이디 입니다.";
     public static final String INVALID_EMAIL = "잘못된 이메일 입니다.";
@@ -17,4 +20,7 @@ public class ErrorCode {
     // image
     public static final String FAIL_TO_WRITE_FILE = "파일 작성에 실패하였습니다.";
     public static final String FAIL_TO_REMOVE_FILE = "파일 삭제에 실패하였습니다.";
+
+    //session
+    public static final String INVALID_SESSION = "잘못되었거나 존재하지 않는 세션입니다.";
 }

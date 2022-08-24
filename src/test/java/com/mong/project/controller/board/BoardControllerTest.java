@@ -40,7 +40,7 @@ class BoardControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("board id 를 통해 board 를 조회합니다. 성공 시 200 을 응답합니다.")
     void getBoard() throws Exception{
-        MockHttpServletRequestBuilder builder = get("/boards/1");
+        MockHttpServletRequestBuilder builder = get("/api/boards/1");
 
         Member member = mock(Member.class);
         Board board = Board.builder()
@@ -58,7 +58,7 @@ class BoardControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("없는 board id 를 통해 board 를 조회합니다. NoSuchElementException 이 발생하고 400 을 응답합니다.")
     void getNotExistBoard() throws Exception{
-        MockHttpServletRequestBuilder builder = get("/boards/1");
+        MockHttpServletRequestBuilder builder = get("/api/boards/1");
 
         Member member = mock(Member.class);
 
@@ -82,17 +82,16 @@ class BoardControllerTest extends AbstractControllerTest {
 
         Board board = mock(Board.class);
         CreateBoardRequest createBoardRequest
-                = new CreateBoardRequest("제목입니다.", "내용입니다.");
+                = new CreateBoardRequest(1L, "제목입니다.", "내용입니다.");
 
         when(boardService.addBoard(any(Long.class), any(Board.class)))
                 .thenReturn(board);
         doNothing().when(boardService)
                 .addImage(any(Long.class), any(List.class));
 
-        MockHttpServletRequestBuilder builder = multipart("/boards")
+        MockHttpServletRequestBuilder builder = multipart("/api/boards")
                 .file(file1)
                 .file(file2)
-                .param("member_id", "1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(createBoardRequest));
 
@@ -105,13 +104,12 @@ class BoardControllerTest extends AbstractControllerTest {
     void createEmptyImageBoard() throws Exception {
         Board board = mock(Board.class);
         CreateBoardRequest createBoardRequest
-                = new CreateBoardRequest("제목입니다.", "내용입니다.");
+                = new CreateBoardRequest(1L, "제목입니다.", "내용입니다.");
 
         when(boardService.addBoard(any(Long.class), any(Board.class)))
                 .thenReturn(board);
 
-        MockHttpServletRequestBuilder builder = post("/boards")
-                .param("member_id", "1")
+        MockHttpServletRequestBuilder builder = post("/api/boards")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(createBoardRequest));
 
@@ -132,7 +130,7 @@ class BoardControllerTest extends AbstractControllerTest {
         when(boardService.changeBoard(1L, "제목입니다.", "내용입니다,"))
                 .thenReturn(board);
 
-        MockHttpServletRequestBuilder builder = put("/boards")
+        MockHttpServletRequestBuilder builder = put("/api/boards")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(changeBoardRequest));
 
@@ -145,8 +143,8 @@ class BoardControllerTest extends AbstractControllerTest {
     void deleteBoard() throws Exception {
         doNothing().when(boardService).deleteBoard(anyLong());
 
-        MockHttpServletRequestBuilder builder = delete("/boards")
-                .param("board_id", "1");
+        MockHttpServletRequestBuilder builder = delete("/api/boards")
+                .param("boardId", "1");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk());
@@ -163,10 +161,10 @@ class BoardControllerTest extends AbstractControllerTest {
         doNothing().when(boardService)
                 .addImage(any(Long.class), any(List.class));
 
-        MockHttpServletRequestBuilder builder = multipart("/boards/image")
+        MockHttpServletRequestBuilder builder = multipart("/api/boards/image")
                 .file(file1)
                 .file(file2)
-                .param("board_id", "1");
+                .param("boardId", "1");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk());
@@ -181,7 +179,7 @@ class BoardControllerTest extends AbstractControllerTest {
         doNothing().when(boardService)
                 .deleteImages(1L, List.of(1L, 2L, 3L));
 
-        MockHttpServletRequestBuilder builder = delete("/boards/image")
+        MockHttpServletRequestBuilder builder = delete("/api/boards/image")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(removeBoardImageRequest));
 

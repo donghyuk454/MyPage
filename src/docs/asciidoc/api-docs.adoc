@@ -1,0 +1,28 @@
+# mong mong API Docment
+donghyuk;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+
+[[Introduction]]
+= Member
+== Join
+=== Request
+include::{snippets}/member/join/success/request-fields.adoc[]
+include::{snippets}/member/join/success/http-request.adoc[]
+include::{snippets}/member/join/success-phone-null/http-request.adoc[]
+=== Response
+==== *성공*
+include::{snippets}/member/join/success/http-response.adoc[]
+==== *실패*
+
+- 이미 존재하는 Alias
+include::{snippets}/member/join/fail/existing-alias/response-fields.adoc[]
+include::{snippets}/member/join/fail/existing-alias/http-response.adoc[]
+
+- 이미 존재하는 Email
+include::{snippets}/member/join/fail/existing-email/response-fields.adoc[]
+include::{snippets}/member/join/fail/existing-email/http-response.adoc[]

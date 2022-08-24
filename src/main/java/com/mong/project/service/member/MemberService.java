@@ -8,7 +8,6 @@ import com.mong.project.repository.member.MemberRepository;
 import com.mong.project.service.FileService;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,7 +23,6 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final FileService fileService;
 
-    @Autowired
     public MemberService(MemberRepository memberRepository, FileService fileService) {
         this.memberRepository = memberRepository;
         this.fileService = fileService;
