@@ -25,7 +25,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
@@ -101,11 +100,6 @@ jacocoTestReport {
 }
 
 jacocoTestCoverageVerification {
-	def qDomains = []
-
-	for (qPattern in "*.QA".."*.QZ") {
-		qDomains.add(qPattern + "*")
-	}
 
 	violationRules {
 		rule {
@@ -132,7 +126,7 @@ jacocoTestCoverageVerification {
 			excludes = ['com.mong.project.MyProjectApplication',
 						'com.mong.project.exception.*',
 						'com.mong.project.dto.*',
-						'com.mong.project.util.readme.*'] + qDomains
+						'com.mong.project.util.readme.*']
 		}
 	}
 }
