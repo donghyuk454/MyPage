@@ -10,7 +10,7 @@
 **Backend**
 - **Language** : Java 
 - **Library & Framework** : Spring Boot
-- **Database** : Mysql
+- **Database** : Mysql, Redis (Session)
 - **ORM** : JPA
 - **Build** : Gradle
 - **Test** : Junit5, Mockito
@@ -27,7 +27,7 @@
 
 
 ## 🔨 Backend Architecture
-![image](https://user-images.githubusercontent.com/20418155/182908730-3404c7ff-e968-4a66-9d13-1aaa21981b1d.png)
+![image](https://user-images.githubusercontent.com/20418155/186852283-924b6d02-42e8-4c67-9889-a2eb14879961.png)
 
 ## 🔨 CI/CD FLow 
 ![image](https://user-images.githubusercontent.com/20418155/182908688-0a0d6e75-de9e-4f03-87bc-f805f1b96545.png)
