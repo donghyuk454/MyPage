@@ -27,7 +27,7 @@
 
 
 ## 🔨 Backend Architecture
-![image](https://user-images.githubusercontent.com/20418155/186852283-924b6d02-42e8-4c67-9889-a2eb14879961.png)
+![image](https://user-images.githubusercontent.com/20418155/187032132-84405343-4730-4c0c-9b27-4d934af3cd13.png)
 
 ## 🔨 CI/CD FLow 
 ![image](https://user-images.githubusercontent.com/20418155/182908688-0a0d6e75-de9e-4f03-87bc-f805f1b96545.png)
