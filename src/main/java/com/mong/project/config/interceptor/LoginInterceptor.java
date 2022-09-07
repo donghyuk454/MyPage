@@ -34,15 +34,11 @@ public class LoginInterceptor implements HandlerInterceptor {
     }
 
     private void checkEmpty(HttpSession session) {
-        if (session == null || session.getAttribute(LOGIN_MEMBER) == null) {
-            throw new SessionException(INVALID_SESSION);
-        }
+        if (session == null || session.getAttribute(LOGIN_MEMBER) == null) throw new SessionException(INVALID_SESSION);
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        if (ex != null) {
-            log.error("session error : {}", ex.getMessage());
-        }
+        if (ex != null) log.error("session error : {}", ex.getMessage());
     }
 }
