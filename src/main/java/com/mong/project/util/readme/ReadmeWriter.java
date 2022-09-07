@@ -73,7 +73,7 @@ public class ReadmeWriter {
             String line = "";
             StringBuilder dummy = new StringBuilder();
 
-            while ((line = reader.readLine()) != null && !line.equals("## 테스트 커버리지")) {
+            while ((line = reader.readLine()) != null && !line.equals("## \uD83D\uDCCB 테스트 커버리지")) {
                 dummy.append(line).append("\r\n");
                 log.info(line);
             }
@@ -82,8 +82,8 @@ public class ReadmeWriter {
             dummy.append("**(해당 내용은 코드로 자동 작성되었습니다.)**").append("\r\n\n");
             dummy.append(testCoverageForm(testResult));
 
-            try (FileWriter fw = new FileWriter(readmePath)) {
-                fw.write(dummy.toString());
+            try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(readmePath), StandardCharsets.UTF_8)) {
+                writer.write(dummy.toString());
             }
 
             return true;

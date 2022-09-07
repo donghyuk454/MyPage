@@ -69,6 +69,12 @@ task copyDocument(type: Copy) {
 	into file("src/main/resources/static/docs")
 }
 
+tasks.withType(JavaCompile){
+	options.encoding = "UTF-8"
+}
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
 build {
 	dependsOn copyDocument
 }

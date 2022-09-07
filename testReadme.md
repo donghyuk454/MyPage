@@ -1,16 +1,16 @@
-# My page (¸ù¸ù) api ¼­¹ö
+# My page (ëª½ëª½) api ì„œë²„
 
-## ? Introduction
-ÇØ´ç ÇÁ·ÎÁ§Æ®´Â °Ô½ÃÆÇÀ» ±¸ÇöÇÏ´Â µ¥¿¡ ÇÊ¿äÇÑ api ¼­¹öÀÔ´Ï´Ù.
+## ðŸ– Introduction
+í•´ë‹¹ í”„ë¡œì íŠ¸ëŠ” ê²Œì‹œíŒì„ êµ¬í˜„í•˜ëŠ” ë°ì— í•„ìš”í•œ api ì„œë²„ìž…ë‹ˆë‹¤.
 
-´Ü¼ø °³¹ßÀ» À§ÇÑ ÅäÀÌ ÇÁ·ÎÁ§Æ®ÀÌ¸ç, ½ÇÁ¦·Î ¼­ºñ½º¸¦ »ó¿ëÈ­ÇÏ°í ÀÖ´Ù´Â ¸¶À½À¸·Î °³¹ßÇÏ°í ÀÖ½À´Ï´Ù.
+ë‹¨ìˆœ ê°œë°œì„ ìœ„í•œ í† ì´ í”„ë¡œì íŠ¸ì´ë©°, ì‹¤ì œë¡œ ì„œë¹„ìŠ¤ë¥¼ ìƒìš©í™”í•˜ê³  ìžˆë‹¤ëŠ” ë§ˆìŒìœ¼ë¡œ ê°œë°œí•˜ê³  ìžˆìŠµë‹ˆë‹¤.
 
-## ? Stack
+## ðŸ”§ Stack
 
 **Backend**
 - **Language** : Java
 - **Library & Framework** : Spring Boot
-- **Database** : Mysql
+- **Database** : Mysql, Redis (Session)
 - **ORM** : JPA
 - **Build** : Gradle
 - **Test** : Junit5, Mockito
@@ -26,35 +26,35 @@
 - **Message** : Slack
 
 
-## ? Backend Architecture
-![image](https://user-images.githubusercontent.com/20418155/182908730-3404c7ff-e968-4a66-9d13-1aaa21981b1d.png)
+## ðŸ”¨ Backend Architecture
+![image](https://user-images.githubusercontent.com/20418155/187032132-84405343-4730-4c0c-9b27-4d934af3cd13.png)
 
-## ? CI/CD FLow
+## ðŸ”¨ CI/CD FLow
 ![image](https://user-images.githubusercontent.com/20418155/182908688-0a0d6e75-de9e-4f03-87bc-f805f1b96545.png)
 
-1. °³¹ß È¯°æ¿¡¼­ github¿¡ pushÇÏ°í, github¿¡¼­ ÇÁ·ÎÁ§Æ®¸¦ pull, merge ÇÕ´Ï´Ù.
-2. github¿¡¼­ jenkins¿¡ webhookÀ» Àü´ÞÇÏ¿© build¸¦ À¯¹ßÇÕ´Ï´Ù.
-3. jenkins¿¡¼­ ÇØ´ç ÇÁ·ÎÁ§Æ®¸¦ buildÇÏ¿© jar ÆÄÀÏÀ» ¸¸µì´Ï´Ù
-4. ÇØ´ç ÇÁ·ÎÁ§Æ®¸¦ sonarqube·Î Àü´ÞÇÏ¿© ºÐ¼®À» ¿äÃ»ÇÕ´Ï´Ù.
-5. Jar ÆÄÀÏÀ» Dockerfile, shell script file, appspec.yml µî°ú ÇÔ²² zipÀ¸·Î ¾ÐÃàÇÏ¿© S3¿¡ upload ÇÕ´Ï´Ù.
-6. Jenkins°¡ CodeDeploy¿¡°Ô S3¿¡ uploadµÈ ¾ÐÃà ÆÄÀÏÀ» ¼­¹ö¿¡ ¹èÆ÷ÇÏµµ·Ï ¿äÃ»ÇÕ´Ï´Ù.
-7. Jenkins°¡ slack Ã¤³Î·Î build »óÅÂ ¸Þ½ÃÁö¸¦ º¸³À´Ï´Ù.
-8. CodeDeploy°¡ S3¿¡¼­ ¾ÐÃàÆÄÀÏÀ» °¡Á®¿Í appspec.yml¿¡ µû¶ó¼­ ¹èÆ÷¸¦ ¼öÇàÇÏ¸ç, ¹èÆ÷ÇÒ ¼­¹ö ³»¿¡¼­ ½© ½ºÅ©¸³Æ®¸¦ ¼öÇàÇÕ´Ï´Ù.
+1. ê°œë°œ í™˜ê²½ì—ì„œ github ì— push í•˜ê³ , github ì—ì„œ í”„ë¡œì íŠ¸ë¥¼ pull, merge í•©ë‹ˆë‹¤.
+2. github ì—ì„œ jenkins ì— webhook ì„ ì „ë‹¬í•˜ì—¬ build ë¥¼ ìœ ë°œí•©ë‹ˆë‹¤.
+3. jenkins ì—ì„œ í•´ë‹¹ í”„ë¡œì íŠ¸ë¥¼ build í•˜ì—¬ jar íŒŒì¼ì„ ë§Œë“­ë‹ˆë‹¤
+4. í•´ë‹¹ í”„ë¡œì íŠ¸ë¥¼ sonarqube ë¡œ ì „ë‹¬í•˜ì—¬ ë¶„ì„ì„ ìš”ì²­í•©ë‹ˆë‹¤.
+5. Jar íŒŒì¼ì„ Dockerfile, shell script file, appspec.yml ë“±ê³¼ í•¨ê»˜ zip ìœ¼ë¡œ ì••ì¶•í•˜ì—¬ S3 ì— upload í•©ë‹ˆë‹¤.
+6. Jenkins ê°€ CodeDeploy ì—ê²Œ S3ì— upload ëœ ì••ì¶• íŒŒì¼ì„ ì„œë²„ì— ë°°í¬í•˜ë„ë¡ ìš”ì²­í•©ë‹ˆë‹¤.
+7. Jenkins ê°€ slack ì±„ë„ë¡œ build ìƒíƒœ ë©”ì‹œì§€ë¥¼ ë³´ëƒ…ë‹ˆë‹¤.
+8. CodeDeploy ê°€ S3ì—ì„œ ì••ì¶•íŒŒì¼ì„ ê°€ì ¸ì™€ appspec.yml ì— ë”°ë¼ì„œ ë°°í¬ë¥¼ ìˆ˜í–‰í•˜ë©°, ë°°í¬í•  ì„œë²„ ë‚´ì—ì„œ ì‰˜ ìŠ¤í¬ë¦½íŠ¸ë¥¼ ìˆ˜í–‰í•©ë‹ˆë‹¤.
 
 
-ÀÌ·¯ÇÑ °úÁ¤¿¡¼­ ¹èÆ÷(8¹ø)´Â ¾Æ·¡¿Í °°Àº ¹«Áß´Ü ¹èÆ÷ ¹æ½ÄÀ¸·Î ÁøÇàÇÕ´Ï´Ù.
+ì´ëŸ¬í•œ ê³¼ì •ì—ì„œ ë°°í¬(8ë²ˆ)ëŠ” ì•„ëž˜ì™€ ê°™ì€ ë¬´ì¤‘ë‹¨ ë°°í¬ ë°©ì‹ìœ¼ë¡œ ì§„í–‰í•©ë‹ˆë‹¤.
 
 
-### ? ¹«Áß´Ü ¹èÆ÷
-1. ¹èÆ÷ÇÒ ¼­¹ö¿¡´Â reverse proxy ¿ªÇÒÀ» ÇÏ´Â nginx°¡ ½ÇÇàµÇ°í ÀÖÀ¸¸ç, 8081Æ÷Æ®¿Í 8082Æ÷Æ®¿¡ °¢°¢ µµÄ¿·Î °¨½ÎÁ®ÀÖ´Â ½ºÇÁ¸µ ÇÁ·ÎÁ§Æ®°¡ ÀÖ½À´Ï´Ù.
-2. Nginx´Â 8081Æ÷Æ®·Î ½ÇÇàÇÏ°í ÀÖ´Â ½ºÇÁ¸µ ÇÁ·ÎÁ§Æ®(profile=set1)¸¦ ¹Ù¶óº¸°í ÀÖ½À´Ï´Ù.
-3. ÀÌ·¯ÇÑ »óÈ²¿¡¼­, nginx°¡ ¹Ù¶óº¸°í ÀÖÁö ¾ÊÀº 8082Æ÷Æ®·Î ½ºÇÁ¸µ ÇÁ·ÎÁ§Æ®(profile=set2)¸¦ ¹èÆ÷ÇÕ´Ï´Ù.
-4. ¹èÆ÷°¡ ³¡³ª¸é nginx´Â »õ·Ó°Ô ¹èÆ÷µÈ 8082Æ÷Æ®¸¦ ¹Ù¶óº¸°Ô µÇ¸ç, ÀÌ·¯ÇÑ °úÁ¤À» ¹èÆ÷ÇÒ ¶§¸¶´Ù ¹Ýº¹ÇÕ´Ï´Ù.
+### ðŸš´ ë¬´ì¤‘ë‹¨ ë°°í¬
+1. ë°°í¬í•  ì„œë²„ì—ëŠ” reverse proxy ì—­í• ì„ í•˜ëŠ” nginx ê°€ ì‹¤í–‰ë˜ê³  ìžˆìœ¼ë©°, 8081í¬íŠ¸ì™€ 8082í¬íŠ¸ì— ê°ê° ë„ì»¤ë¡œ ê°ì‹¸ì ¸ìžˆëŠ” ìŠ¤í”„ë§ í”„ë¡œì íŠ¸ê°€ ìžˆìŠµë‹ˆë‹¤.
+2. Nginx ëŠ” 8081í¬íŠ¸ë¡œ ì‹¤í–‰í•˜ê³  ìžˆëŠ” ìŠ¤í”„ë§ í”„ë¡œì íŠ¸(profile=set1)ë¥¼ ë°”ë¼ë³´ê³  ìžˆìŠµë‹ˆë‹¤.
+3. ì´ëŸ¬í•œ ìƒí™©ì—ì„œ, nginx ê°€ ë°”ë¼ë³´ê³  ìžˆì§€ ì•Šì€ 8082í¬íŠ¸ë¡œ ìŠ¤í”„ë§ í”„ë¡œì íŠ¸(profile=set2)ë¥¼ ë°°í¬í•©ë‹ˆë‹¤.
+4. ë°°í¬ê°€ ëë‚˜ë©´ nginx ëŠ” ìƒˆë¡­ê²Œ ë°°í¬ëœ 8082í¬íŠ¸ë¥¼ ë°”ë¼ë³´ê²Œ ë˜ë©°, ì´ëŸ¬í•œ ê³¼ì •ì„ ë°°í¬í•  ë•Œë§ˆë‹¤ ë°˜ë³µí•©ë‹ˆë‹¤.
 
 
-## Å×½ºÆ® Ä¿¹ö¸®Áö
-**(ÇØ´ç ³»¿ëÀº ÄÚµå·Î ÀÚµ¿ ÀÛ¼ºµÇ¾ú½À´Ï´Ù.)**
+## ðŸ“‹ í…ŒìŠ¤íŠ¸ ì»¤ë²„ë¦¬ì§€
+**(í•´ë‹¹ ë‚´ìš©ì€ ì½”ë“œë¡œ ìžë™ ìž‘ì„±ë˜ì—ˆìŠµë‹ˆë‹¤.)**
 
 |Instruction, %|Branch, %|Line, %|Complexity, %|Method, %|
 |---|---|---|---|---|
-|0|100|0|100|0|
+|89|79|93|80|83|
