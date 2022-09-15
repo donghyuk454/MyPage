@@ -57,4 +57,4 @@
 
 |Instruction, %|Branch, %|Line, %|Complexity, %|Method, %|
 |---|---|---|---|---|
-|89|79|93|80|83|
+|89|79|94|80|83|
