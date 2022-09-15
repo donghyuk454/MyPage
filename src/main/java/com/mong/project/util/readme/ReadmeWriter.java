@@ -69,7 +69,7 @@ public class ReadmeWriter {
     }
 
     private boolean write(String readmePath, Map<String, Integer> testResult) {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(readmePath), StandardCharsets.UTF_8))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(readmePath, StandardCharsets.UTF_8))) {
             String line = "";
             StringBuilder dummy = new StringBuilder();
 
@@ -82,7 +82,7 @@ public class ReadmeWriter {
             dummy.append("**(해당 내용은 코드로 자동 작성되었습니다.)**").append("\r\n\n");
             dummy.append(testCoverageForm(testResult));
 
-            try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(readmePath), StandardCharsets.UTF_8)) {
+            try (FileWriter writer = new FileWriter(readmePath, StandardCharsets.UTF_8)) {
                 writer.write(dummy.toString());
             }
 
