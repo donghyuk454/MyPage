@@ -12,7 +12,7 @@ sleep 5
 
 echo "> server 구동" >> ${LOG_PATH}
 nohup ./gradlew bootRun >> ${LOG_PATH} &
-sleep 30
+sleep 60
 
 echo "> readme 작성" >> ${LOG_PATH}
 
