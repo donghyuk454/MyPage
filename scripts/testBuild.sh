@@ -21,3 +21,11 @@ curl -I http://localhost:9000/readme >> ${LOG_PATH} &
 echo "> server 종료" >> ${LOG_PATH}
 ./gradlew --stop >> ${LOG_PATH}
 rm -rf %USER_HOME%\.gradle/caches/ >> ${LOG_PATH}
+
+
+echo "> github 에 업로드" >> ${LOG_PATH}
+git add ./README.md
+
+git commit -m "docs: 테스트 커버리지 수정"
+
+git push origin release/1
