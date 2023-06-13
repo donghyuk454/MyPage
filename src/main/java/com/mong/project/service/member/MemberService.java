@@ -59,15 +59,17 @@ public class MemberService {
      * */
     public Long login(String email, String passwd){
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(()->{
-                    throw new NoSuchElementException(ErrorCode.INVALID_EMAIL);
-                });
+                .orElseThrow(()-> new NoSuchElementException(ErrorCode.INVALID_EMAIL));
 
-        if (!member.getPasswd().equals(passwd)) {
+        if (isInvalidPassword(passwd, member)) {
             throw new IllegalStateException(ErrorCode.INVALID_PASSWORD);
         }
 
         return member.getId();
+    }
+
+    private static boolean isInvalidPassword(String passwd, Member member) {
+        return !member.getPasswd().equals(passwd);
     }
 
     /**
