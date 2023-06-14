@@ -33,7 +33,6 @@ public class MemberService {
      * */
     public Long join(Member member) {
         validateDuplicateMember(member);
-        validateDuplicateAlias(member);
 
         memberRepository.save(member);
         log.info("회원 가입 id = {}, name = {}, alias = {}, email = {}", member.getId(), member.getName(), member.getAlias(), member.getEmail());
@@ -41,17 +40,8 @@ public class MemberService {
     }
 
     private void validateDuplicateMember(Member member) {
-        memberRepository.findByEmail(member.getEmail())
-                .ifPresent(m -> {
-                    throw new IllegalStateException(ErrorCode.ALREADY_EXIST_MEMBER);
-                });
-    }
-
-    private void validateDuplicateAlias(Member member) {
-        memberRepository.findByAlias(member.getAlias())
-                .ifPresent(m -> {
-                    throw new IllegalStateException(ErrorCode.ALREADY_EXIST_ALIAS);
-                });
+        memberRepository.findByEmailAndAlias(member.getEmail(), member.getAlias())
+                .ifPresent(m->{throw new IllegalStateException(ErrorCode.ALREADY_EXIST_MEMBER);});
     }
 
     /**
