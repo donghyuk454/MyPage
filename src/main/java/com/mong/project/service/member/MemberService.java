@@ -125,9 +125,13 @@ public class MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
 
-        if (fileService.removeFileByPath(member.getImage().getUrl())) {
+        if (isSuccessToDeleteImage(member)) {
             member.setImage(null);
             memberRepository.save(member);
         }
+    }
+
+    private boolean isSuccessToDeleteImage(Member member) {
+        return fileService.removeFileByPath(member.getImage().getUrl());
     }
 }
