@@ -63,9 +63,7 @@ class MemberServiceTest {
         verify(memberRepository,times(1))
                 .save(any(Member.class));
         verify(memberRepository, times(1))
-                .findByEmail(any(String.class));
-        verify(memberRepository, times(1))
-                .findByAlias(any(String.class));
+                .findByEmailAndAlias(anyString(), anyString());
     }
 
     @Test
@@ -81,10 +79,8 @@ class MemberServiceTest {
 
         assertThat(e.getMessage()).isEqualTo("이미 존재하는 닉네임입니다.");
 
-        verify(memberRepository, times(2))
-                .findByEmail(any());
-        verify(memberRepository, times(2))
-                .findByAlias(any());
+        verify(memberRepository, times(1))
+                .findByEmailAndAlias(anyString(), anyString());
     }
 
     @Test
@@ -100,8 +96,8 @@ class MemberServiceTest {
 
         assertThat(e.getMessage()).isEqualTo(ErrorCode.ALREADY_EXIST_MEMBER);
 
-        verify(memberRepository, times(2))
-                .findByEmail(any());
+        verify(memberRepository, times(1))
+                .findByEmailAndAlias(anyString(), anyString());
     }
 
     @Test
