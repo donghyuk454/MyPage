@@ -47,6 +47,17 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
+    public Optional<Member> findByEmailAndAlias(String email, String alias) {
+        List<Member> result = em.createQuery(
+                "select m from member m where m.email=:email and m.alias=:alias", Member.class)
+                .setParameter("email", email)
+                .setParameter("alias", alias)
+                .getResultList();
+
+        return result.stream().findAny();
+    }
+
+    @Override
     public List<Member> findAll() {
         return em.createQuery("select m from member m", Member.class)
                 .getResultList();
