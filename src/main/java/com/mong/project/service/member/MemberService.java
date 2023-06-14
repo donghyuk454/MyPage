@@ -84,8 +84,7 @@ public class MemberService {
      * 회원 삭제
      * */
     public void deleteMember(Long memberId){
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
+        Member member = getMemberById(memberId);
 
         member.delete();
     }
@@ -94,8 +93,7 @@ public class MemberService {
      * 비밀번호 변경
      * */
     public void changePasswd(Long memberId, String passwd) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
+        Member member = getMemberById(memberId);
 
         member.setPasswd(passwd);
         memberRepository.save(member);
@@ -105,8 +103,7 @@ public class MemberService {
      * member image 추가, 변경
      * */
     public void setImage(Long memberId, MultipartFile file) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
+        Member member = getMemberById(memberId);
 
         File imageFile = fileService.convertToFile(file);
         Image image = Image.builder()
@@ -122,8 +119,7 @@ public class MemberService {
      * member image 삭제
      * */
     public void deleteImage(Long memberId){
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
+        Member member = getMemberById(memberId);
 
         if (isSuccessToDeleteImage(member)) {
             member.setImage(null);
