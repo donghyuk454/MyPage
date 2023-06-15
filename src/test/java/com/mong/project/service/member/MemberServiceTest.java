@@ -117,7 +117,7 @@ class MemberServiceTest {
 
         assertThat(member_id).isEqualTo(member.getId());
         verify(memberRepository, times(1))
-                .findByEmail(any(String.class));
+                .findByEmail(anyString());
         verify(member, times(2))
                 .getPasswd();
     }
@@ -132,7 +132,7 @@ class MemberServiceTest {
 
         assertThat(e.getMessage()).isEqualTo(ErrorCode.INVALID_EMAIL);
         verify(memberRepository, times(1))
-                .findByEmail(any(String.class));
+                .findByEmail(anyString());
     }
 
     @Test
@@ -148,7 +148,7 @@ class MemberServiceTest {
 
         assertThat(e.getMessage()).isEqualTo(ErrorCode.INVALID_PASSWORD);
         verify(memberRepository, times(1))
-                .findByEmail(any(String.class));
+                .findByEmail(anyString());
     }
 
     @Test
@@ -166,7 +166,7 @@ class MemberServiceTest {
         verify(memberRepository, times(1))
                 .findById(any(Long.class));
         verify(member, times(1))
-                .setPasswd(any(String.class));
+                .setPasswd(anyString());
     }
 
     @Test
@@ -200,7 +200,7 @@ class MemberServiceTest {
                 .thenReturn(image);
         when(image.getUrl())
                 .thenReturn("/this/is/absolute/path.PNG");
-        when(fileService.removeFileByPath(any(String.class)))
+        when(fileService.removeFileByPath(anyString()))
                 .thenReturn(true);
 
         memberService.deleteImage(1L);
