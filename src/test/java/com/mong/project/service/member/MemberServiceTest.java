@@ -6,8 +6,7 @@ import com.mong.project.exception.ErrorCode;
 import com.mong.project.repository.member.MemberRepository;
 import com.mong.project.service.FileService;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -39,22 +38,27 @@ class MemberServiceTest {
     @Mock
     private Member member;
 
-    @Test
-    @DisplayName("회원 가입")
-    void join() {
-        member = Member.builder()
+    private static Member memberInstance;
+
+    @BeforeAll
+    static void beforeAll() {
+        memberInstance = Member.builder()
+                .id(1L)
                 .name("test")
                 .email("email@email.com")
                 .alias("string")
-                .passwd("string").build();
+                .passwd("string")
+                .build();
+    }
 
-        when(memberRepository.save(member))
-                .thenReturn(Member.builder()
-                        .id(1L)
-                        .name("test")
-                        .email("email@email.com")
-                        .alias("string")
-                        .passwd("string").build());
+    @Test
+    @DisplayName("회원 가입")
+    void join() {
+        setMemberId();
+        setMemberName();
+        setMemberEmail();
+        setMemberAlias();
+        setValidSave(memberInstance);
 
         Long id = memberService.join(member);
 
@@ -69,13 +73,12 @@ class MemberServiceTest {
     @Test
     @DisplayName("기존에 존재하는 닉네임을 가진 회원 등록. IllegalException 을 throw 합니다")
     void joinExistAlias() {
-        memberService.join(member);
-        Member member1 = mock(Member.class);
-
-        when(memberRepository.save(member1))
+        setMemberEmail();
+        setMemberAlias();
+        when(memberRepository.save(member))
                 .thenThrow(new IllegalStateException("이미 존재하는 닉네임입니다."));
 
-        IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.join(member1));
+        IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.join(member));
 
         assertThat(e.getMessage()).isEqualTo("이미 존재하는 닉네임입니다.");
 
@@ -86,13 +89,12 @@ class MemberServiceTest {
     @Test
     @DisplayName("기존에 존재하는 이메일을 가진 회원 등록. IllegalException 을 throw 합니다")
     void joinExistEmail() {
-        memberService.join(member);
-        Member member1 = mock(Member.class);
-
-        when(memberRepository.save(member1))
+        setMemberEmail();
+        setMemberAlias();
+        when(memberRepository.save(member))
                 .thenThrow(new IllegalStateException(ErrorCode.ALREADY_EXIST_MEMBER));
 
-        IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.join(member1));
+        IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.join(member));
 
         assertThat(e.getMessage()).isEqualTo(ErrorCode.ALREADY_EXIST_MEMBER);
 
@@ -103,15 +105,10 @@ class MemberServiceTest {
     @Test
     @DisplayName("로그인 기능입니다. 조회한 Member 를 return 합니다")
     void login() {
-        when(member.getPasswd())
-                .thenReturn("string");
-        when(member.getEmail())
-                .thenReturn("email@email.com");
-        when(member.getId())
-                .thenReturn(1L);
-
-        when(memberRepository.findByEmail("email@email.com"))
-                .thenReturn(Optional.of(member));
+        setMemberId();
+        setMemberEmail();
+        setMemberPassword();
+        setValidFindByEmail();
 
         Long member_id = memberService.login(member.getEmail(), member.getPasswd());
 
@@ -120,6 +117,16 @@ class MemberServiceTest {
                 .findByEmail(anyString());
         verify(member, times(2))
                 .getPasswd();
+    }
+
+    private void setValidFindByEmail() {
+        when(memberRepository.findByEmail(member.getEmail()))
+                .thenReturn(Optional.of(member));
+    }
+
+    private void setMemberPassword() {
+        when(member.getPasswd())
+                .thenReturn(memberInstance.getPasswd());
     }
 
     @Test
@@ -138,13 +145,12 @@ class MemberServiceTest {
     @Test
     @DisplayName("패스워드가 다른 경우입니다. IllegalStateException 을 throw 합니다.")
     void loginInvalidPassword() {
-        when(member.getPasswd())
-                .thenReturn("string");
-
-        when(memberRepository.findByEmail("email@email.com"))
+        setMemberEmail();
+        setMemberPassword();
+        when(memberRepository.findByEmail(memberInstance.getEmail()))
                 .thenReturn(Optional.of(member));
 
-        IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.login("email@email.com", "none"));
+        IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.login(member.getEmail(), "none"));
 
         assertThat(e.getMessage()).isEqualTo(ErrorCode.INVALID_PASSWORD);
         verify(memberRepository, times(1))
@@ -154,13 +160,12 @@ class MemberServiceTest {
     @Test
     @DisplayName("비밀번호를 변경합니다.")
     void changePassword() {
-        when(memberRepository.findById(1L))
-                .thenReturn(Optional.of(member));
+        setValidFindById();
         when(member.getPasswd())
                 .thenReturn("newPassword");
 
         String newPasswd = "newPassword";
-        memberService.changePasswd(1L, newPasswd);
+        memberService.changePasswd(memberInstance.getId(), newPasswd);
 
         assertThat(member.getPasswd()).isEqualTo(newPasswd);
         verify(memberRepository, times(1))
@@ -171,11 +176,9 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("맴버의 image 를 추가하거나 변경합니다.")
-    void setMemberImage(){
-        when(memberRepository.findById(1L))
-                .thenReturn(Optional.of(member));
-        when(memberRepository.save(member))
-                .thenReturn(member);
+    void setMemberImage() {
+        setValidFindById();
+        setValidSave(member);
         File imageFile = mock(File.class);
         when(fileService.convertToFile(any()))
                 .thenReturn(imageFile);
@@ -188,13 +191,21 @@ class MemberServiceTest {
         verify(member).setImage(any(Image.class));
     }
 
+    private void setValidSave(Member member) {
+        when(memberRepository.save(member))
+                .thenReturn(member);
+    }
+
+    private void setValidFindById() {
+        when(memberRepository.findById(memberInstance.getId()))
+                .thenReturn(Optional.of(member));
+    }
+
     @Test
     @DisplayName("맴버의 이미지를 삭제합니다.")
     void deleteMemberImage(){
-        when(memberRepository.findById(1L))
-                .thenReturn(Optional.of(member));
-        when(memberRepository.save(member))
-                .thenReturn(member);
+        setValidFindById();
+        setValidSave(member);
         Image image = mock(Image.class);
         when(member.getImage())
                 .thenReturn(image);
@@ -206,5 +217,25 @@ class MemberServiceTest {
         memberService.deleteImage(1L);
 
         verify(member).setImage(null);
+    }
+
+    private void setMemberEmail() {
+        when(member.getEmail())
+                .thenReturn(memberInstance.getEmail());
+    }
+
+    private void setMemberName() {
+        when(member.getName())
+                .thenReturn(memberInstance.getName());
+    }
+
+    private void setMemberId() {
+        when(member.getId())
+                .thenReturn(memberInstance.getId());
+    }
+
+    private void setMemberAlias() {
+        when(member.getAlias())
+                .thenReturn(memberInstance.getAlias());
     }
 }
