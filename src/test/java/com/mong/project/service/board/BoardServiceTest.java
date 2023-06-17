@@ -28,6 +28,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class BoardServiceTest {
 
+    public static final long TEST_ID = 1L;
     @InjectMocks
     private BoardService boardService;
 
@@ -48,15 +49,15 @@ class BoardServiceTest {
     @Test
     @DisplayName("member 의 새로운 board 를 추가합니다.")
     void addBoard() {
-        when(memberRepository.findById(1L))
+        when(memberRepository.findById(TEST_ID))
                 .thenReturn(Optional.of(member));
         when(boardRepository.save(member, board))
                 .thenReturn(board);
 
-        boardService.addBoard(1L, board);
+        boardService.addBoard(TEST_ID, board);
 
         verify(memberRepository, times(1))
-                .findById(1L);
+                .findById(TEST_ID);
         verify(boardRepository, times(1))
                 .save(member, board);
     }
@@ -66,25 +67,25 @@ class BoardServiceTest {
     void getBoardsByMemberId() {
         when(member.getBoards())
                 .thenReturn(List.of(board));
-        when(memberRepository.findById(1L))
+        when(memberRepository.findById(TEST_ID))
                 .thenReturn(Optional.of(member));
 
-        List<Board> result = boardService.getBoardsByMemberId(1L);
+        List<Board> result = boardService.getBoardsByMemberId(TEST_ID);
 
         verify(memberRepository, times(1))
-                .findById(1L);
+                .findById(TEST_ID);
     }
 
     @Test
     @DisplayName("member 의 id 를 통해 member 의 모든 board 를 조회합니다.")
     void getBoardById() {
-        when(boardRepository.findById(1L))
+        when(boardRepository.findById(TEST_ID))
                 .thenReturn(Optional.of(board));
 
-        Board result = boardService.getBoardById(1L);
+        Board result = boardService.getBoardById(TEST_ID);
 
         verify(boardRepository, times(1))
-                .findById(1L);
+                .findById(TEST_ID);
     }
 
     @Test
@@ -92,10 +93,10 @@ class BoardServiceTest {
     void changeBoard() {
         when(boardRepository.save(board))
                 .thenReturn(board);
-        when(boardRepository.findById(1L))
+        when(boardRepository.findById(TEST_ID))
                 .thenReturn(Optional.of(board));
 
-        Board result = boardService.changeBoard(1L, "title", "content");
+        Board result = boardService.changeBoard(TEST_ID, "title", "content");
 
         verify(boardRepository, times(1))
                 .save(board);
@@ -104,12 +105,12 @@ class BoardServiceTest {
     @Test
     @DisplayName("board 를 삭제합니다.")
     void deleteBoard() {
-        doNothing().when(boardRepository).deleteBoardById(1L);
+        doNothing().when(boardRepository).deleteBoardById(TEST_ID);
 
-        boardService.deleteBoard(1L);
+        boardService.deleteBoard(TEST_ID);
 
         verify(boardRepository, times(1))
-                .deleteBoardById(1L);
+                .deleteBoardById(TEST_ID);
     }
 
     @Test
@@ -117,7 +118,7 @@ class BoardServiceTest {
     void addBoardImage(){
         when(boardRepository.save(board))
                 .thenReturn(board);
-        when(boardRepository.findById(1L))
+        when(boardRepository.findById(TEST_ID))
                 .thenReturn(Optional.of(board));
         List<MultipartFile> images = List.of(
                 new MockMultipartFile("test1", "test1.PNG", MediaType.IMAGE_PNG_VALUE, "test1".getBytes()),
@@ -129,7 +130,7 @@ class BoardServiceTest {
         when(imageFile.getAbsolutePath())
                 .thenReturn("/this/is/absolute/path.PNG");
 
-        boardService.addImage(1L, images);
+        boardService.addImage(TEST_ID, images);
 
         verify(board,times(2))
                 .addImage(any());
@@ -142,7 +143,7 @@ class BoardServiceTest {
         List<Long> image_ids = new ArrayList<>();
         List<Image> foundedImages = new ArrayList<>();
 
-        for(long i = 1L; i < 5L; i++) {
+        for(long i = TEST_ID; i < 5L; i++) {
             Image temp = mock(Image.class);
             if (i < 3){
                 image_ids.add(i);
@@ -152,7 +153,7 @@ class BoardServiceTest {
             }
         }
 
-        when(boardRepository.findById(1L))
+        when(boardRepository.findById(TEST_ID))
                 .thenReturn(Optional.of(board));
         when(board.getImages())
                 .thenReturn(images);
@@ -163,7 +164,7 @@ class BoardServiceTest {
         when(fileService.removeFileByPath(any()))
                 .thenReturn(true);
 
-        boardService.deleteImages(1L, image_ids);
+        boardService.deleteImages(TEST_ID, image_ids);
 
         verify(images, times(2))
                 .remove(any(Image.class));
