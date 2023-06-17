@@ -18,6 +18,8 @@ import java.io.File;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import static com.mong.project.exception.ErrorCode.*;
+
 @Slf4j
 @Service
 @Transactional
@@ -28,7 +30,10 @@ public class BoardService {
     private final ImageRepository imageRepository;
     private final FileService fileService;
 
-    public BoardService(BoardRepository boardRepository, MemberRepository memberRepository, ImageRepository imageRepository, FileService fileService) {
+    public BoardService(BoardRepository boardRepository,
+                        MemberRepository memberRepository,
+                        ImageRepository imageRepository,
+                        FileService fileService) {
         this.boardRepository = boardRepository;
         this.memberRepository = memberRepository;
         this.imageRepository = imageRepository;
@@ -39,8 +44,7 @@ public class BoardService {
      * 새로운 board 생성
      * */
     public Board addBoard(Long memberId, Board board){
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(()-> new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
+        Member member = getMemberByMemberId(memberId);
 
         return boardRepository.save(member, board);
     }
@@ -49,10 +53,13 @@ public class BoardService {
      * member 소유의 board 조회
      * */
     public List<Board> getBoardsByMemberId(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(()-> new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
+        return getMemberByMemberId(memberId)
+                .getBoards();
+    }
 
-        return member.getBoards();
+    private Member getMemberByMemberId(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(()-> new NoSuchElementException(NOT_EXIST_MEMBER));
     }
 
     /**
@@ -60,15 +67,14 @@ public class BoardService {
      * */
     public Board getBoardById(Long boardId) {
         return boardRepository.findById(boardId)
-                .orElseThrow(() -> new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD));
+                .orElseThrow(() -> new NoSuchElementException(NOT_EXIST_BOARD));
     }
 
-    /**
+    /**을
      * board 내용(title, content) 수정
      * */
     public Board changeBoard(Long boardId, String title, String content) {
-        Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD));
+        Board board = getBoardById(boardId);
 
         board.setTitle(title);
         board.setContent(content);
@@ -87,8 +93,7 @@ public class BoardService {
      * board 이미지 추가
      * */
     public void addImage(Long boardId, List<MultipartFile> images) {
-        Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD));
+        Board board = getBoardById(boardId);
 
         images.forEach(img ->{
             File imageFile = fileService.convertToFile(img);
@@ -108,8 +113,7 @@ public class BoardService {
      * board 이미지 삭제
      * */
     public void deleteImages(Long boardId, List<Long> imageIds) {
-        Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD));
+        Board board = getBoardById(boardId);
 
         List<Image> images = imageRepository.findAllById(imageIds);
         List<Image> boardImages = board.getImages();
