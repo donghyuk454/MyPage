@@ -28,7 +28,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class BoardServiceTest {
 
-    public static final long TEST_ID = 1L;
+    private static final long TEST_ID = 1L;
     @InjectMocks
     private BoardService boardService;
 
