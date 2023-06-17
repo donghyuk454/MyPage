@@ -40,9 +40,7 @@ public class BoardService {
      * */
     public Board addBoard(Long memberId, Board board){
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(()-> {
-                    throw new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER);
-                });
+                .orElseThrow(()-> new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
         return boardRepository.save(member, board);
     }
 
@@ -51,9 +49,7 @@ public class BoardService {
      * */
     public List<Board> getBoardsByMemberId(Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(()-> {
-                    throw new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER);
-                });
+                .orElseThrow(()-> new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
 
         return member.getBoards();
     }
@@ -91,9 +87,9 @@ public class BoardService {
      * board 이미지 추가
      * */
     public void addImage(Long boardId, List<MultipartFile> images) {
-        Board board = boardRepository.findById(boardId).orElseThrow(() -> {
-            throw new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD);
-        });
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD));
+
         images.forEach(img ->{
             File imageFile = fileService.convertToFile(img);
 
@@ -112,9 +108,8 @@ public class BoardService {
      * board 이미지 삭제
      * */
     public void deleteImages(Long boardId, List<Long> imageIds) {
-        Board board = boardRepository.findById(boardId).orElseThrow(() -> {
-            throw new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD);
-        });
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD));
 
         List<Image> images = imageRepository.findAllById(imageIds);
         List<Image> boardImages = board.getImages();
