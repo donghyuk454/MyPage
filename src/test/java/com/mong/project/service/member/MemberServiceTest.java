@@ -58,7 +58,7 @@ class MemberServiceTest {
         setMemberName();
         setMemberEmail();
         setMemberAlias();
-        setValidSave(memberInstance);
+        setValidSave(member);
 
         Long id = memberService.join(member);
 
@@ -147,7 +147,7 @@ class MemberServiceTest {
     void loginInvalidPassword() {
         setMemberEmail();
         setMemberPassword();
-        when(memberRepository.findByEmail(memberInstance.getEmail()))
+        when(memberRepository.findByEmail(member.getEmail()))
                 .thenReturn(Optional.of(member));
 
         IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.login(member.getEmail(), "none"));
@@ -160,12 +160,13 @@ class MemberServiceTest {
     @Test
     @DisplayName("비밀번호를 변경합니다.")
     void changePassword() {
+        setMemberId();
         setValidFindById();
         when(member.getPasswd())
                 .thenReturn("newPassword");
 
         String newPasswd = "newPassword";
-        memberService.changePasswd(memberInstance.getId(), newPasswd);
+        memberService.changePasswd(member.getId(), newPasswd);
 
         assertThat(member.getPasswd()).isEqualTo(newPasswd);
         verify(memberRepository, times(1))
