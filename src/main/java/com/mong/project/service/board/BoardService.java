@@ -41,6 +41,7 @@ public class BoardService {
     public Board addBoard(Long memberId, Board board){
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(()-> new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
+
         return boardRepository.save(member, board);
     }
 
@@ -58,18 +59,17 @@ public class BoardService {
      * board id 를 통해 board 조회
      * */
     public Board getBoardById(Long boardId) {
-        return boardRepository.findById(boardId).orElseThrow(() -> {
-            throw new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD);
-        });
+        return boardRepository.findById(boardId)
+                .orElseThrow(() -> new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD));
     }
 
     /**
      * board 내용(title, content) 수정
      * */
     public Board changeBoard(Long boardId, String title, String content) {
-        Board board = boardRepository.findById(boardId).orElseThrow(() -> {
-            throw new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD);
-        });
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD));
+
         board.setTitle(title);
         board.setContent(content);
 
