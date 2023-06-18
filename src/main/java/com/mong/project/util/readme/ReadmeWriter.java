@@ -49,9 +49,9 @@ public class ReadmeWriter {
                     testCnt[i] += result[i];
             }
 
-            for (Integer t: testCnt) {
-                log.info("count: {}", t);
-            }
+            Arrays.stream(testCnt)
+                    .forEach(t -> log.info("count: {}", t));
+
             for (int i = 0; i < testCnt.length; i += 2) {
                 testResult.put(testResultNames[i/2], testCnt[i+1]*100/(testCnt[i]+testCnt[i+1]));
             }
