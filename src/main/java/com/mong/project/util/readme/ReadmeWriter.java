@@ -13,7 +13,9 @@ import java.util.Map;
 @Slf4j
 public class ReadmeWriter {
 
-    private final String[] testResultNames = {"Instruction", "Branch", "Line", "Complexity", "Method"};
+    private static final String[] testResultNames = {"Instruction", "Branch", "Line", "Complexity", "Method"};
+    private static final String NEXT_LINE_CHAR = "\r\n";
+    private static final String TITLE = "## \uD83D\uDCCB 테스트 커버리지";
 
     public boolean writeReadme (String readmePath, String csvPath) {
 
@@ -73,13 +75,13 @@ public class ReadmeWriter {
             String line = "";
             StringBuilder dummy = new StringBuilder();
 
-            while ((line = reader.readLine()) != null && !line.equals("## \uD83D\uDCCB 테스트 커버리지")) {
-                dummy.append(line).append("\r\n");
+            while ((line = reader.readLine()) != null && !line.equals(TITLE)) {
+                dummy.append(line).append(NEXT_LINE_CHAR);
                 log.info(line);
             }
 
-            dummy.append(line).append("\r\n");
-            dummy.append("**(해당 내용은 코드로 자동 작성되었습니다.)**").append("\r\n\n");
+            dummy.append(line).append(NEXT_LINE_CHAR);
+            dummy.append("**(해당 내용은 코드로 자동 작성되었습니다.)**").append(NEXT_LINE_CHAR + "\n");
             dummy.append(testCoverageForm(testResult));
 
             try (FileWriter writer = new FileWriter(readmePath, StandardCharsets.UTF_8)) {
