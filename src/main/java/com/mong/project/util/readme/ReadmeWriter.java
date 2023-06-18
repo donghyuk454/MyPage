@@ -6,9 +6,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 public class ReadmeWriter {
@@ -97,17 +95,16 @@ public class ReadmeWriter {
 
     private String testCoverageForm(Map<String, Integer> testResult) {
         String[] result = {"","",""};
+        String separator = "|";
 
-        for (String testResultName : testResultNames) {
-            result[0] += "|" + testResultName + ", %";
-            result[1] += "|---";
-            result[2] += "|" + testResult.get(testResultName);
-        }
+        testResult.forEach((name, value) -> {
+            result[0] += separator + name + ", %";
+            result[1] += separator + "---";
+            result[2] += separator + value;
+        });
 
-        for (int i = 0 ; i < 3; i++) {
-            result[i] += "|";
-        }
-
-        return result[0]+"\r\n"+result[1]+"\r\n"+result[2];
+        return result[0] + separator + NEXT_LINE_CHAR +
+                result[1] + separator + NEXT_LINE_CHAR +
+                result[2] + separator;
     }
 }
