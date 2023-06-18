@@ -2,10 +2,10 @@ package com.mong.project.util.transformer;
 
 import com.mong.project.domain.member.Member;
 import com.mong.project.dto.request.member.MemberJoinRequest;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class MemberTransformer {
-
-    private MemberTransformer(){}
 
     public static Member joinRequestToMember(MemberJoinRequest memberJoinRequest) {
         return Member.builder()
