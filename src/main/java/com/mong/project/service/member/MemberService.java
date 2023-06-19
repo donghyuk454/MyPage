@@ -7,6 +7,7 @@ import com.mong.project.exception.ErrorCode;
 import com.mong.project.repository.member.MemberRepository;
 import com.mong.project.service.FileService;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,15 +19,11 @@ import java.util.NoSuchElementException;
 @Slf4j
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
     private final FileService fileService;
-
-    public MemberService(MemberRepository memberRepository, FileService fileService) {
-        this.memberRepository = memberRepository;
-        this.fileService = fileService;
-    }
 
     /**
      * 회원 가입

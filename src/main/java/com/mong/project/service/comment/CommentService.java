@@ -7,6 +7,7 @@ import com.mong.project.exception.ErrorCode;
 import com.mong.project.repository.board.BoardRepository;
 import com.mong.project.repository.comment.CommentRepository;
 import com.mong.project.repository.member.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,17 +15,12 @@ import java.util.NoSuchElementException;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class CommentService {
 
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
-
-    public CommentService(MemberRepository memberRepository, BoardRepository boardRepository, CommentRepository commentRepository) {
-        this.memberRepository = memberRepository;
-        this.boardRepository = boardRepository;
-        this.commentRepository = commentRepository;
-    }
 
     /**
      * 댓글 생성

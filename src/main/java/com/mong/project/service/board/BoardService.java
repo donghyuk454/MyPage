@@ -9,6 +9,7 @@ import com.mong.project.repository.board.BoardRepository;
 import com.mong.project.repository.image.ImageRepository;
 import com.mong.project.repository.member.MemberRepository;
 import com.mong.project.service.FileService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,22 +24,13 @@ import static com.mong.project.exception.ErrorCode.*;
 @Slf4j
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class BoardService {
 
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
     private final ImageRepository imageRepository;
     private final FileService fileService;
-
-    public BoardService(BoardRepository boardRepository,
-                        MemberRepository memberRepository,
-                        ImageRepository imageRepository,
-                        FileService fileService) {
-        this.boardRepository = boardRepository;
-        this.memberRepository = memberRepository;
-        this.imageRepository = imageRepository;
-        this.fileService = fileService;
-    }
 
     /**
      * 새로운 board 생성
