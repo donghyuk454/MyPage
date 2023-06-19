@@ -4,7 +4,6 @@ import com.mong.project.domain.board.Board;
 import com.mong.project.domain.image.Image;
 import com.mong.project.domain.image.ImageType;
 import com.mong.project.domain.member.Member;
-import com.mong.project.exception.ErrorCode;
 import com.mong.project.repository.board.BoardRepository;
 import com.mong.project.repository.image.ImageRepository;
 import com.mong.project.repository.member.MemberRepository;
