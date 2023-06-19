@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ImageRepositoryImpl implements ImageRepository{
 
-    private EntityManager em;
+    private final EntityManager em;
 
     @Override
     public List<Image> findAllById(List<Long> ids) {

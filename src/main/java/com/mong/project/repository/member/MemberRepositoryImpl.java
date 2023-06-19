@@ -12,7 +12,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberRepositoryImpl implements MemberRepository {
 
-    private EntityManager em;
+    private final EntityManager em;
 
     @Override
     public Member save(Member member) {
