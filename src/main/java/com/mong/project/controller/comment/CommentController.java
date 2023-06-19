@@ -5,18 +5,16 @@ import com.mong.project.dto.request.comment.AddCommentRequest;
 import com.mong.project.dto.request.comment.ChangeCommentRequest;
 import com.mong.project.service.comment.CommentService;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/comments")
+@RequiredArgsConstructor
 public class CommentController {
 
     private final CommentService commentService;
-
-    public CommentController(CommentService commentService) {
-        this.commentService = commentService;
-    }
 
     @PostMapping
     public ResponseEntity<Void> addComment(@Login final Long memberId,

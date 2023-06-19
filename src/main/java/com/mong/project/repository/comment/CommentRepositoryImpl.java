@@ -3,6 +3,7 @@ package com.mong.project.repository.comment;
 import com.mong.project.domain.board.Board;
 import com.mong.project.domain.comment.Comment;
 import com.mong.project.domain.member.Member;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -11,13 +12,10 @@ import java.util.Optional;
 
 @Slf4j
 @Repository
+@RequiredArgsConstructor
 public class CommentRepositoryImpl implements CommentRepository{
 
     private final EntityManager em;
-
-    public CommentRepositoryImpl(EntityManager em){
-        this.em = em;
-    }
 
     @Override
     public Comment save(Member member, Board board, String content) {

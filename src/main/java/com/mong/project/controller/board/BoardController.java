@@ -8,6 +8,7 @@ import com.mong.project.dto.request.board.RemoveBoardImageRequest;
 import com.mong.project.dto.response.board.GetBoardResponse;
 import com.mong.project.service.board.BoardService;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
@@ -18,13 +19,10 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/api/boards")
+@RequiredArgsConstructor
 public class BoardController {
 
     private final BoardService boardService;
-
-    public BoardController(BoardService boardService) {
-        this.boardService = boardService;
-    }
 
     @GetMapping("/{boardId}")
     public ResponseEntity<GetBoardResponse> getBoard(@PathVariable(name = "boardId") Long boardId) {

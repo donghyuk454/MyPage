@@ -10,6 +10,7 @@ import com.mong.project.dto.response.board.GetBoardResponse;
 import com.mong.project.dto.response.member.LoginResponse;
 import com.mong.project.service.member.MemberService;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,13 +26,10 @@ import static com.mong.project.config.interceptor.LoginConst.LOGIN_MEMBER;
 @Slf4j
 @RestController
 @RequestMapping("/api/members")
+@RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
-
-    public MemberController(MemberService memberService){
-        this.memberService = memberService;
-    }
 
     @GetMapping
     public ResponseEntity<Member> getMember(@Login final Long memberId) {
