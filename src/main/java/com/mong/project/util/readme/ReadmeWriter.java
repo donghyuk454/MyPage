@@ -20,7 +20,7 @@ public class ReadmeWriter {
 
         log.info("README 경로: {}, CSV 경로: {}", readmePath, csvPath);
 
-        Map<String, Integer> testResult = null;
+        Map<String, Integer> testResult;
 
         try {
             testResult = getTestResult(csvPath);
@@ -39,24 +39,33 @@ public class ReadmeWriter {
         Arrays.fill(testCnt, 0);
 
         try(BufferedReader reader = Files.newBufferedReader(Paths.get(csvPath))) {
-            String line = reader.readLine();
-
-            while ((line = reader.readLine()) != null) {
-                Integer[] result = changeToInteger(line.split(","));
-
-                for (int i = 0; i < 10; i++)
-                    testCnt[i] += result[i];
-            }
+            
+            readLineAndSetTestCount(testCnt, reader);
 
             Arrays.stream(testCnt)
                     .forEach(t -> log.info("count: {}", t));
 
-            for (int i = 0; i < testCnt.length; i += 2) {
-                testResult.put(testResultNames[i/2], testCnt[i+1]*100/(testCnt[i]+testCnt[i+1]));
-            }
+            setTestResultByTestCount(testResult, testCnt);
         }
 
         return testResult;
+    }
+
+    private static void setTestResultByTestCount(Map<String, Integer> testResult, Integer[] testCnt) {
+        for (int i = 0; i < testCnt.length; i += 2) {
+            testResult.put(testResultNames[i/2], testCnt[i+1]*100/(testCnt[i]+ testCnt[i+1]));
+        }
+    }
+
+    private void readLineAndSetTestCount(Integer[] testCnt, BufferedReader reader) throws IOException {
+        String line;
+        
+        while ((line = reader.readLine()) != null) {
+            Integer[] result = changeToInteger(line.split(","));
+
+            for (int i = 0; i < 10; i++)
+                testCnt[i] += result[i];
+        }
     }
 
     private Integer[] changeToInteger(String[] line) {
@@ -71,27 +80,43 @@ public class ReadmeWriter {
 
     private boolean write(String readmePath, Map<String, Integer> testResult) {
         try (BufferedReader reader = new BufferedReader(new FileReader(readmePath, StandardCharsets.UTF_8))) {
-            String line = "";
+            
             StringBuilder dummy = new StringBuilder();
 
-            while ((line = reader.readLine()) != null && !line.equals(TITLE)) {
-                dummy.append(line).append(NEXT_LINE_CHAR);
-                log.info(line);
-            }
-
-            dummy.append(line).append(NEXT_LINE_CHAR);
-            dummy.append(AUTO_WRITE_TITLE).append(NEXT_LINE_CHAR + "\n");
+            copyUntilAutoWriteTitle(reader, dummy);
+            
+            dummy.append(AUTO_WRITE_TITLE)
+                    .append(NEXT_LINE_CHAR + "\n");
+            
             dummy.append(testCoverageForm(testResult));
 
-            try (FileWriter writer = new FileWriter(readmePath, StandardCharsets.UTF_8)) {
-                writer.write(dummy.toString());
-            }
-
-            return true;
+            writeReadMeFile(readmePath, dummy);
+            
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
+        
+        return true;
+    }
+
+    private static void writeReadMeFile(String readmePath, StringBuilder dummy) throws IOException {
+        try (FileWriter writer = new FileWriter(readmePath, StandardCharsets.UTF_8)) {
+            writer.write(dummy.toString());
+        }
+    }
+
+    private static void copyUntilAutoWriteTitle(BufferedReader reader, StringBuilder dummy) throws IOException {
+        String line;
+
+        while ((line = reader.readLine()) != null && !line.equals(TITLE)) {
+            dummy.append(line)
+                    .append(NEXT_LINE_CHAR);
+            log.info(line);
+        }
+
+        dummy.append(line)
+                .append(NEXT_LINE_CHAR);
     }
 
     private String testCoverageForm(Map<String, Integer> testResult) {
