@@ -1,6 +1,7 @@
 package com.mong.project.dto.request.member;
 
 
+import com.mong.project.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,5 +23,14 @@ public class MemberJoinRequest {
         this.email = email;
         this.alias = alias;
         this.passwd = passwd;
+    }
+
+    public Member toMember() {
+        return Member.builder()
+                .name(name)
+                .email(email)
+                .alias(alias)
+                .passwd(passwd)
+                .build();
     }
 }
