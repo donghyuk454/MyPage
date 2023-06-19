@@ -10,7 +10,6 @@ import com.mong.project.dto.response.board.GetBoardResponse;
 import com.mong.project.dto.response.member.LoginResponse;
 import com.mong.project.service.member.MemberService;
 
-import com.mong.project.util.transformer.MemberTransformer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +50,7 @@ public class MemberController {
 
     @PostMapping("/signup")
     public ResponseEntity<Void> signup(@RequestBody MemberJoinRequest memberJoinRequest) {
-        memberService.join(MemberTransformer.joinRequestToMember(memberJoinRequest));
+        memberService.join(memberJoinRequest.toMember());
 
         return ResponseEntity.ok().build();
     }

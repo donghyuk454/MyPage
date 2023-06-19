@@ -8,7 +8,6 @@ import com.mong.project.dto.request.board.RemoveBoardImageRequest;
 import com.mong.project.dto.response.board.GetBoardResponse;
 import com.mong.project.service.board.BoardService;
 
-import com.mong.project.util.transformer.BoardTransformer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
@@ -39,7 +38,7 @@ public class BoardController {
                                             @Nullable @RequestPart(name = "image") List<MultipartFile> images,
                                             @RequestBody CreateBoardRequest createBoardRequest) {
         Board board = boardService.addBoard(memberId,
-                BoardTransformer.createBoardRequestToBoard(createBoardRequest));
+                createBoardRequest.toBoard());
         if (images != null && images.isEmpty())
             boardService.addImage(board.getId(), images);
 
