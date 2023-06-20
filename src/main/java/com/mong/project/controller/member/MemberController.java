@@ -1,5 +1,6 @@
 package com.mong.project.controller.member;
 
+import com.mong.project.controller.member.dto.response.GetMemberResponse;
 import com.mong.project.domain.board.Board;
 import com.mong.project.domain.member.Member;
 import com.mong.project.domain.member.annotation.Login;
@@ -32,10 +33,10 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping
-    public ResponseEntity<Member> getMember(@Login final Long memberId) {
+    public ResponseEntity<GetMemberResponse> getMember(@Login final Long memberId) {
         Member member = memberService.getMemberById(memberId);
 
-        return ResponseEntity.ok().body(member);
+        return ResponseEntity.ok().body(new GetMemberResponse(member));
     }
 
     @DeleteMapping
