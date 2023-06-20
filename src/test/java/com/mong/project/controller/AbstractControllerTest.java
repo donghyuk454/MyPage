@@ -12,12 +12,14 @@ import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.core.MethodParameter;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.operation.preprocess.OperationRequestPreprocessor;
 import org.springframework.restdocs.operation.preprocess.OperationResponsePreprocessor;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -29,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @AutoConfigureRestDocs
@@ -68,4 +71,22 @@ public abstract class AbstractControllerTest {
     }
 
     protected abstract Object setController();
+
+    protected MockHttpServletRequestBuilder createPostMockHttpServletRequest(Object object, String uri) {
+        return post(uri)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(object));
+    }
+
+    protected MockHttpServletRequestBuilder createPutMockHttpServletRequest(Object object, String uri) {
+        return put(uri)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(object));
+    }
+
+    protected MockHttpServletRequestBuilder createDeleteMockHttpServletRequest(Object object, String uri) {
+        return delete(uri)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(object));
+    }
 }
