@@ -25,9 +25,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -53,16 +50,7 @@ class MemberControllerTest extends AbstractControllerTest {
         MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(memberJoinRequest, "/api/members/signup");
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andDo(document("/members/join/success",
-                        requestPreprocessor,
-                        responsePreprocessor,
-                        requestFields(
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("사용자 이름"),
-                                fieldWithPath("email").type(JsonFieldType.STRING).description("사용자 이메일"),
-                                fieldWithPath("passwd").type(JsonFieldType.STRING).description("비밀번호"),
-                                fieldWithPath("alias").type(JsonFieldType.STRING).description("사용자 뱔명(닉네임)")
-                        )));
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -76,19 +64,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 .thenThrow(new IllegalStateException(ErrorCode.ALREADY_EXIST_ALIAS));
 
         mockMvc.perform(builder)
-                .andExpect(status().isBadRequest())
-                .andDo(document("/members/join/fail/existing-alias",
-                        requestPreprocessor,
-                        responsePreprocessor,
-                        requestFields(
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("사용자 이름"),
-                                fieldWithPath("email").type(JsonFieldType.STRING).description("사용자 이메일"),
-                                fieldWithPath("passwd").type(JsonFieldType.STRING).description("비밀번호"),
-                                fieldWithPath("alias").type(JsonFieldType.STRING).description("사용자 뱔명(닉네임)")
-                        ),
-                        responseFields(
-                                fieldWithPath("errorCode").type(JsonFieldType.STRING).description("에러메세지")
-                        )));
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -102,19 +78,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 .thenThrow(new IllegalStateException(ErrorCode.ALREADY_EXIST_MEMBER));
 
         mockMvc.perform(builder)
-                .andExpect(status().isBadRequest())
-                .andDo(document("/members/join/fail/existing-email",
-                        requestPreprocessor,
-                        responsePreprocessor,
-                        requestFields(
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("사용자 이름"),
-                                fieldWithPath("email").type(JsonFieldType.STRING).description("사용자 이메일"),
-                                fieldWithPath("passwd").type(JsonFieldType.STRING).description("비밀번호"),
-                                fieldWithPath("alias").type(JsonFieldType.STRING).description("사용자 뱔명(닉네임)")
-                        ),
-                        responseFields(
-                                fieldWithPath("errorCode").type(JsonFieldType.STRING).description("에러메세지")
-                        )));
+                .andExpect(status().isBadRequest());
     }
 
     private static MemberJoinRequest createMemberJoinRequest() {
@@ -136,14 +100,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 .thenReturn(1L);
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andDo(document("/members/login/success",
-                        requestPreprocessor,
-                        responsePreprocessor,
-                        requestFields(
-                                fieldWithPath("email").type(JsonFieldType.STRING).description("사용자 이메일"),
-                                fieldWithPath("passwd").type(JsonFieldType.STRING).description("비밀번호")
-                        )));
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -157,14 +114,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 .thenThrow(new NoSuchElementException(ErrorCode.INVALID_EMAIL));
 
         mockMvc.perform(builder)
-                .andExpect(status().isBadRequest())
-                .andDo(document("/members/login/fail/invalid-email",
-                        requestPreprocessor,
-                        responsePreprocessor,
-                        requestFields(
-                                fieldWithPath("email").type(JsonFieldType.STRING).description("사용자 이메일"),
-                                fieldWithPath("passwd").type(JsonFieldType.STRING).description("비밀번호")
-                        )));
+                .andExpect(status().isBadRequest());
     }
 
     private static LoginRequest createLoginRequest() {
@@ -182,14 +132,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 .thenThrow(new IllegalStateException(ErrorCode.INVALID_PASSWORD));
 
         mockMvc.perform(builder)
-                .andExpect(status().isBadRequest())
-                .andDo(document("/members/login/fail/invalid-password",
-                        requestPreprocessor,
-                        responsePreprocessor,
-                        requestFields(
-                                fieldWithPath("email").type(JsonFieldType.STRING).description("사용자 이메일"),
-                                fieldWithPath("passwd").type(JsonFieldType.STRING).description("비밀번호")
-                        )));
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -201,11 +144,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 .thenReturn(Member.builder().build());
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andDo(document("/members/get/success",
-                        requestPreprocessor,
-                        responsePreprocessor
-                        ));
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -217,13 +156,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 .thenThrow(new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
 
         mockMvc.perform(builder)
-                .andExpect(status().isBadRequest())
-                .andDo(document("/members/get/fail/not-existing-memberId",
-                        requestPreprocessor,
-                        responsePreprocessor,
-                        responseFields(
-                                fieldWithPath("errorCode").type(JsonFieldType.STRING).description("에러메세지")
-                        )));
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -240,13 +173,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 .changePasswd(1L, changePasswordRequest.getNewPasswd());
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andDo(document("/members/password/success",
-                        requestPreprocessor,
-                        responsePreprocessor,
-                        requestFields(
-                                fieldWithPath("newPasswd").type(JsonFieldType.STRING).description("새로운 비밀번호")
-                        )));
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -271,20 +198,7 @@ class MemberControllerTest extends AbstractControllerTest {
         when(board1.getCreatedDateTime()).thenReturn(LocalDateTime.now());
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andDo(document("/members/board/get/success",
-                        requestPreprocessor,
-                        responsePreprocessor,
-                        responseFields(
-                                fieldWithPath("[].boardId").type(JsonFieldType.NUMBER).description("board id"),
-                                fieldWithPath("[].title").type(JsonFieldType.STRING).description("게시물 제목"),
-                                fieldWithPath("[].content").type(JsonFieldType.STRING).description("게시물 내용"),
-                                fieldWithPath("[].writerId").type(JsonFieldType.NUMBER).description("작성자 id"),
-                                fieldWithPath("[].writerAlias").type(JsonFieldType.STRING).description("작성자 별칭(닉네임)"),
-                                fieldWithPath("[].createDateTime").type(JsonFieldType.ARRAY).description("게시물 생성 날짜와 시간"),
-                                fieldWithPath("[].images").type(JsonFieldType.ARRAY).description("게시물 이미지 배열"),
-                                fieldWithPath("[].comments").type(JsonFieldType.ARRAY).description("게시물에 달린 댓글 배열")
-                        )));
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -301,13 +215,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 .param("memberId", "1");
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andDo(document("/members/image/set/success",
-                        requestPreprocessor,
-                        responsePreprocessor,
-                        requestParts(
-                                partWithName("image").description("사용자 프로필 사진")
-                        )));
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -319,11 +227,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 .deleteImage(1L);
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andDo(document("/members/image/delete/success",
-                        requestPreprocessor,
-                        responsePreprocessor
-                        ));
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -335,11 +239,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 .deleteMember(1L);
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andDo(document("/members/delete/success",
-                        requestPreprocessor,
-                        responsePreprocessor
-                        ));
+                .andExpect(status().isOk());
     }
 
     private MockHttpServletRequestBuilder createPostMockHttpServletRequest(Object memberJoinRequest, String uri) {
