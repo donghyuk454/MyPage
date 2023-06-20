@@ -140,8 +140,14 @@ class MemberControllerTest extends AbstractControllerTest {
     void getMember() throws Exception {
         MockHttpServletRequestBuilder builder = get("/api/members");
 
+        Member member = Member.builder()
+                .id(1L)
+                .name("name")
+                .email("email.com")
+                .alias("alias").build();
+
         when(memberService.getMemberById(1L))
-                .thenReturn(Member.builder().build());
+                .thenReturn(member);
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk());
