@@ -48,15 +48,9 @@ class MemberControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("회원 가입을 합니다. 성공 시 200 으로 응답합니다.")
     void join() throws Exception {
-        MemberJoinRequest memberJoinRequest = MemberJoinRequest.builder()
-                .name("이름")
-                .email("email@email.com")
-                .passwd("password")
-                .alias("별칭").build();
+        MemberJoinRequest memberJoinRequest = createMemberJoinRequest();
 
-        MockHttpServletRequestBuilder builder = post("/api/members/signup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(memberJoinRequest));
+        MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(memberJoinRequest, "/api/members/signup");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
@@ -74,15 +68,9 @@ class MemberControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("회원 가입을 하는 경우, 중복된 alias 인 경우 이미 존재하는 닉네임으로 인식하여, IllegalStateException 이 발생하고 400 을 응답합니다.")
     void joinDuplicateAlias() throws Exception {
-        MemberJoinRequest memberJoinRequest = MemberJoinRequest.builder()
-                .name("이름")
-                .email("email@email.com")
-                .passwd("password")
-                .alias("별칭").build();
+        MemberJoinRequest memberJoinRequest = createMemberJoinRequest();
 
-        MockHttpServletRequestBuilder builder = post("/api/members/signup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(memberJoinRequest));
+        MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(memberJoinRequest, "/api/members/signup");
 
         when(memberService.join(any()))
                 .thenThrow(new IllegalStateException(ErrorCode.ALREADY_EXIST_ALIAS));
@@ -106,15 +94,9 @@ class MemberControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("회원 가입을 하는 경우, 중복된 email 인 경우 이미 존재하는 회원으로 인식하여, IllegalStateException 이 발생하고 400 을 응답합니다.")
     void joinDuplicateEmail() throws Exception {
-        MemberJoinRequest memberJoinRequest = MemberJoinRequest.builder()
-                .name("이름")
-                .email("email@email.com")
-                .passwd("password")
-                .alias("별칭").build();
+        MemberJoinRequest memberJoinRequest = createMemberJoinRequest();
 
-        MockHttpServletRequestBuilder builder = post("/api/members/signup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(memberJoinRequest));
+        MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(memberJoinRequest, "/api/members/signup");
 
         when(memberService.join(any()))
                 .thenThrow(new IllegalStateException(ErrorCode.ALREADY_EXIST_MEMBER));
@@ -135,15 +117,20 @@ class MemberControllerTest extends AbstractControllerTest {
                         )));
     }
 
+    private static MemberJoinRequest createMemberJoinRequest() {
+        return MemberJoinRequest.builder()
+                .name("이름")
+                .email("email@email.com")
+                .passwd("password")
+                .alias("별칭").build();
+    }
+
     @Test
     @DisplayName("로그인 합니다. 성공 시 200 을 응답합니다.")
     void login() throws Exception {
-        LoginRequest loginRequest
-                = new LoginRequest("email", "password");
+        LoginRequest loginRequest = createLoginRequest();
 
-        MockHttpServletRequestBuilder builder = post("/api/members/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(loginRequest));
+        MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(loginRequest, "/api/members/login");
 
         when(memberService.login("email", "password"))
                 .thenReturn(1L);
@@ -162,12 +149,9 @@ class MemberControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("로그인을 실패할 경우 중 가입한 이메일이 아닌 경우 NoSuchElementException 가 발생하고 400 을 응답합니다.")
     void loginInvalidEmail() throws Exception {
-        LoginRequest loginRequest
-                = new LoginRequest("email", "password");
+        LoginRequest loginRequest = createLoginRequest();
 
-        MockHttpServletRequestBuilder builder = post("/api/members/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(loginRequest));
+        MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(loginRequest, "/api/members/login");
 
         when(memberService.login("email", "password"))
                 .thenThrow(new NoSuchElementException(ErrorCode.INVALID_EMAIL));
@@ -183,15 +167,16 @@ class MemberControllerTest extends AbstractControllerTest {
                         )));
     }
 
+    private static LoginRequest createLoginRequest() {
+        return new LoginRequest("email", "password");
+    }
+
     @Test
     @DisplayName("로그인을 실패할 경우 중 비밀번호를 틀린 경우 NoSuchElementException 가 발생하고 400 을 응답합니다.")
     void loginInvalidPassword() throws Exception {
-        LoginRequest loginRequest
-                = new LoginRequest("email", "password");
+        LoginRequest loginRequest = createLoginRequest();
 
-        MockHttpServletRequestBuilder builder = post("/api/members/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(loginRequest));
+        MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(loginRequest, "/api/members/login");
 
         when(memberService.login("email", "password"))
                 .thenThrow(new IllegalStateException(ErrorCode.INVALID_PASSWORD));
@@ -355,5 +340,11 @@ class MemberControllerTest extends AbstractControllerTest {
                         requestPreprocessor,
                         responsePreprocessor
                         ));
+    }
+
+    private MockHttpServletRequestBuilder createPostMockHttpServletRequest(Object memberJoinRequest, String uri) {
+        return post(uri)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(memberJoinRequest));
     }
 }
