@@ -1,4 +1,4 @@
-package com.mong.project.dto.request.member;
+package com.mong.project.controller.member.dto.request;
 
 
 import com.mong.project.domain.member.Member;

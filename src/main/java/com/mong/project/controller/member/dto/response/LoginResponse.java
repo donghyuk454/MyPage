@@ -1,4 +1,4 @@
-package com.mong.project.dto.response.member;
+package com.mong.project.controller.member.dto.response;
 
 import lombok.AccessLevel;
 import lombok.Getter;

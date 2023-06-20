@@ -3,9 +3,9 @@ package com.mong.project.controller.member;
 import com.mong.project.controller.AbstractControllerTest;
 import com.mong.project.domain.board.Board;
 import com.mong.project.domain.member.Member;
-import com.mong.project.dto.request.member.ChangePasswordRequest;
-import com.mong.project.dto.request.member.LoginRequest;
-import com.mong.project.dto.request.member.MemberJoinRequest;
+import com.mong.project.controller.member.dto.request.ChangePasswordRequest;
+import com.mong.project.controller.member.dto.request.LoginRequest;
+import com.mong.project.controller.member.dto.request.MemberJoinRequest;
 import com.mong.project.exception.ErrorCode;
 import com.mong.project.service.member.MemberService;
 

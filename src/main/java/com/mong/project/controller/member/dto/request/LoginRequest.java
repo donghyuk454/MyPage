@@ -1,4 +1,4 @@
-package com.mong.project.dto.response.board;
+package com.mong.project.controller.member.dto.request;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class GetBoardImageResponse {
-    private Long imageId;
-    private String url;
+public class LoginRequest {
+    private String email;
+    private String passwd;
 }

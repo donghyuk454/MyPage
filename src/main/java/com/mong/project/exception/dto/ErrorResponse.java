@@ -1,4 +1,4 @@
-package com.mong.project.dto.response;
+package com.mong.project.exception.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

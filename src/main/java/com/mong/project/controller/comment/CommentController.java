@@ -1,8 +1,8 @@
 package com.mong.project.controller.comment;
 
 import com.mong.project.domain.member.annotation.Login;
-import com.mong.project.dto.request.comment.AddCommentRequest;
-import com.mong.project.dto.request.comment.ChangeCommentRequest;
+import com.mong.project.controller.comment.dto.request.AddCommentRequest;
+import com.mong.project.controller.comment.dto.request.ChangeCommentRequest;
 import com.mong.project.service.comment.CommentService;
 
 import lombok.RequiredArgsConstructor;

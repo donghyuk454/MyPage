@@ -1,4 +1,4 @@
-package com.mong.project.dto.request.member;
+package com.mong.project.controller.member.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -2,10 +2,10 @@ package com.mong.project.controller.board;
 
 import com.mong.project.domain.board.Board;
 import com.mong.project.domain.member.annotation.Login;
-import com.mong.project.dto.request.board.ChangeBoardRequest;
-import com.mong.project.dto.request.board.CreateBoardRequest;
-import com.mong.project.dto.request.board.RemoveBoardImageRequest;
-import com.mong.project.dto.response.board.GetBoardResponse;
+import com.mong.project.controller.board.dto.request.ChangeBoardRequest;
+import com.mong.project.controller.board.dto.request.CreateBoardRequest;
+import com.mong.project.controller.board.dto.request.RemoveBoardImageRequest;
+import com.mong.project.controller.board.dto.response.GetBoardResponse;
 import com.mong.project.service.board.BoardService;
 
 import lombok.RequiredArgsConstructor;

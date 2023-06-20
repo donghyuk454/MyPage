@@ -1,4 +1,4 @@
-package com.mong.project.dto.request.board;
+package com.mong.project.controller.board.dto.request;
 
 import com.mong.project.domain.board.Board;
 import lombok.AccessLevel;

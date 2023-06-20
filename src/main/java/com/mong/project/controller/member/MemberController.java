@@ -3,11 +3,11 @@ package com.mong.project.controller.member;
 import com.mong.project.domain.board.Board;
 import com.mong.project.domain.member.Member;
 import com.mong.project.domain.member.annotation.Login;
-import com.mong.project.dto.request.member.ChangePasswordRequest;
-import com.mong.project.dto.request.member.LoginRequest;
-import com.mong.project.dto.request.member.MemberJoinRequest;
-import com.mong.project.dto.response.board.GetBoardResponse;
-import com.mong.project.dto.response.member.LoginResponse;
+import com.mong.project.controller.member.dto.request.ChangePasswordRequest;
+import com.mong.project.controller.member.dto.request.LoginRequest;
+import com.mong.project.controller.member.dto.request.MemberJoinRequest;
+import com.mong.project.controller.board.dto.response.GetBoardResponse;
+import com.mong.project.controller.member.dto.response.LoginResponse;
 import com.mong.project.service.member.MemberService;
 
 import lombok.RequiredArgsConstructor;

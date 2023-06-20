@@ -1,4 +1,4 @@
-package com.mong.project.dto.request.comment;
+package com.mong.project.controller.member.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChangeCommentRequest {
-    private Long commentId;
-    private String content;
+public class ChangePasswordRequest {
+    private String newPasswd;
 }

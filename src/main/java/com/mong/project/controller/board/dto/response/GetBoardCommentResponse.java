@@ -1,4 +1,4 @@
-package com.mong.project.dto.response.board;
+package com.mong.project.controller.board.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

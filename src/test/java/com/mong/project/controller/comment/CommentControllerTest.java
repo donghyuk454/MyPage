@@ -2,8 +2,8 @@ package com.mong.project.controller.comment;
 
 import com.mong.project.controller.AbstractControllerTest;
 import com.mong.project.domain.comment.Comment;
-import com.mong.project.dto.request.comment.AddCommentRequest;
-import com.mong.project.dto.request.comment.ChangeCommentRequest;
+import com.mong.project.controller.comment.dto.request.AddCommentRequest;
+import com.mong.project.controller.comment.dto.request.ChangeCommentRequest;
 import com.mong.project.exception.ErrorCode;
 import com.mong.project.service.comment.CommentService;
 import org.junit.jupiter.api.DisplayName;
