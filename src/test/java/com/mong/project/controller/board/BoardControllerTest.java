@@ -75,10 +75,8 @@ class BoardControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("새로운 board 를 생성합니다. 사진이 있는 경우 image 까지 추가합니다. 성공 시 200 을 응답합니다.")
     void createBoard() throws Exception {
-        MockMultipartFile file1
-                = new MockMultipartFile("image", "test.PNG", MediaType.IMAGE_PNG_VALUE, "test".getBytes(StandardCharsets.UTF_8));
-        MockMultipartFile file2
-                = new MockMultipartFile("image", "test.PNG", MediaType.IMAGE_PNG_VALUE, "test".getBytes(StandardCharsets.UTF_8));
+        MockMultipartFile file1 = createMockMultipartFile("image");
+        MockMultipartFile file2 = createMockMultipartFile("image");
 
         Board board = mock(Board.class);
         CreateBoardRequest createBoardRequest
@@ -153,10 +151,8 @@ class BoardControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("board 의 image 를 추가합니다. 성공 시 200 을 응답합니다.")
     void addBoardImage() throws Exception {
-        MockMultipartFile file1
-                = new MockMultipartFile("imageFiles", "test.PNG", MediaType.IMAGE_PNG_VALUE, "test".getBytes(StandardCharsets.UTF_8));
-        MockMultipartFile file2
-                = new MockMultipartFile("imageFiles", "test.PNG", MediaType.IMAGE_PNG_VALUE, "test".getBytes(StandardCharsets.UTF_8));
+        MockMultipartFile file1 = createMockMultipartFile("imageFiles");
+        MockMultipartFile file2 = createMockMultipartFile("imageFiles");
 
         doNothing().when(boardService)
                 .addImage(any(Long.class), any(List.class));
@@ -168,6 +164,10 @@ class BoardControllerTest extends AbstractControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk());
+    }
+
+    private static MockMultipartFile createMockMultipartFile(String imageFiles) {
+        return new MockMultipartFile(imageFiles, "test.PNG", MediaType.IMAGE_PNG_VALUE, "test".getBytes(StandardCharsets.UTF_8));
     }
 
     @Test
