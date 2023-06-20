@@ -10,7 +10,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.NoSuchElementException;
@@ -41,9 +40,7 @@ class CommentControllerTest extends AbstractControllerTest {
         AddCommentRequest addCommentRequest
                 = new AddCommentRequest(1L, "댓글입니다.");
 
-        MockHttpServletRequestBuilder builder = post("/api/comments")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(addCommentRequest));
+        MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(addCommentRequest, "/api/comments");
 
         doNothing().when(commentService)
                 .addComment(1L,1L,"댓글입니다.");
@@ -58,9 +55,8 @@ class CommentControllerTest extends AbstractControllerTest {
         ChangeCommentRequest changeCommentRequest
                 = new ChangeCommentRequest(1L, "수정할 내용입니다.");
 
-        MockHttpServletRequestBuilder builder = put("/api/comments")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(changeCommentRequest));
+        MockHttpServletRequestBuilder builder
+                = createPutMockHttpServletRequest(changeCommentRequest, "/api/comments");
 
         when(commentService.changeComment(1L, "수정할 내용입니다."))
                 .thenReturn(Comment.builder().id(1L).content("수정할 내용입니다.").build());
@@ -75,9 +71,8 @@ class CommentControllerTest extends AbstractControllerTest {
         ChangeCommentRequest changeCommentRequest
                 = new ChangeCommentRequest(1L, "수정할 내용입니다.");
 
-        MockHttpServletRequestBuilder builder = put("/api/comments")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(changeCommentRequest));
+        MockHttpServletRequestBuilder builder
+                = createPutMockHttpServletRequest(changeCommentRequest, "/api/comments");
 
         when(commentService.changeComment(any(Long.class), anyString()))
                 .thenThrow(new NoSuchElementException(ErrorCode.NOT_EXIST_COMMENT));

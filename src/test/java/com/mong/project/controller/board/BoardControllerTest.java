@@ -107,9 +107,8 @@ class BoardControllerTest extends AbstractControllerTest {
         when(boardService.addBoard(any(Long.class), any(Board.class)))
                 .thenReturn(board);
 
-        MockHttpServletRequestBuilder builder = post("/api/boards")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(createBoardRequest));
+        MockHttpServletRequestBuilder builder
+                = createPostMockHttpServletRequest(createBoardRequest, "/api/boards");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk());
@@ -128,9 +127,8 @@ class BoardControllerTest extends AbstractControllerTest {
         when(boardService.changeBoard(1L, "제목입니다.", "내용입니다,"))
                 .thenReturn(board);
 
-        MockHttpServletRequestBuilder builder = put("/api/boards")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(changeBoardRequest));
+        MockHttpServletRequestBuilder builder
+                = createPutMockHttpServletRequest(changeBoardRequest, "/api/boards");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk());
@@ -179,9 +177,8 @@ class BoardControllerTest extends AbstractControllerTest {
         doNothing().when(boardService)
                 .deleteImages(1L, List.of(1L, 2L, 3L));
 
-        MockHttpServletRequestBuilder builder = delete("/api/boards/image")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(removeBoardImageRequest));
+        MockHttpServletRequestBuilder builder
+                = createDeleteMockHttpServletRequest(removeBoardImageRequest, "/api/boards/image");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk());

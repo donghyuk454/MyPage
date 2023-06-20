@@ -16,7 +16,6 @@ import org.mockito.Mock;
 
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.nio.charset.StandardCharsets;
@@ -171,9 +170,8 @@ class MemberControllerTest extends AbstractControllerTest {
         ChangePasswordRequest changePasswordRequest
                 = new ChangePasswordRequest("newPasswd");
 
-        MockHttpServletRequestBuilder builder = put("/api/members/password")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(changePasswordRequest));
+        MockHttpServletRequestBuilder builder
+                = createPutMockHttpServletRequest(changePasswordRequest, "/api/members/password");
 
         doNothing().when(memberService)
                 .changePasswd(1L, changePasswordRequest.getNewPasswd());
@@ -246,11 +244,5 @@ class MemberControllerTest extends AbstractControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk());
-    }
-
-    private MockHttpServletRequestBuilder createPostMockHttpServletRequest(Object memberJoinRequest, String uri) {
-        return post(uri)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(memberJoinRequest));
     }
 }
