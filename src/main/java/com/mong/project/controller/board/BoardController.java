@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @Controller
-@RequestMapping("/api/boards")
+@RequestMapping("/api/v2/boards")
 @RequiredArgsConstructor
 public class BoardController {
 

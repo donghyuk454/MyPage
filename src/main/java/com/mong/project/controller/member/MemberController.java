@@ -26,7 +26,7 @@ import static com.mong.project.config.interceptor.LoginConst.LOGIN_MEMBER;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/members")
+@RequestMapping("/api/v2/members")
 @RequiredArgsConstructor
 public class MemberController {
 
