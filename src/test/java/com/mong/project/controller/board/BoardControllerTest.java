@@ -26,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class BoardControllerTest extends AbstractControllerTest {
 
+    private static final String BASE_BOARD_URI = "/api/v2/boards";
     @InjectMocks
     private BoardController boardController;
 
@@ -40,7 +41,7 @@ class BoardControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("board id 를 통해 board 를 조회합니다. 성공 시 200 을 응답합니다.")
     void getBoard() throws Exception{
-        MockHttpServletRequestBuilder builder = get("/api/boards/1");
+        MockHttpServletRequestBuilder builder = get(BASE_BOARD_URI + "/1");
 
         Member member = mock(Member.class);
         Board board = Board.builder()
@@ -58,7 +59,7 @@ class BoardControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("없는 board id 를 통해 board 를 조회합니다. NoSuchElementException 이 발생하고 400 을 응답합니다.")
     void getNotExistBoard() throws Exception{
-        MockHttpServletRequestBuilder builder = get("/api/boards/1");
+        MockHttpServletRequestBuilder builder = get(BASE_BOARD_URI + "/1");
 
         Member member = mock(Member.class);
 
@@ -87,7 +88,7 @@ class BoardControllerTest extends AbstractControllerTest {
         doNothing().when(boardService)
                 .addImage(any(Long.class), any(List.class));
 
-        MockHttpServletRequestBuilder builder = multipart("/api/boards")
+        MockHttpServletRequestBuilder builder = multipart(BASE_BOARD_URI)
                 .file(file1)
                 .file(file2)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -108,7 +109,7 @@ class BoardControllerTest extends AbstractControllerTest {
                 .thenReturn(board);
 
         MockHttpServletRequestBuilder builder
-                = createPostMockHttpServletRequest(createBoardRequest, "/api/boards");
+                = createPostMockHttpServletRequest(createBoardRequest, BASE_BOARD_URI);
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk());
@@ -128,7 +129,7 @@ class BoardControllerTest extends AbstractControllerTest {
                 .thenReturn(board);
 
         MockHttpServletRequestBuilder builder
-                = createPutMockHttpServletRequest(changeBoardRequest, "/api/boards");
+                = createPutMockHttpServletRequest(changeBoardRequest, BASE_BOARD_URI);
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk());
@@ -139,7 +140,7 @@ class BoardControllerTest extends AbstractControllerTest {
     void deleteBoard() throws Exception {
         doNothing().when(boardService).deleteBoard(anyLong());
 
-        MockHttpServletRequestBuilder builder = delete("/api/boards")
+        MockHttpServletRequestBuilder builder = delete(BASE_BOARD_URI)
                 .param("boardId", "1");
 
         mockMvc.perform(builder)
@@ -155,7 +156,7 @@ class BoardControllerTest extends AbstractControllerTest {
         doNothing().when(boardService)
                 .addImage(any(Long.class), any(List.class));
 
-        MockHttpServletRequestBuilder builder = multipart("/api/boards/image")
+        MockHttpServletRequestBuilder builder = multipart(BASE_BOARD_URI + "/image")
                 .file(file1)
                 .file(file2)
                 .param("boardId", "1");
@@ -178,7 +179,7 @@ class BoardControllerTest extends AbstractControllerTest {
                 .deleteImages(1L, List.of(1L, 2L, 3L));
 
         MockHttpServletRequestBuilder builder
-                = createDeleteMockHttpServletRequest(removeBoardImageRequest, "/api/boards/image");
+                = createDeleteMockHttpServletRequest(removeBoardImageRequest, BASE_BOARD_URI + "/image");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk());

@@ -23,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class CommentControllerTest extends AbstractControllerTest {
 
+    private static final String BASE_COMMENT_URI = "/api/v2/comments";
     @InjectMocks
     private CommentController commentController;
 
@@ -40,7 +41,7 @@ class CommentControllerTest extends AbstractControllerTest {
         AddCommentRequest addCommentRequest
                 = new AddCommentRequest(1L, "댓글입니다.");
 
-        MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(addCommentRequest, "/api/comments");
+        MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(addCommentRequest, BASE_COMMENT_URI);
 
         doNothing().when(commentService)
                 .addComment(1L,1L,"댓글입니다.");
@@ -56,7 +57,7 @@ class CommentControllerTest extends AbstractControllerTest {
                 = new ChangeCommentRequest(1L, "수정할 내용입니다.");
 
         MockHttpServletRequestBuilder builder
-                = createPutMockHttpServletRequest(changeCommentRequest, "/api/comments");
+                = createPutMockHttpServletRequest(changeCommentRequest, BASE_COMMENT_URI);
 
         when(commentService.changeComment(1L, "수정할 내용입니다."))
                 .thenReturn(Comment.builder().id(1L).content("수정할 내용입니다.").build());
@@ -72,7 +73,7 @@ class CommentControllerTest extends AbstractControllerTest {
                 = new ChangeCommentRequest(1L, "수정할 내용입니다.");
 
         MockHttpServletRequestBuilder builder
-                = createPutMockHttpServletRequest(changeCommentRequest, "/api/comments");
+                = createPutMockHttpServletRequest(changeCommentRequest, BASE_COMMENT_URI);
 
         when(commentService.changeComment(any(Long.class), anyString()))
                 .thenThrow(new NoSuchElementException(ErrorCode.NOT_EXIST_COMMENT));
@@ -84,7 +85,7 @@ class CommentControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("댓글을 삭제합니다. 성공 시 200 을 응답합니다.")
     void deleteComment() throws Exception {
-        MockHttpServletRequestBuilder builder = delete("/api/comments")
+        MockHttpServletRequestBuilder builder = delete(BASE_COMMENT_URI)
                 .param("commentId", "1");
 
         doNothing().when(commentService)

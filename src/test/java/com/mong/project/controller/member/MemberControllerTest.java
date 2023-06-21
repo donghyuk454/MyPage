@@ -29,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class MemberControllerTest extends AbstractControllerTest {
 
+    private static final String BASE_MEMBER_URI = "/api/v2/members";
     @InjectMocks
     private MemberController memberController;
 
@@ -46,7 +47,7 @@ class MemberControllerTest extends AbstractControllerTest {
     void join() throws Exception {
         MemberJoinRequest memberJoinRequest = createMemberJoinRequest();
 
-        MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(memberJoinRequest, "/api/members/signup");
+        MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(memberJoinRequest, BASE_MEMBER_URI + "/signup");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk());
@@ -57,7 +58,7 @@ class MemberControllerTest extends AbstractControllerTest {
     void joinDuplicateAlias() throws Exception {
         MemberJoinRequest memberJoinRequest = createMemberJoinRequest();
 
-        MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(memberJoinRequest, "/api/members/signup");
+        MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(memberJoinRequest, BASE_MEMBER_URI + "/signup");
 
         when(memberService.join(any()))
                 .thenThrow(new IllegalStateException(ErrorCode.ALREADY_EXIST_ALIAS));
@@ -71,7 +72,7 @@ class MemberControllerTest extends AbstractControllerTest {
     void joinDuplicateEmail() throws Exception {
         MemberJoinRequest memberJoinRequest = createMemberJoinRequest();
 
-        MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(memberJoinRequest, "/api/members/signup");
+        MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(memberJoinRequest, BASE_MEMBER_URI + "/signup");
 
         when(memberService.join(any()))
                 .thenThrow(new IllegalStateException(ErrorCode.ALREADY_EXIST_MEMBER));
@@ -93,7 +94,7 @@ class MemberControllerTest extends AbstractControllerTest {
     void login() throws Exception {
         LoginRequest loginRequest = createLoginRequest();
 
-        MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(loginRequest, "/api/members/login");
+        MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(loginRequest, BASE_MEMBER_URI + "/login");
 
         when(memberService.login("email", "password"))
                 .thenReturn(1L);
@@ -107,7 +108,7 @@ class MemberControllerTest extends AbstractControllerTest {
     void loginInvalidEmail() throws Exception {
         LoginRequest loginRequest = createLoginRequest();
 
-        MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(loginRequest, "/api/members/login");
+        MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(loginRequest, BASE_MEMBER_URI + "/login");
 
         when(memberService.login("email", "password"))
                 .thenThrow(new NoSuchElementException(ErrorCode.INVALID_EMAIL));
@@ -125,7 +126,7 @@ class MemberControllerTest extends AbstractControllerTest {
     void loginInvalidPassword() throws Exception {
         LoginRequest loginRequest = createLoginRequest();
 
-        MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(loginRequest, "/api/members/login");
+        MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(loginRequest, BASE_MEMBER_URI + "/login");
 
         when(memberService.login("email", "password"))
                 .thenThrow(new IllegalStateException(ErrorCode.INVALID_PASSWORD));
@@ -137,7 +138,7 @@ class MemberControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("회원의 id 값을 통해 회원의 정보를 조회합니다. 성공 시 200 을 응답합니다.")
     void getMember() throws Exception {
-        MockHttpServletRequestBuilder builder = get("/api/members");
+        MockHttpServletRequestBuilder builder = get(BASE_MEMBER_URI);
 
         Member member = Member.builder()
                 .id(1L)
@@ -155,7 +156,7 @@ class MemberControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("존재하지 않는 회원의 id 값을 통해 회원의 정보를 조회합니다. NoSuchElementException 이 발생하고, 400 을 응답합니다.")
     void getNotExistMember() throws Exception {
-        MockHttpServletRequestBuilder builder = get("/api/members");
+        MockHttpServletRequestBuilder builder = get(BASE_MEMBER_URI);
 
         when(memberService.getMemberById(1L))
                 .thenThrow(new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
@@ -171,7 +172,7 @@ class MemberControllerTest extends AbstractControllerTest {
                 = new ChangePasswordRequest("newPasswd");
 
         MockHttpServletRequestBuilder builder
-                = createPutMockHttpServletRequest(changePasswordRequest, "/api/members/password");
+                = createPutMockHttpServletRequest(changePasswordRequest, BASE_MEMBER_URI + "/password");
 
         doNothing().when(memberService)
                 .changePasswd(1L, changePasswordRequest.getNewPasswd());
@@ -183,7 +184,7 @@ class MemberControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("member 가 작성한 boards 를 조회합니다. 성공 시 200 을 응답합니다.")
     void getMemberBoards() throws Exception {
-        MockHttpServletRequestBuilder builder = get("/api/members/board");
+        MockHttpServletRequestBuilder builder = get(BASE_MEMBER_URI + "/board");
 
         Board board1 = mock(Board.class);
         List<Board> boards = List.of(board1);
@@ -214,7 +215,7 @@ class MemberControllerTest extends AbstractControllerTest {
         doNothing().when(memberService)
                 .setImage(1L, file);
 
-        MockHttpServletRequestBuilder builder = multipart("/api/members/image")
+        MockHttpServletRequestBuilder builder = multipart(BASE_MEMBER_URI + "/image")
                 .file(file)
                 .param("memberId", "1");
 
@@ -225,7 +226,7 @@ class MemberControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("회원의 이미지를 삭제합니다. MultipartFile 이 없는 경우 사진이 삭제됩니다. 성공 시 200 을 응답합니다.")
     void deleteMemberImage() throws Exception {
-        MockHttpServletRequestBuilder builder = delete("/api/members/image");
+        MockHttpServletRequestBuilder builder = delete(BASE_MEMBER_URI + "/image");
 
         doNothing().when(memberService)
                 .deleteImage(1L);
@@ -237,7 +238,7 @@ class MemberControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("회원을 삭제합니다. 성공 시 200 을 응답합니다.")
     void deleteMember() throws Exception {
-        MockHttpServletRequestBuilder builder = delete("/api/members");
+        MockHttpServletRequestBuilder builder = delete(BASE_MEMBER_URI);
 
         doNothing().when(memberService)
                 .deleteMember(1L);
