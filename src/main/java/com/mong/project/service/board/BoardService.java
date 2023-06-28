@@ -61,7 +61,7 @@ public class BoardService {
                 .orElseThrow(() -> new NoSuchElementException(NOT_EXIST_BOARD));
     }
 
-    /**을
+    /**
      * board 내용(title, content) 수정
      * */
     public Board changeBoard(Long boardId, String title, String content) {
