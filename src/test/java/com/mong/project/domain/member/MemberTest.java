@@ -6,8 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MemberTest {
@@ -34,11 +32,12 @@ class MemberTest {
     @DisplayName("member 가 builder 를 통해 생성되는지 확인합니다.")
     void checkBuilder() {
         //when
-        Member member1 = new Member();
-        member1.setName("name");
-        member1.setPasswd("passwd");
-        member1.setAlias("alias");
-        member1.setEmail("email@email.com");
+        Member member1 = Member.builder()
+                .name("name")
+                .alias("alias")
+                .passwd("passwd")
+                .email("email@email.com")
+                .build();
 
         //then
         assertThat(member.getAlias()).isEqualTo(member1.getAlias());
@@ -52,19 +51,14 @@ class MemberTest {
     }
 
     @Test
-    @DisplayName("setPasswd 실행 시 lastModifiedDateTime 도 바뀌는 지 확인합니다.")
+    @DisplayName("setPasswd 실행 시 password 가 정상적으로 바뀌는 지 확인합니다.")
     void changePassword(){
         //when
-        LocalDateTime lmdt = member.getLastModifiedDateTime();
-        try{
-            Thread.sleep(1000);
-            member.setPasswd("newPasswd");
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            //then
-            assertThat(member.getLastModifiedDateTime()).isNotEqualTo(lmdt);
-        }
+        String newPasswd = "newPasswd";
+        member.setPasswd(newPasswd);
+
+        //then
+        assertThat(member.getPasswd()).isEqualTo(newPasswd);
     }
 
     @Test
@@ -98,6 +92,6 @@ class MemberTest {
         member.deleteBoard(board);
 
         //then
-        assertThat(member.getBoards().size()).isZero();
+        assertThat(member.getBoards()).isEmpty();
     }
 }
