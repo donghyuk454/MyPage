@@ -51,18 +51,14 @@ public class Board extends BaseEntity {
         if(member != null)
             member.addBoard(this);
         this.status = BoardStatus.ACTIVE;
-        this.createdDateTime = LocalDateTime.now();
-        this.lastModifiedDateTime = this.createdDateTime;
     }
 
     public void setTitle(String title){
         this.title = title;
-        this.lastModifiedDateTime = LocalDateTime.now();
     }
 
     public void setContent(String content) {
         this.content = content;
-        this.lastModifiedDateTime = LocalDateTime.now();
     }
 
     public void delete() {
