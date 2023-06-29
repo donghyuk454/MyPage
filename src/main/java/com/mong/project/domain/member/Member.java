@@ -7,7 +7,6 @@ import com.mong.project.domain.image.Image;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
@@ -18,7 +17,6 @@ import java.util.List;
 @Slf4j
 @Entity(name="member")
 @Getter
-@Setter
 @Table(name="member", uniqueConstraints = {
         @UniqueConstraint(name = "user_unique_constraint", columnNames = {"email", "alias"})
 })
@@ -77,7 +75,6 @@ public class Member extends BaseEntity {
 
     public void setPasswd(String passwd) {
         this.passwd = passwd;
-        this.lastModifiedDateTime = LocalDateTime.now();
     }
 
     public void addBoard(Board board) {
@@ -93,6 +90,10 @@ public class Member extends BaseEntity {
         //무한 루프 방지
         if(boards.contains(board))
             boards.remove(board);
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 
     public void delete(){
