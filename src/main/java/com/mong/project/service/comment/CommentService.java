@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -52,11 +51,4 @@ public class CommentService {
     public void deleteComment(Long commentId) {
         commentRepository.deleteById(commentId);
     }
-
-//    /**
-//     * 댓글 조회 기능
-//     * */
-//    public List<Comment> getComments(Long boardId) {
-//
-//    }
 }
