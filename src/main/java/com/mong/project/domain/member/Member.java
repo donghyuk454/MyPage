@@ -55,7 +55,6 @@ public class Member extends BaseEntity {
         this.image = image;
         this.boards = boards;
         this.createdDateTime = LocalDateTime.now();
-        this.lastModifiedDateTime = createdDateTime;
         this.boards = new ArrayList<>();
     }
 
