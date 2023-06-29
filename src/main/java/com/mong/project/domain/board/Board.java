@@ -7,7 +7,6 @@ import com.mong.project.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,12 +15,10 @@ import java.util.List;
 
 @Entity(name = "board")
 @Getter
-@Setter
 @NoArgsConstructor
 public class Board extends BaseEntity {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     @Column(name = "board_id", updatable = false)
     private Long id;
 
@@ -40,10 +37,10 @@ public class Board extends BaseEntity {
     private Member member;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private List<Image> images = new ArrayList<>();
+    private final List<Image> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Comment> comments = new ArrayList<>();
+    private final List<Comment> comments = new ArrayList<>();
 
     @Builder
     public Board(Long id, String title, String content, Member member){
@@ -76,5 +73,9 @@ public class Board extends BaseEntity {
 
     public void addImage(Image image) {
         images.add(image);
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
     }
 }
