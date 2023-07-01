@@ -36,8 +36,10 @@ public class BoardService {
      * */
     public Board addBoard(Long memberId, Board board){
         Member member = getMemberByMemberId(memberId);
+        Board board1 = boardRepository.save(board);
+        member.addBoard(board);
 
-        return boardRepository.save(member, board);
+        return board1;
     }
 
     /**
