@@ -87,8 +87,7 @@ public class Member extends BaseEntity {
 
     public void deleteBoard(Board board) {
         //무한 루프 방지
-        if(boards.contains(board))
-            boards.remove(board);
+        boards.remove(board);
     }
 
     public void setImage(Image image) {
