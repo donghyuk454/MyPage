@@ -34,6 +34,7 @@ class BoardRepositoryImplTest {
     void addBoard() {
         //given
         Member member = newTestMember();
+        Long memberId = member.getId();
 
         //when
         member = memberRepository.getById(memberId);
@@ -41,8 +42,8 @@ class BoardRepositoryImplTest {
         member.addBoard(board);
 
         //then
-        assertThat(board.getMember()).isEqualTo(member);
-        assertThat(member.getBoards().size()).isEqualTo(1);
+        assertThat(board.getMember().getId()).isEqualTo(member.getId());
+        assertThat(member.getBoards()).hasSize(1);
         assertThat(member.getBoards().get(0).getId()).isNotNull();
     }
 
