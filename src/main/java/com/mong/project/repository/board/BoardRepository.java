@@ -1,13 +1,10 @@
 package com.mong.project.repository.board;
 
 import com.mong.project.domain.board.Board;
-import com.mong.project.domain.member.Member;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
-public interface BoardRepository {
-    Board save(Member member, Board board);
-    Board save(Board board);
-    Optional<Board> findById(Long id);
-    void deleteBoardById(Long id);
+@Repository
+public interface BoardRepository extends JpaRepository<Board, Long> {
+    void deleteBoardById(Long boardId);
 }
