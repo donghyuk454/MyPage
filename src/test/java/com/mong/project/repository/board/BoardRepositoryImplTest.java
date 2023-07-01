@@ -14,8 +14,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -25,6 +27,7 @@ class BoardRepositoryImplTest {
 
     @Autowired private BoardRepository boardRepository;
     @Autowired private MemberRepository memberRepository;
+    @PersistenceContext private EntityManager em;
 
     @Test
     @DisplayName("새로운 board 에 영속성을 부여합니다.")
