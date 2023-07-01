@@ -65,8 +65,15 @@ class BoardRepositoryImplTest {
 
         //then
         assertThat(result1).isNotNull();
-        assertThat(result2).isEqualTo(result1);
+        isEqualBoard(result1, result2);
     }
+
+    private static void isEqualBoard(Board result1, Board result2) {
+        assertThat(result2.getId()).isEqualTo(result1.getId());
+        assertThat(result2.getTitle()).isEqualTo(result1.getTitle());
+        assertThat(result2.getContent()).isEqualTo(result1.getContent());
+    }
+
 
     @Test
     @DisplayName("board id 를 통해 board 를 조회합니다.")
@@ -81,8 +88,7 @@ class BoardRepositoryImplTest {
         Board result = boardRepository.findById(board.getId()).get();
 
         //then
-        assertThat(result.getContent()).isEqualTo(board.getContent());
-        assertEquals(board.getTitle(), result.getTitle());
+        isEqualBoard(result, board);
         assertThat(result.getMember().getId()).isEqualTo(member.getId());
     }
 
