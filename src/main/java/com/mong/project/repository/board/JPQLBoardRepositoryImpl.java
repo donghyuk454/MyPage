@@ -3,14 +3,12 @@ package com.mong.project.repository.board;
 import com.mong.project.domain.board.Board;
 import com.mong.project.domain.member.Member;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.Optional;
 
-@Repository
 @RequiredArgsConstructor
-public class BoardRepositoryImpl implements BoardRepository{
+public class JPQLBoardRepositoryImpl implements JPQLBoardRepository {
 
     private final EntityManager em;
 
