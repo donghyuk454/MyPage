@@ -36,8 +36,9 @@ class BoardRepositoryImplTest {
         Member member = newTestMember();
 
         //when
-        Board board = boardRepository.save(member, Board.builder()
-                .title("제목입니다").content("내용입니다.").build());
+        member = memberRepository.getById(memberId);
+        Board board = newTestBoard();
+        member.addBoard(board);
 
         //then
         assertThat(board.getMember()).isEqualTo(member);
@@ -50,8 +51,8 @@ class BoardRepositoryImplTest {
     void changeBoard() {
         //given
         Member member = newTestMember();
-        boardRepository.save(member, Board.builder()
-                .title("제목입니다").content("내용입니다.").build());
+        member.addBoard(newTestBoard());
+        memberRepository.save(member);
 
         //when
         Board board = member.getBoards().get(0);
@@ -72,9 +73,8 @@ class BoardRepositoryImplTest {
     void getBoard() {
         //given
         Member member = newTestMember();
-        boardRepository.save(member, Board.builder()
-                .title("제목입니다").content("내용입니다.").build());
-
+        member.addBoard(newTestBoard());
+        memberRepository.save(member);
         Board board = member.getBoards().get(0);
 
         //when
@@ -91,9 +91,8 @@ class BoardRepositoryImplTest {
     void deleteBoard() {
         //given
         Member member = newTestMember();
-        boardRepository.save(member, Board.builder()
-                .title("제목입니다").content("내용입니다.").build());
-        Board board = member.getBoards().get(0);
+        Board board = newTestBoard();
+        member.addBoard(board);
 
         //when
         boardRepository.deleteBoardById(board.getId());
@@ -105,7 +104,15 @@ class BoardRepositoryImplTest {
     }
 
     private Member newTestMember(){
-        return memberRepository.save(Member.builder()
+        Member member = memberRepository.save(Member.builder()
                 .name("name").email("tt@test.com").alias("테스트 닉네임").passwd("passwd").build());
+        em.flush();
+        em.clear();
+        return member;
+    }
+
+    private Board newTestBoard() {
+        return boardRepository.save(Board.builder()
+                .title("제목입니다").content("내용입니다.").build());
     }
 }
