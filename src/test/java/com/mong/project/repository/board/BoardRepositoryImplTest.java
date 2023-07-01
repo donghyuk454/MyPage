@@ -101,10 +101,10 @@ class BoardRepositoryImplTest {
         member.addBoard(board);
 
         //when
-        boardRepository.deleteBoardById(board.getId());
+        board.delete();
 
         //then
-        assertThat(member.getBoards().size()).isEqualTo(0);
+        assertThat(member.getBoards()).isEmpty();
         assertThat(board.getStatus()).isEqualTo(BoardStatus.DELETED);
         assertThat(board.getDeletedDateTime()).isNotNull();
     }
