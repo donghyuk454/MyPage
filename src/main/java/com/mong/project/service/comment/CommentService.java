@@ -31,7 +31,13 @@ public class CommentService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD));
 
-        commentRepository.save(member, board, content);
+        Comment comment = Comment.builder()
+                .board(board)
+                .member(member)
+                .content(content)
+                .build();
+
+        commentRepository.save(comment);
     }
 
     /**
