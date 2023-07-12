@@ -13,7 +13,7 @@ import java.util.Optional;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class CommentRepositoryImpl implements CommentRepository{
+public class JPQLCommentRepositoryImpl implements JPQLCommentRepository {
 
     private final EntityManager em;
 

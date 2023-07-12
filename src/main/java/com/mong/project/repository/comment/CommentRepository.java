@@ -1,13 +1,10 @@
 package com.mong.project.repository.comment;
 
-import com.mong.project.domain.board.Board;
 import com.mong.project.domain.comment.Comment;
-import com.mong.project.domain.member.Member;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
-public interface CommentRepository {
-    Comment save(Member member, Board board, String content);
-    Optional<Comment> findById(Long id);
+@Repository
+public interface CommentRepository extends JpaRepository<Comment, Long> {
     void deleteById(Long id);
 }
