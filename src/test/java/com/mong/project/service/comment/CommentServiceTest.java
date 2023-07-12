@@ -45,13 +45,13 @@ class CommentServiceTest {
                 .thenReturn(Optional.of(member));
         when(boardRepository.findById(1L))
                 .thenReturn(Optional.of(board));
-        when(commentRepository.save(member, board, "content"))
+        when(commentRepository.save(any()))
                 .thenReturn(comment);
 
         commentService.addComment(1L, 1L, "content");
 
         verify(commentRepository, times(1))
-                .save(member, board, "content");
+                .save(any());
     }
 
     @Test
