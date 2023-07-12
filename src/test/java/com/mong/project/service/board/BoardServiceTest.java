@@ -51,7 +51,7 @@ class BoardServiceTest {
     void addBoard() {
         when(memberRepository.findById(TEST_ID))
                 .thenReturn(Optional.of(member));
-        when(boardRepository.save(member, board))
+        when(boardRepository.save(board))
                 .thenReturn(board);
 
         boardService.addBoard(TEST_ID, board);
@@ -59,7 +59,7 @@ class BoardServiceTest {
         verify(memberRepository, times(1))
                 .findById(TEST_ID);
         verify(boardRepository, times(1))
-                .save(member, board);
+                .save(board);
     }
 
     @Test
