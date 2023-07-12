@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -55,6 +56,12 @@ public class CommentService {
      * 댓글 삭제
      * */
     public void deleteComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new NoSuchElementException(ErrorCode.NOT_EXIST_COMMENT));
+
+        List<Comment> comments = comment.getBoard().getComments();
+        comments.remove(comment);
+
         commentRepository.deleteById(commentId);
     }
 }
