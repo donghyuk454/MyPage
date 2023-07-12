@@ -13,6 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -75,10 +77,19 @@ class CommentServiceTest {
     @DisplayName("comment 를 삭제합니다.")
     void deleteComment() {
         doNothing().when(commentRepository).deleteById(1L);
+        when(commentRepository.findById(1L))
+                .thenReturn(Optional.of(comment));
+        when(comment.getBoard())
+                .thenReturn(board);
+        List<Comment> mockComments = new ArrayList<>();
+        mockComments.add(comment);
+        when(board.getComments())
+                .thenReturn(mockComments);
 
         commentService.deleteComment(1L);
 
         verify(commentRepository, times(1))
                 .deleteById(1L);
+        assertThat(mockComments).isEmpty();
     }
 }
