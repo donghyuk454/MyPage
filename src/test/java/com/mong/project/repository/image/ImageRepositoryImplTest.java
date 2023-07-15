@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @Transactional
+@ActiveProfiles("dev")
 @TestPropertySource("classpath:test.properties")
 class ImageRepositoryImplTest {
 
@@ -32,14 +34,11 @@ class ImageRepositoryImplTest {
 
     @Test
     @DisplayName("board 의 이미지를 id 를 통해 검색합니다.")
-    void findAllById() {
+    void findAllById_board() {
         //given
-        Board board = Board.builder().content("content").title("title").build();
+        Board board = createDefaultBoard();
         for (int i = 0; i < 5; i++) {
-            Image image = Image.builder()
-                    .url(imageDirectory+"/"+i+".PNG")
-                    .type(ImageType.BOARD)
-                    .build();
+            Image image = createImage(i, ImageType.BOARD);
             board.addImage(image);
         }
         boardRepository.save(board);
@@ -55,9 +54,23 @@ class ImageRepositoryImplTest {
         List<Image> result = imageRepository.findAllById(image_ids);
 
         //then
-        assertThat(result.size()).isEqualTo(3);
+        assertThat(result).hasSize(3);
         result.forEach(image->
-            assertThat(images.contains(image)).isTrue()
+            assertThat(images).contains(image)
         );
+    }
+
+    private static Board createDefaultBoard() {
+        return Board.builder()
+                .content("content")
+                .title("title")
+                .build();
+    }
+
+    private Image createImage(int index, ImageType type) {
+        return Image.builder()
+                .url(imageDirectory + "/" + index + ".PNG")
+                .type(type)
+                .build();
     }
 }
