@@ -3,7 +3,9 @@ package com.mong.project.repository.image;
 import com.mong.project.domain.board.Board;
 import com.mong.project.domain.image.Image;
 import com.mong.project.domain.image.ImageType;
+import com.mong.project.domain.member.Member;
 import com.mong.project.repository.board.BoardRepository;
+import com.mong.project.repository.member.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,6 +31,7 @@ class ImageRepositoryImplTest {
 
     @Autowired private ImageRepository imageRepository;
     @Autowired private BoardRepository boardRepository;
+    @Autowired private MemberRepository memberRepository;
 
     @Value("${spring.image.directory}") String imageDirectory;
 
@@ -58,6 +61,35 @@ class ImageRepositoryImplTest {
         result.forEach(image->
             assertThat(images).contains(image)
         );
+    }
+
+    @Test
+    @DisplayName("member 의 이미지를 id 를 통해 검색합니다.")
+    void findAllById_member() {
+        //given
+        Member member = createDefaultMember();
+        member.setImage(createImage(1, ImageType.MEMBER));
+        memberRepository.save(member);
+
+        Image image = member.getImage();
+
+        //when
+        Image result = imageRepository.findById(image.getId())
+                .orElse(null);
+
+        //then
+        assertThat(result).isNotNull();
+        assertThat(result.getUrl()).isEqualTo(member.getImage().getUrl());
+        assertThat(result.getType()).isEqualTo(ImageType.MEMBER);
+    }
+
+    private static Member createDefaultMember() {
+        return Member.builder()
+                .name("test")
+                .email("test@test.com")
+                .alias("test")
+                .passwd("test")
+                .build();
     }
 
     private static Board createDefaultBoard() {
