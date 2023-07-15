@@ -1,11 +1,9 @@
 package com.mong.project.repository.image;
 
 import com.mong.project.domain.image.Image;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-public interface ImageRepository {
-    List<Image> findAllById(List<Long> ids);
-
-
+@Repository
+public interface ImageRepository extends JpaRepository<Image, Long> {
 }
