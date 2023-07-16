@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity(name="comment")
 @Getter
@@ -53,5 +54,9 @@ public class Comment extends BaseEntity {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public void delete() {
+        this.deletedDateTime = LocalDateTime.now();
     }
 }
