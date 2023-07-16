@@ -59,9 +59,12 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new NoSuchElementException(ErrorCode.NOT_EXIST_COMMENT));
 
-        List<Comment> comments = comment.getBoard().getComments();
+        Board board = comment.getBoard();
+        List<Comment> comments = board.getComments();
         comments.remove(comment);
+        comment.delete();
 
-        commentRepository.deleteById(commentId);
+        commentRepository.save(comment);
+        boardRepository.save(board);
     }
 }
