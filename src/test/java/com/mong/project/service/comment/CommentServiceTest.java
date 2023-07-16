@@ -76,7 +76,7 @@ class CommentServiceTest {
     @Test
     @DisplayName("comment 를 삭제합니다.")
     void deleteComment() {
-        doNothing().when(commentRepository).deleteById(1L);
+        //given
         when(commentRepository.findById(1L))
                 .thenReturn(Optional.of(comment));
         when(comment.getBoard())
@@ -86,10 +86,15 @@ class CommentServiceTest {
         when(board.getComments())
                 .thenReturn(mockComments);
 
+        //when
         commentService.deleteComment(1L);
 
+        //then
         verify(commentRepository, times(1))
-                .deleteById(1L);
+                .save(comment);
+        verify(boardRepository, times(1))
+                .save(board);
+
         assertThat(mockComments).isEmpty();
     }
 }
