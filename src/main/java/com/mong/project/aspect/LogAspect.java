@@ -15,23 +15,27 @@ public class LogAspect {
     private final MessageService messageService;
 
     @Around("execution(* com.mong.project..*(..))")
-    public void log(ProceedingJoinPoint joinPoint) {
+    public Object sendLogMessage(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
-            joinPoint.proceed();
+            return joinPoint.proceed();
         } catch (Throwable e) {
             // db 에 log message 저장
 
             // slack message 전송
-            messageService.sendMessage("exception 발생",
-                    getMessage(joinPoint, e));
+            messageService.sendMessage(createMessage(joinPoint, e));
 
-            throw new RuntimeException(e);
+            throw e;
         }
     }
 
-    private String getMessage(ProceedingJoinPoint joinPoint, Throwable e) {
-        String className = joinPoint.getTarget().getClass().getName();
+    private String createMessage(ProceedingJoinPoint joinPoint, Throwable e) {
+        String className = joinPoint
+                .getTarget()
+                .getClass()
+                .getName();
 
-        return className + ": " + e.getMessage();
+        return "exception 발생" +
+                className + ": " +
+                e.getMessage();
     }
 }
