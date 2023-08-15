@@ -1,16 +1,16 @@
-package com.mong.project.aspect;
+package com.mong.project.util.log.aspect;
 
 import com.mong.project.domain.member.Member;
 import com.mong.project.repository.member.MemberRepository;
-import com.mong.project.service.log.MessageService;
+import com.mong.project.util.log.service.MessageService;
 import com.mong.project.service.member.MemberService;
+import com.mong.project.util.log.aspect.LogAspect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

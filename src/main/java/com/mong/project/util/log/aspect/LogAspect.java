@@ -1,6 +1,6 @@
-package com.mong.project.aspect;
+package com.mong.project.util.log.aspect;
 
-import com.mong.project.service.log.MessageService;
+import com.mong.project.util.log.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

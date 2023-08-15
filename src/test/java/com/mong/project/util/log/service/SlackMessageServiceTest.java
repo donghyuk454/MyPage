@@ -1,5 +1,7 @@
-package com.mong.project.service.log;
+package com.mong.project.util.log.service;
 
+import com.mong.project.util.log.service.MessageService;
+import com.mong.project.util.log.service.SlackMessageService;
 import com.slack.api.methods.MethodsClient;
 import com.slack.api.methods.SlackApiException;
 import com.slack.api.methods.request.chat.ChatPostMessageRequest;
@@ -9,7 +11,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
