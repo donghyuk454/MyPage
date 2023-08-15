@@ -22,7 +22,9 @@ public class LogAspect {
             // db 에 log message 저장
 
             // slack message 전송
-            messageService.sendMessage(createMessage(joinPoint, e));
+            String message = createMessage(joinPoint, e);
+            log.info(message);
+            messageService.sendMessage(message);
 
             throw e;
         }
@@ -34,7 +36,7 @@ public class LogAspect {
                 .getClass()
                 .getName();
 
-        return "exception 발생" +
+        return "exception 발생" + ":" +
                 className + ": " +
                 e.getMessage();
     }
