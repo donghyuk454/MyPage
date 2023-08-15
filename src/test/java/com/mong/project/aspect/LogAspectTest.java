@@ -47,8 +47,6 @@ class LogAspectTest {
                 .thenThrow(new IllegalStateException(message));
 
         MemberRepository repository = factory.getProxy();
-        Advisor[] advisors = factory.getAdvisors();
-        System.out.println(advisors.length);
 
         //when
         try {
