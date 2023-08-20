@@ -36,10 +36,10 @@ public class BoardService {
      * */
     public Board addBoard(Long memberId, Board board){
         Member member = getMemberByMemberId(memberId);
-        Board board1 = boardRepository.save(board);
-        member.addBoard(board);
+        Board savedBoard = boardRepository.save(board);
+        member.addBoard(savedBoard);
 
-        return board1;
+        return savedBoard;
     }
 
     /**
@@ -95,6 +95,7 @@ public class BoardService {
                     .type(ImageType.BOARD)
                     .url(imageFile.getAbsolutePath())
                     .build();
+            image = imageRepository.save(image);
 
             board.addImage(image);
         });
