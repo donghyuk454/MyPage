@@ -37,17 +37,18 @@ public class FileService {
         File newFile = new File(fileName);
 
         try {
-            if (newFile.createNewFile()) {
-                writeFileByFOS(newFile, file);
-
-                log.info("파일을 생성하였습니다. 경로 = {}", newFile.getAbsolutePath());
-                return newFile;
+            if (!newFile.createNewFile()) {
+                return null;
             }
+
+            writeFileByFOS(newFile, file);
+            log.info("파일을 생성하였습니다. 경로 = {}", newFile.getAbsolutePath());
+
         } catch (IOException e) {
             log.error("파일을 생성에 실패하였습니다. 경로 = {}", newFile.getAbsolutePath());
             throw new IllegalArgumentException(FAIL_TO_WRITE_FILE, e);
         }
-        return null;
+        return newFile;
     }
 
     private String extractExtension(String fileName) {
