@@ -1,7 +1,5 @@
-package com.mong.project.util.log.service;
+package com.mong.project.util.log.service.message;
 
-import com.mong.project.util.log.service.MessageService;
-import com.mong.project.util.log.service.SlackMessageService;
 import com.slack.api.methods.MethodsClient;
 import com.slack.api.methods.SlackApiException;
 import com.slack.api.methods.request.chat.ChatPostMessageRequest;
