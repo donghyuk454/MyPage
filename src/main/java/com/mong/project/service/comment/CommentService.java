@@ -3,7 +3,6 @@ package com.mong.project.service.comment;
 import com.mong.project.domain.board.Board;
 import com.mong.project.domain.comment.Comment;
 import com.mong.project.domain.member.Member;
-import com.mong.project.exception.ErrorCode;
 import com.mong.project.repository.board.BoardRepository;
 import com.mong.project.repository.comment.CommentRepository;
 import com.mong.project.repository.member.MemberRepository;
@@ -13,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import static com.mong.project.exception.ErrorCode.*;
 
 @Service
 @Transactional
@@ -28,9 +29,9 @@ public class CommentService {
      * */
     public void addComment(Long memberId, Long boardId, String content) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
+                .orElseThrow(() -> new NoSuchElementException(NOT_EXIST_MEMBER));
         Board board = boardRepository.findById(boardId)
-                .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD));
+                .orElseThrow(() -> new NoSuchElementException(NOT_EXIST_BOARD));
 
         Comment comment = Comment.builder()
                 .board(board)
@@ -46,7 +47,7 @@ public class CommentService {
      * */
     public Comment changeComment(Long commentId, String content) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_COMMENT));
+                .orElseThrow(() -> new NoSuchElementException(NOT_EXIST_COMMENT));
         comment.setContent(content);
 
         return comment;
@@ -57,7 +58,7 @@ public class CommentService {
      * */
     public void deleteComment(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new NoSuchElementException(ErrorCode.NOT_EXIST_COMMENT));
+                .orElseThrow(() -> new NoSuchElementException(NOT_EXIST_COMMENT));
 
         Board board = comment.getBoard();
         List<Comment> comments = board.getComments();

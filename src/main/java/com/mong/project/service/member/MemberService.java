@@ -3,7 +3,6 @@ package com.mong.project.service.member;
 import com.mong.project.domain.image.Image;
 import com.mong.project.domain.image.ImageType;
 import com.mong.project.domain.member.Member;
-import com.mong.project.exception.ErrorCode;
 import com.mong.project.repository.member.MemberRepository;
 import com.mong.project.service.FileService;
 
@@ -15,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.NoSuchElementException;
+
+import static com.mong.project.exception.ErrorCode.*;
 
 @Slf4j
 @Service
@@ -38,7 +39,7 @@ public class MemberService {
 
     private void validateDuplicateMember(Member member) {
         memberRepository.findByEmailAndAlias(member.getEmail(), member.getAlias())
-                .ifPresent(m->{throw new IllegalStateException(ErrorCode.ALREADY_EXIST_MEMBER);});
+                .ifPresent(m-> {throw new IllegalStateException(ALREADY_EXIST_MEMBER);});
     }
 
     /**
@@ -46,10 +47,10 @@ public class MemberService {
      * */
     public Long login(String email, String passwd){
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(()-> new NoSuchElementException(ErrorCode.INVALID_EMAIL));
+                .orElseThrow(()-> new NoSuchElementException(INVALID_EMAIL));
 
         if (isInvalidPassword(passwd, member)) {
-            throw new IllegalStateException(ErrorCode.INVALID_PASSWORD);
+            throw new IllegalStateException(INVALID_PASSWORD);
         }
 
         return member.getId();
@@ -64,7 +65,7 @@ public class MemberService {
      * */
     public Member getMemberById(Long memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(()->new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
+                .orElseThrow(()->new NoSuchElementException(NOT_EXIST_MEMBER));
     }
 
     /**
