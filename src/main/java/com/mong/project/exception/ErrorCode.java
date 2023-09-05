@@ -23,4 +23,7 @@ public class ErrorCode {
 
     //session
     public static final String INVALID_SESSION = "잘못되었거나 존재하지 않는 세션입니다.";
+
+    // unchecked
+    public static final String UNCHECKED_EXCEPTION = "서버에 문제가 발생했습니다. 잠시 후 다시 이용해주세요.";
 }
