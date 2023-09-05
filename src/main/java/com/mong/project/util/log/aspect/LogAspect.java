@@ -12,6 +12,8 @@ import org.aspectj.lang.annotation.Aspect;
 
 import javax.persistence.PersistenceException;
 
+import static com.mong.project.exception.ErrorCode.UNCHECKED_EXCEPTION;
+
 @Aspect
 @Slf4j
 @RequiredArgsConstructor
@@ -24,10 +26,13 @@ public class LogAspect {
     public Object sendLogMessage(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
             return joinPoint.proceed();
-        } catch (MyPageException | PersistenceException e) {
+        } catch (MyPageException e) {
             // check 된 Exception
             throw e;
-        }  catch (RuntimeException e) { // MyPageException 이 아닌 Runtime exception 인 경우에만 동작
+        } catch (PersistenceException e) {
+            // check 된 Exception
+            throw new MyPageException(e.getMessage(), e);
+        } catch (RuntimeException e) { // MyPageException 이 아닌 Runtime exception 인 경우에만 동작
             // db 에 log message 저장
             logService.addExceptionLog(new ExceptionLogDto(joinPoint, e));
 
@@ -36,7 +41,7 @@ public class LogAspect {
             log.info(message);
             messageService.sendMessage(message);
 
-            throw new MyPageException(e);
+            throw new MyPageException(UNCHECKED_EXCEPTION, e);
         }
     }
 
