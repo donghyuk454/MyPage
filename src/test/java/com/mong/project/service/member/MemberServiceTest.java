@@ -3,6 +3,7 @@ package com.mong.project.service.member;
 import com.mong.project.domain.image.Image;
 import com.mong.project.domain.member.Member;
 import com.mong.project.exception.ErrorCode;
+import com.mong.project.exception.MyPageException;
 import com.mong.project.repository.member.MemberRepository;
 import com.mong.project.service.FileService;
 
@@ -16,10 +17,12 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import static com.mong.project.exception.ErrorCode.ALREADY_EXIST_MEMBER;
+import static com.mong.project.exception.ErrorCode.INVALID_EMAIL;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -71,32 +74,32 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("기존에 존재하는 닉네임을 가진 회원 등록. IllegalException 을 throw 합니다")
+    @DisplayName("기존에 존재하는 닉네임을 가진 회원 등록. MyPageException 을 throw 합니다")
     void joinExistAlias() {
         setMemberEmail();
         setMemberAlias();
         when(memberRepository.save(member))
-                .thenThrow(new IllegalStateException("이미 존재하는 닉네임입니다."));
+                .thenThrow(new MyPageException(ALREADY_EXIST_MEMBER));
 
-        IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.join(member));
+        MyPageException e = assertThrows(MyPageException.class, () -> memberService.join(member));
 
-        assertThat(e.getMessage()).isEqualTo("이미 존재하는 닉네임입니다.");
+        assertThat(e.getMessage()).isEqualTo(ALREADY_EXIST_MEMBER);
 
         verify(memberRepository, times(1))
                 .findByEmailAndAlias(anyString(), anyString());
     }
 
     @Test
-    @DisplayName("기존에 존재하는 이메일을 가진 회원 등록. IllegalException 을 throw 합니다")
+    @DisplayName("기존에 존재하는 이메일을 가진 회원 등록. MyPageException 을 throw 합니다")
     void joinExistEmail() {
         setMemberEmail();
         setMemberAlias();
         when(memberRepository.save(member))
-                .thenThrow(new IllegalStateException(ErrorCode.ALREADY_EXIST_MEMBER));
+                .thenThrow(new MyPageException(ALREADY_EXIST_MEMBER));
 
-        IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.join(member));
+        MyPageException e = assertThrows(MyPageException.class, () -> memberService.join(member));
 
-        assertThat(e.getMessage()).isEqualTo(ErrorCode.ALREADY_EXIST_MEMBER);
+        assertThat(e.getMessage()).isEqualTo(ALREADY_EXIST_MEMBER);
 
         verify(memberRepository, times(1))
                 .findByEmailAndAlias(anyString(), anyString());
@@ -130,27 +133,27 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("존재하지 않는 이메일로 로그인 하는 경우입니다. NoSuchElementException 을 throw 합니다.")
+    @DisplayName("존재하지 않는 이메일로 로그인 하는 경우입니다. MyPageException 을 throw 합니다.")
     void loginInvalidEmail() {
         when(memberRepository.findByEmail("none"))
                 .thenReturn(Optional.empty());
 
-        NoSuchElementException e = assertThrows(NoSuchElementException.class, () -> memberService.login("none", "none"));
+        MyPageException e = assertThrows(MyPageException.class, () -> memberService.login("none", "none"));
 
-        assertThat(e.getMessage()).isEqualTo(ErrorCode.INVALID_EMAIL);
+        assertThat(e.getMessage()).isEqualTo(INVALID_EMAIL);
         verify(memberRepository, times(1))
                 .findByEmail(anyString());
     }
 
     @Test
-    @DisplayName("패스워드가 다른 경우입니다. IllegalStateException 을 throw 합니다.")
+    @DisplayName("패스워드가 다른 경우입니다. MyPageException 을 throw 합니다.")
     void loginInvalidPassword() {
         setMemberEmail();
         setMemberPassword();
         when(memberRepository.findByEmail(member.getEmail()))
                 .thenReturn(Optional.of(member));
 
-        IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.login(member.getEmail(), "none"));
+        MyPageException e = assertThrows(MyPageException.class, () -> memberService.login(member.getEmail(), "none"));
 
         assertThat(e.getMessage()).isEqualTo(ErrorCode.INVALID_PASSWORD);
         verify(memberRepository, times(1))
