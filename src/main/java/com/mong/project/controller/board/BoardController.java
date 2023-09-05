@@ -44,24 +44,21 @@ public class BoardController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> changeBoard(@Login final Long memberId,
-                                            @RequestBody ChangeBoardRequest changeBoardRequest) {
+    public ResponseEntity<Void> changeBoard(@RequestBody ChangeBoardRequest changeBoardRequest) {
         boardService.changeBoard(changeBoardRequest.getBoardId(), changeBoardRequest.getTitle(), changeBoardRequest.getContent());
 
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteBoard(@Login final Long memberId,
-                                            @RequestParam(name = "boardId") Long boardId) {
+    public ResponseEntity<Void> deleteBoard(@RequestParam(name = "boardId") Long boardId) {
         boardService.deleteBoard(boardId);
 
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/image")
-    public ResponseEntity<Void> createBoardImage(@Login final Long memberId,
-                                                 @RequestParam(name = "boardId") Long boardId,
+    public ResponseEntity<Void> createBoardImage(@RequestParam(name = "boardId") Long boardId,
                                                  @RequestPart List<MultipartFile> imageFiles) {
         boardService.addImage(boardId, imageFiles);
 
@@ -69,8 +66,7 @@ public class BoardController {
     }
 
     @DeleteMapping("/image")
-    public ResponseEntity<Void> removeBoardImage(@Login final Long memberId,
-                                                 @RequestBody RemoveBoardImageRequest removeBoardImageRequest) {
+    public ResponseEntity<Void> removeBoardImage(@RequestBody RemoveBoardImageRequest removeBoardImageRequest) {
         boardService.deleteImages(removeBoardImageRequest.getBoardId(), removeBoardImageRequest.getImageIds());
 
         return ResponseEntity.ok().build();
