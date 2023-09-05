@@ -1,5 +1,6 @@
 package com.mong.project.service;
 
+import com.mong.project.exception.MyPageException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -46,7 +47,7 @@ public class FileService {
 
         } catch (IOException e) {
             log.error("파일을 생성에 실패하였습니다. 경로 = {}", newFile.getAbsolutePath());
-            throw new IllegalArgumentException(FAIL_TO_WRITE_FILE, e);
+            throw new MyPageException(FAIL_TO_WRITE_FILE, e);
         }
         return newFile;
     }
@@ -55,7 +56,7 @@ public class FileService {
         try{
             return fileName.substring(fileName.lastIndexOf("."));
         } catch (StringIndexOutOfBoundsException e) {
-            throw new IllegalArgumentException(FAIL_TO_WRITE_FILE, e);
+            throw new MyPageException(FAIL_TO_WRITE_FILE, e);
         }
     }
 
@@ -69,7 +70,7 @@ public class FileService {
         try {
             Files.delete(Path.of(path));
         } catch (NoSuchFileException e) {
-            throw new IllegalStateException(FAIL_TO_REMOVE_FILE, e);
+            throw new MyPageException(FAIL_TO_REMOVE_FILE, e);
         } catch (IOException e) {
             return false;
         }

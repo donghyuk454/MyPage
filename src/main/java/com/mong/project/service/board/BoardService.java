@@ -4,6 +4,7 @@ import com.mong.project.domain.board.Board;
 import com.mong.project.domain.image.Image;
 import com.mong.project.domain.image.ImageType;
 import com.mong.project.domain.member.Member;
+import com.mong.project.exception.MyPageException;
 import com.mong.project.repository.board.BoardRepository;
 import com.mong.project.repository.image.ImageRepository;
 import com.mong.project.repository.member.MemberRepository;
@@ -16,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static com.mong.project.exception.ErrorCode.*;
 
@@ -52,7 +52,7 @@ public class BoardService {
 
     private Member getMemberByMemberId(Long memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(()-> new NoSuchElementException(NOT_EXIST_MEMBER));
+                .orElseThrow(()-> new MyPageException(NOT_EXIST_MEMBER));
     }
 
     /**
@@ -60,7 +60,7 @@ public class BoardService {
      * */
     public Board getBoardById(Long boardId) {
         return boardRepository.findById(boardId)
-                .orElseThrow(() -> new NoSuchElementException(NOT_EXIST_BOARD));
+                .orElseThrow(() -> new MyPageException(NOT_EXIST_BOARD));
     }
 
     /**
