@@ -6,7 +6,7 @@ import com.mong.project.domain.member.Member;
 import com.mong.project.controller.member.dto.request.ChangePasswordRequest;
 import com.mong.project.controller.member.dto.request.LoginRequest;
 import com.mong.project.controller.member.dto.request.MemberJoinRequest;
-import com.mong.project.exception.ErrorCode;
+import com.mong.project.exception.MyPageException;
 import com.mong.project.service.member.MemberService;
 
 import org.junit.jupiter.api.DisplayName;
@@ -21,8 +21,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 
+import static com.mong.project.exception.ErrorCode.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -54,28 +54,28 @@ class MemberControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @DisplayName("회원 가입을 하는 경우, 중복된 alias 인 경우 이미 존재하는 닉네임으로 인식하여, IllegalStateException 이 발생하고 400 을 응답합니다.")
+    @DisplayName("회원 가입을 하는 경우, 중복된 alias 인 경우 이미 존재하는 닉네임으로 인식하여, MyPageException 이 발생하고 400 을 응답합니다.")
     void joinDuplicateAlias() throws Exception {
         MemberJoinRequest memberJoinRequest = createMemberJoinRequest();
 
         MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(memberJoinRequest, BASE_MEMBER_URI + "/signup");
 
         when(memberService.join(any()))
-                .thenThrow(new IllegalStateException(ErrorCode.ALREADY_EXIST_ALIAS));
+                .thenThrow(new MyPageException(ALREADY_EXIST_ALIAS));
 
         mockMvc.perform(builder)
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    @DisplayName("회원 가입을 하는 경우, 중복된 email 인 경우 이미 존재하는 회원으로 인식하여, IllegalStateException 이 발생하고 400 을 응답합니다.")
+    @DisplayName("회원 가입을 하는 경우, 중복된 email 인 경우 이미 존재하는 회원으로 인식하여, MyPageException 이 발생하고 400 을 응답합니다.")
     void joinDuplicateEmail() throws Exception {
         MemberJoinRequest memberJoinRequest = createMemberJoinRequest();
 
         MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(memberJoinRequest, BASE_MEMBER_URI + "/signup");
 
         when(memberService.join(any()))
-                .thenThrow(new IllegalStateException(ErrorCode.ALREADY_EXIST_MEMBER));
+                .thenThrow(new MyPageException(ALREADY_EXIST_MEMBER));
 
         mockMvc.perform(builder)
                 .andExpect(status().isBadRequest());
@@ -104,14 +104,14 @@ class MemberControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @DisplayName("로그인을 실패할 경우 중 가입한 이메일이 아닌 경우 NoSuchElementException 가 발생하고 400 을 응답합니다.")
+    @DisplayName("로그인을 실패할 경우 중 가입한 이메일이 아닌 경우 MyPageException 가 발생하고 400 을 응답합니다.")
     void loginInvalidEmail() throws Exception {
         LoginRequest loginRequest = createLoginRequest();
 
         MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(loginRequest, BASE_MEMBER_URI + "/login");
 
         when(memberService.login("email", "password"))
-                .thenThrow(new NoSuchElementException(ErrorCode.INVALID_EMAIL));
+                .thenThrow(new MyPageException(INVALID_EMAIL));
 
         mockMvc.perform(builder)
                 .andExpect(status().isBadRequest());
@@ -122,14 +122,14 @@ class MemberControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @DisplayName("로그인을 실패할 경우 중 비밀번호를 틀린 경우 NoSuchElementException 가 발생하고 400 을 응답합니다.")
+    @DisplayName("로그인을 실패할 경우 중 비밀번호를 틀린 경우 MyPageException 가 발생하고 400 을 응답합니다.")
     void loginInvalidPassword() throws Exception {
         LoginRequest loginRequest = createLoginRequest();
 
         MockHttpServletRequestBuilder builder = createPostMockHttpServletRequest(loginRequest, BASE_MEMBER_URI + "/login");
 
         when(memberService.login("email", "password"))
-                .thenThrow(new IllegalStateException(ErrorCode.INVALID_PASSWORD));
+                .thenThrow(new MyPageException(INVALID_PASSWORD));
 
         mockMvc.perform(builder)
                 .andExpect(status().isBadRequest());
@@ -154,15 +154,15 @@ class MemberControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @DisplayName("존재하지 않는 회원의 id 값을 통해 회원의 정보를 조회합니다. NoSuchElementException 이 발생하고, 400 을 응답합니다.")
+    @DisplayName("존재하지 않는 회원의 id 값을 통해 회원의 정보를 조회합니다. MyPageException 이 발생하고, 400 을 응답합니다.")
     void getNotExistMember() throws Exception {
         MockHttpServletRequestBuilder builder = get(BASE_MEMBER_URI);
 
         when(memberService.getMemberById(1L))
-                .thenThrow(new NoSuchElementException(ErrorCode.NOT_EXIST_MEMBER));
+                .thenThrow(new MyPageException(NOT_EXIST_MEMBER));
 
         mockMvc.perform(builder)
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest()) ;
     }
 
     @Test

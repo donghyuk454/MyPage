@@ -4,7 +4,7 @@ import com.mong.project.controller.AbstractControllerTest;
 import com.mong.project.domain.comment.Comment;
 import com.mong.project.controller.comment.dto.request.AddCommentRequest;
 import com.mong.project.controller.comment.dto.request.ChangeCommentRequest;
-import com.mong.project.exception.ErrorCode;
+import com.mong.project.exception.MyPageException;
 import com.mong.project.service.comment.CommentService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,8 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import java.util.NoSuchElementException;
-
+import static com.mong.project.exception.ErrorCode.NOT_EXIST_COMMENT;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
@@ -67,7 +66,7 @@ class CommentControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @DisplayName("없는 댓글의 내용을 수정합니다. 업는 댓글이므로 NoSuchElementException 이 발생하고 400 을 응답합니다.")
+    @DisplayName("없는 댓글의 내용을 수정합니다. 업는 댓글이므로 MyPageException 이 발생하고 400 을 응답합니다.")
     void changeNotExistComment() throws Exception {
         ChangeCommentRequest changeCommentRequest
                 = new ChangeCommentRequest(1L, "수정할 내용입니다.");
@@ -76,7 +75,7 @@ class CommentControllerTest extends AbstractControllerTest {
                 = createPutMockHttpServletRequest(changeCommentRequest, BASE_COMMENT_URI);
 
         when(commentService.changeComment(any(Long.class), anyString()))
-                .thenThrow(new NoSuchElementException(ErrorCode.NOT_EXIST_COMMENT));
+                .thenThrow(new MyPageException(NOT_EXIST_COMMENT));
 
         mockMvc.perform(builder)
                 .andExpect(status().isBadRequest());

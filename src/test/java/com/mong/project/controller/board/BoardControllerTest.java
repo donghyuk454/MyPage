@@ -6,7 +6,7 @@ import com.mong.project.domain.member.Member;
 import com.mong.project.controller.board.dto.request.ChangeBoardRequest;
 import com.mong.project.controller.board.dto.request.CreateBoardRequest;
 import com.mong.project.controller.board.dto.request.RemoveBoardImageRequest;
-import com.mong.project.exception.ErrorCode;
+import com.mong.project.exception.MyPageException;
 import com.mong.project.service.board.BoardService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,8 +18,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.NoSuchElementException;
 
+import static com.mong.project.exception.ErrorCode.NOT_EXIST_BOARD;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -57,7 +57,7 @@ class BoardControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @DisplayName("없는 board id 를 통해 board 를 조회합니다. NoSuchElementException 이 발생하고 400 을 응답합니다.")
+    @DisplayName("없는 board id 를 통해 board 를 조회합니다. MyPageException 이 발생하고 400 을 응답합니다.")
     void getNotExistBoard() throws Exception{
         MockHttpServletRequestBuilder builder = get(BASE_BOARD_URI + "/1");
 
@@ -67,7 +67,7 @@ class BoardControllerTest extends AbstractControllerTest {
         when(member.getAlias()).thenReturn("테스트용");
 
         when(boardService.getBoardById(1L))
-                .thenThrow(new NoSuchElementException(ErrorCode.NOT_EXIST_BOARD));
+                .thenThrow(new MyPageException(NOT_EXIST_BOARD));
 
         mockMvc.perform(builder)
                 .andExpect(status().isBadRequest());
