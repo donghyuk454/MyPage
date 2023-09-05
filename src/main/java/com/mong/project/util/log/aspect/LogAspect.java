@@ -10,6 +10,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 
+import javax.persistence.PersistenceException;
+
 @Aspect
 @Slf4j
 @RequiredArgsConstructor
@@ -22,10 +24,10 @@ public class LogAspect {
     public Object sendLogMessage(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
             return joinPoint.proceed();
-        } catch (MyPageException e) {
+        } catch (MyPageException | PersistenceException e) {
             // check 된 Exception
             throw e;
-        } catch (RuntimeException e) { // MyPageException 이 아닌 Runtime exception 인 경우에만 동작
+        }  catch (RuntimeException e) { // MyPageException 이 아닌 Runtime exception 인 경우에만 동작
             // db 에 log message 저장
             logService.addExceptionLog(new ExceptionLogDto(joinPoint, e));
 
