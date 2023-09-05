@@ -1,5 +1,6 @@
 package com.mong.project.util.log.aspect;
 
+import com.mong.project.exception.MyPageException;
 import com.mong.project.util.log.service.dto.ExceptionLogDto;
 import com.mong.project.util.log.service.message.MessageService;
 import com.mong.project.util.log.service.ServerExceptionLogService;
@@ -21,16 +22,19 @@ public class LogAspect {
     public Object sendLogMessage(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
             return joinPoint.proceed();
-        } catch (Throwable e) {
+        } catch (MyPageException e) {
+            // check 된 Exception
+            throw e;
+        } catch (RuntimeException e) { // MyPageException 이 아닌 Runtime exception 인 경우에만 동작
             // db 에 log message 저장
-            logService.addExceptionLog(new ExceptionLogDto(joinPoint, (Exception) e));
+            logService.addExceptionLog(new ExceptionLogDto(joinPoint, e));
 
             // slack message 전송
             String message = createMessage(joinPoint, e);
             log.info(message);
             messageService.sendMessage(message);
 
-            throw e;
+            throw new MyPageException(e);
         }
     }
 
