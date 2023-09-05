@@ -3,23 +3,28 @@ package com.mong.project.exception;
 import com.mong.project.exception.dto.ErrorResponse;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.SessionException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import javax.persistence.EntityNotFoundException;
-import java.util.NoSuchElementException;
 
 @Slf4j
 @RestControllerAdvice
 public class ExceptionHandlers {
 
     @ResponseBody
-    @ExceptionHandler({SessionException.class, NoSuchElementException.class, EntityNotFoundException.class, IllegalStateException.class, IllegalArgumentException.class})
-    public ResponseEntity<ErrorResponse> handleException(RuntimeException e){
+    @ExceptionHandler(UncheckedException.class)
+    public ResponseEntity<ErrorResponse> handleException(UncheckedException e){
         log.info("에러 발생 message = {}", e.getMessage());
-        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorResponse(e.getMessage()));
+    }
+
+    @ResponseBody
+    @ExceptionHandler(MyPageException.class)
+    public ResponseEntity<ErrorResponse> handleException(MyPageException e) {
+        return ResponseEntity.badRequest()
+                .body(new ErrorResponse(e.getMessage()));
     }
 }
