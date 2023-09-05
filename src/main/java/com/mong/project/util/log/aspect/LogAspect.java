@@ -1,6 +1,7 @@
 package com.mong.project.util.log.aspect;
 
 import com.mong.project.exception.MyPageException;
+import com.mong.project.exception.UncheckedException;
 import com.mong.project.util.log.service.dto.ExceptionLogDto;
 import com.mong.project.util.log.service.message.MessageService;
 import com.mong.project.util.log.service.ServerExceptionLogService;
@@ -41,7 +42,7 @@ public class LogAspect {
             log.info(message);
             messageService.sendMessage(message);
 
-            throw new MyPageException(UNCHECKED_EXCEPTION, e);
+            throw new UncheckedException(UNCHECKED_EXCEPTION, e);
         }
     }
 
