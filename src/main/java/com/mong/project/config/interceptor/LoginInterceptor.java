@@ -1,5 +1,6 @@
 package com.mong.project.config.interceptor;
 
+import com.mong.project.exception.MyPageException;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionException;
 import org.springframework.stereotype.Component;
@@ -34,7 +35,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     }
 
     private void checkEmpty(HttpSession session) {
-        if (session == null || session.getAttribute(LOGIN_MEMBER) == null) throw new SessionException(INVALID_SESSION);
+        if (session == null || session.getAttribute(LOGIN_MEMBER) == null) throw new MyPageException(INVALID_SESSION);
     }
 
     @Override
