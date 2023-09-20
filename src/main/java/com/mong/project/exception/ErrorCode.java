@@ -10,6 +10,8 @@ public class ErrorCode {
     public static final String INVALID_PASSWORD = "잘못된 비밀번호 입니다.";
     public static final String ALREADY_EXIST_ALIAS = "이미 존재하는 닉네임 입니다.";
     public static final String ALREADY_EXIST_MEMBER = "이미 존재하는 유저입니다.";
+    public static final String INVALID_PASSWORD_FORMAT = "비밀번호는 8자 이상 15자 이하여야 합니다.";
+    public static final String INVALID_EMAIL_FORMAT = "잘못된 이메일 형식입니다.";
 
     // board
     public static final String NOT_EXIST_BOARD = "존재하지 않는 개시물의 아이디 입니다.";
