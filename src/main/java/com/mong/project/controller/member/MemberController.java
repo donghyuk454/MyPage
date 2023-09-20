@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,14 +49,15 @@ public class MemberController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Void> signup(@RequestBody MemberJoinRequest memberJoinRequest) {
+    public ResponseEntity<Void> signup(@RequestBody @Valid MemberJoinRequest memberJoinRequest) {
         memberService.join(memberJoinRequest.toMember());
 
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest, final HttpSession session) {
+    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest loginRequest,
+                                               final HttpSession session) {
         Long memberId = memberService.login(loginRequest.getEmail(), loginRequest.getPasswd());
         session.setAttribute(LOGIN_MEMBER, memberId);
         LoginResponse loginResponse = new LoginResponse(memberId);
@@ -71,7 +73,8 @@ public class MemberController {
     }
 
     @PutMapping("/password")
-    public ResponseEntity<Void> changePassword(@Login final Long memberId, @RequestBody ChangePasswordRequest changePasswordRequest) {
+    public ResponseEntity<Void> changePassword(@Login final Long memberId,
+                                               @Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
         memberService.changePasswd(memberId, changePasswordRequest.getNewPasswd());
 
         return ResponseEntity.ok().build();
@@ -88,7 +91,8 @@ public class MemberController {
     }
 
     @PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> changeImage(@Login final Long memberId,  @RequestPart(name = "image") MultipartFile image) {
+    public ResponseEntity<Void> changeImage(@Login final Long memberId,
+                                            @Valid @RequestPart(name = "image") MultipartFile image) {
         memberService.setImage(memberId, image);
 
         return ResponseEntity.ok().build();

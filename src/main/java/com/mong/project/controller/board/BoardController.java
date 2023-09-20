@@ -15,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Controller
@@ -25,7 +27,7 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping("/{boardId}")
-    public ResponseEntity<GetBoardResponse> getBoard(@PathVariable(name = "boardId") Long boardId) {
+    public ResponseEntity<GetBoardResponse> getBoard(@Valid @PathVariable(name = "boardId") Long boardId) {
         Board board = boardService.getBoardById(boardId);
 
         return ResponseEntity.ok().body(new GetBoardResponse(board));
@@ -34,7 +36,7 @@ public class BoardController {
     @PostMapping
     public ResponseEntity<Void> createBoard(@Login final Long memberId,
                                             @Nullable @RequestPart(name = "image") List<MultipartFile> images,
-                                            @RequestBody CreateBoardRequest createBoardRequest) {
+                                            @Valid @RequestBody CreateBoardRequest createBoardRequest) {
         Board board = boardService.addBoard(memberId,
                 createBoardRequest.toBoard());
         if (images != null && images.isEmpty())
@@ -44,21 +46,21 @@ public class BoardController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> changeBoard(@RequestBody ChangeBoardRequest changeBoardRequest) {
+    public ResponseEntity<Void> changeBoard(@Valid @RequestBody ChangeBoardRequest changeBoardRequest) {
         boardService.changeBoard(changeBoardRequest.getBoardId(), changeBoardRequest.getTitle(), changeBoardRequest.getContent());
 
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteBoard(@RequestParam(name = "boardId") Long boardId) {
+    public ResponseEntity<Void> deleteBoard(@NotNull @RequestParam(name = "boardId") Long boardId) {
         boardService.deleteBoard(boardId);
 
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/image")
-    public ResponseEntity<Void> createBoardImage(@RequestParam(name = "boardId") Long boardId,
+    public ResponseEntity<Void> createBoardImage(@NotNull @RequestParam(name = "boardId") Long boardId,
                                                  @RequestPart List<MultipartFile> imageFiles) {
         boardService.addImage(boardId, imageFiles);
 
@@ -66,7 +68,7 @@ public class BoardController {
     }
 
     @DeleteMapping("/image")
-    public ResponseEntity<Void> removeBoardImage(@RequestBody RemoveBoardImageRequest removeBoardImageRequest) {
+    public ResponseEntity<Void> removeBoardImage(@Valid @RequestBody RemoveBoardImageRequest removeBoardImageRequest) {
         boardService.deleteImages(removeBoardImageRequest.getBoardId(), removeBoardImageRequest.getImageIds());
 
         return ResponseEntity.ok().build();

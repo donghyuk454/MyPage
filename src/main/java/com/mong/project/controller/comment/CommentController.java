@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 @RestController
 @RequestMapping("/api/v2/comments")
 @RequiredArgsConstructor
@@ -18,7 +21,7 @@ public class CommentController {
 
     @PostMapping
     public ResponseEntity<Void> addComment(@Login final Long memberId,
-                                           @RequestBody AddCommentRequest addCommentRequest) {
+                                           @Valid @RequestBody AddCommentRequest addCommentRequest) {
         commentService.addComment(memberId, addCommentRequest.getBoardId(), addCommentRequest.getContent());
 
         return ResponseEntity.ok().build();
@@ -26,7 +29,7 @@ public class CommentController {
 
     @PutMapping
     public ResponseEntity<Void> changeComment(@Login final Long memberId,
-                                              @RequestBody ChangeCommentRequest changeCommentRequest){
+                                              @Valid @RequestBody ChangeCommentRequest changeCommentRequest){
         commentService.changeComment(changeCommentRequest.getCommentId(), changeCommentRequest.getContent());
 
         return ResponseEntity.ok().build();
@@ -34,7 +37,7 @@ public class CommentController {
 
     @DeleteMapping
     public ResponseEntity<Void> deleteComment(@Login final Long memberId,
-                                              @RequestParam(name = "commentId") Long commentId) {
+                                              @NotNull @RequestParam(name = "commentId") Long commentId) {
         commentService.deleteComment(commentId);
 
         return ResponseEntity.ok().build();
