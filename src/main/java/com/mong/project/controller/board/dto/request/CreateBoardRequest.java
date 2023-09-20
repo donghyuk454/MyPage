@@ -6,12 +6,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class CreateBoardRequest {
+    @NotNull
     private Long memberId;
+    @NotBlank
     private String title;
+    @NotBlank
     private String content;
 
     public Board toBoard() {
