@@ -1,4 +1,4 @@
-package com.mong.project.util.log.service.message;
+package com.mong.util.log.service.message;
 
 public interface MessageService {
     Boolean sendMessage(String text);

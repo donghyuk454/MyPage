@@ -1,4 +1,4 @@
-package com.mong.project.util.log.service.message.dto;
+package com.mong.util.log.service.message.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

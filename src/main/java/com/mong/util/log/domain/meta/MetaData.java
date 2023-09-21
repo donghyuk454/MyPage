@@ -1,4 +1,4 @@
-package com.mong.project.util.log.domain.meta;
+package com.mong.util.log.domain.meta;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

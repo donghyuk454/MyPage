@@ -1,8 +1,9 @@
-package com.mong.project.util.log.service;
+package com.mong.util.log.service;
 
-import com.mong.project.util.log.domain.ServerExceptionLog;
-import com.mong.project.util.log.repository.ServerExceptionLogRepository;
-import com.mong.project.util.log.service.dto.ExceptionLogDto;
+import com.mong.util.log.domain.ServerExceptionLog;
+import com.mong.util.log.repository.ServerExceptionLogRepository;
+import com.mong.util.log.service.ServerExceptionLogService;
+import com.mong.util.log.service.dto.ExceptionLogDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,5 +1,6 @@
-package com.mong.project.util.readme;
+package com.mong.util.readme;
 
+import com.mong.util.readme.ReadmeWriter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

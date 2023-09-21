@@ -1,4 +1,4 @@
-package com.mong.project.util.document;
+package com.mong.util.document;
 
 import org.springframework.restdocs.operation.preprocess.OperationRequestPreprocessor;
 import org.springframework.restdocs.operation.preprocess.OperationResponsePreprocessor;

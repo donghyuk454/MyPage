@@ -1,12 +1,13 @@
-package com.mong.project.util.log.aspect;
+package com.mong.util.log.aspect;
 
 import com.mong.project.domain.member.Member;
 import com.mong.project.exception.MyPageException;
 import com.mong.project.exception.UncheckedException;
 import com.mong.project.repository.member.MemberRepository;
-import com.mong.project.util.log.service.ServerExceptionLogService;
-import com.mong.project.util.log.service.dto.ExceptionLogDto;
-import com.mong.project.util.log.service.message.MessageService;
+import com.mong.util.log.aspect.LogAspect;
+import com.mong.util.log.service.ServerExceptionLogService;
+import com.mong.util.log.service.dto.ExceptionLogDto;
+import com.mong.util.log.service.message.MessageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

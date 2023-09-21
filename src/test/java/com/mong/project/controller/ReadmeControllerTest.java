@@ -1,6 +1,6 @@
 package com.mong.project.controller;
 
-import com.mong.project.util.readme.ReadmeWriter;
+import com.mong.util.readme.ReadmeWriter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

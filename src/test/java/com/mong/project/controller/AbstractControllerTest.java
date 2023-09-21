@@ -5,7 +5,7 @@ import com.mong.project.config.interceptor.LoginInterceptor;
 import com.mong.project.exception.ExceptionHandlers;
 
 import com.google.gson.Gson;
-import com.mong.project.util.document.ApiDocumentUtil;
+import com.mong.util.document.ApiDocumentUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
