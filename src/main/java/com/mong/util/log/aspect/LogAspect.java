@@ -1,10 +1,10 @@
-package com.mong.project.util.log.aspect;
+package com.mong.util.log.aspect;
 
 import com.mong.project.exception.MyPageException;
 import com.mong.project.exception.UncheckedException;
-import com.mong.project.util.log.service.dto.ExceptionLogDto;
-import com.mong.project.util.log.service.message.MessageService;
-import com.mong.project.util.log.service.ServerExceptionLogService;
+import com.mong.util.log.service.dto.ExceptionLogDto;
+import com.mong.util.log.service.message.MessageService;
+import com.mong.util.log.service.ServerExceptionLogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

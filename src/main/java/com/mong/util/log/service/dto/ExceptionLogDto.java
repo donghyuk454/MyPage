@@ -1,8 +1,8 @@
-package com.mong.project.util.log.service.dto;
+package com.mong.util.log.service.dto;
 
-import com.mong.project.util.log.domain.ServerExceptionLog;
-import com.mong.project.util.log.domain.exception.ExceptionData;
-import com.mong.project.util.log.domain.meta.MetaData;
+import com.mong.util.log.domain.ServerExceptionLog;
+import com.mong.util.log.domain.exception.ExceptionData;
+import com.mong.util.log.domain.meta.MetaData;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

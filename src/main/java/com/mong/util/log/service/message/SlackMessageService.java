@@ -1,4 +1,4 @@
-package com.mong.project.util.log.service.message;
+package com.mong.util.log.service.message;
 
 import com.slack.api.Slack;
 import com.slack.api.methods.MethodsClient;

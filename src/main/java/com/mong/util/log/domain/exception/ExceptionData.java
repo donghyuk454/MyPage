@@ -1,4 +1,4 @@
-package com.mong.project.util.log.domain.exception;
+package com.mong.util.log.domain.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

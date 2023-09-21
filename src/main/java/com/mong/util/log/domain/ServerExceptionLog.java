@@ -1,7 +1,7 @@
-package com.mong.project.util.log.domain;
+package com.mong.util.log.domain;
 
-import com.mong.project.util.log.domain.exception.ExceptionData;
-import com.mong.project.util.log.domain.meta.MetaData;
+import com.mong.util.log.domain.exception.ExceptionData;
+import com.mong.util.log.domain.meta.MetaData;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 

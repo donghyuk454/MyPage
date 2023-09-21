@@ -1,4 +1,4 @@
-package com.mong.project.util.readme;
+package com.mong.util.readme;
 
 import lombok.extern.slf4j.Slf4j;
 
